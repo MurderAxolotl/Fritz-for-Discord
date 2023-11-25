@@ -6,6 +6,17 @@ __pycache__/
 # C extensions
 *.so
 
+.vscode
+cache
+bin
+include
+_oldCode
+logs
+pyvenv.cfg
+.env
+.gitignore
+.gitattributes
+
 # Distribution / packaging
 .Python
 build/

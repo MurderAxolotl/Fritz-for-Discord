@@ -68,10 +68,10 @@ def manCheckAllowedNSFW(ctx, onlyReturnCheck=False):
 	else: return True
 
 async def downloadYoutubeVideo(video_url, id):
-	string = 'yt-dlp "' + video_url + '" -x -q -N 25 -o video_cache' + str(id) + " --path /home/lexi/Documents/Fritz/cache"
+	string = 'yt-dlp "' + video_url + '" -x -q -N 25 -o video_cache' + str(id) + " --path /home/%s/Documents/Fritz/cache"%os.getlogin()
 
 	await loop.run_in_executor(ThreadPoolExecutor(), lambda: os.system(string))
-	os.system("rm /home/lexi/Documents/Fritz/*.webm 2> /dev/null")
+	os.system("rm /home/%s/Documents/Fritz/*.webm 2> /dev/null"%os.getlogin())
 
 async def getPageTitle(URL):
 	try:

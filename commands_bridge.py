@@ -202,8 +202,8 @@ async def triggerUpdateWarn(ctx): await ctx.respond(final_migration_warning)
 @isDeveloper()
 async def initiateShutdown(ctx):
 	await ctx.respond(":saluting_face:")
-	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon ~/Pictures/fritzSystemIcon.jpeg -e")
-	os.system("pkill /home/lexi/Documents/Fritz/ -f")
+	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
+	os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 
 @zdev.command(name="swiper_no_swiping", description='fritz.dev.swiper_no_swiping', pass_context=True)
 @isDeveloper()

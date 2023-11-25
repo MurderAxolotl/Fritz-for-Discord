@@ -98,14 +98,14 @@ async def playAudio(ctx: discord.ApplicationContext, youtube_link:str, channel_i
 			await downloadYoutubeVideo(audio_url, INSTANCE.memoryID)
 
 		try:
-			audioFile = discord.FFmpegOpusAudio(source="/home/lexi/Documents/Fritz/cache/video_cache%s.opus"%GUILD_ID)
+			audioFile = discord.FFmpegOpusAudio(source="/home/%s/Documents/Fritz/cache/video_cache%s.opus"%(os.getlogin(), GUILD_ID))
 			await discord_response.edit("Playing `%s`"%await getPageTitle(audio_url))
 
 		except:
 			await discord_response.edit("Failed to load ffmpeg audio stream, skipping to next queue item")
-			os.system("rm /home/lexi/Documents/Fritz/cache/video_cache%s.opus"%GUILD_ID)
+			os.system("rm /home/%s/Documents/Fritz/cache/video_cache%s.opus"%(os.getlogin(), GUILD_ID))
 
-		if os.path.isfile("/home/lexi/Documents/Fritz/cache/video_cache%s.opus"%GUILD_ID):
+		if os.path.isfile("/home/%s/Documents/Fritz/cache/video_cache%s.opus"%(os.getlogin(), GUILD_ID)):
 			try: connectedVC.play(audioFile)
 			except: await ctx.channel.send("Unable to read audio stream for %s, skipping to next track!"%await getPageTitle(audio_url))
 		else: await ctx.channel.send("Error reading unknown audio stream, skipping to next track!")
@@ -122,11 +122,11 @@ async def playAudio(ctx: discord.ApplicationContext, youtube_link:str, channel_i
 		print(len(INSTANCE.audioQueue))
 
 		if len(INSTANCE.audioQueue) == 0: 
-			os.system("rm /home/lexi/Documents/Fritz/cache/video_cache%s.opus"%GUILD_ID)
+			os.system("rm /home/%s/Documents/Fritz/cache/video_cache%s.opus"%(os.getlogin(), GUILD_ID))
 			print(RED + "Removing file" + RESET)
 		else:
 			if not (INSTANCE.audioQueue[0] == audio_url):
-				os.system("rm /home/lexi/Documents/Fritz/cache/video_cache%s.opus"%GUILD_ID); download_required = 1
+				os.system("rm /home/%s/Documents/Fritz/cache/video_cache%s.opus"%(os.getlogin(), GUILD_ID)); download_required = 1
 				print(RED + "Removing file" + RESET)
 
 			else: print(RED + "Not erasing" + RESET); download_required = 0

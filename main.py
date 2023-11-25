@@ -57,17 +57,6 @@ async def on_message(message):
 			print(YELLOW + "Creating dir %s"%sys.path[0] + "/logs/guilds/%s"%(guild_id))
 			os.mkdir(sys.path[0] + "/logs/guilds/%s"%(guild_id))
 
-	# if ":3" in str(message.content) or "colon" in str(message.content).lower() or ":" in str(message.content) or "3" in str(message.content): 
-	# 	if not str(message.author.id) == "1063584978081951814": await message.delete()
-	if "ugly" in str(message.content).lower().replace(" ", ""): await message.delete()
-
-	if guild_id == "1170869996856016956":
-		if str(message.channel.id) == "1170871176638246962":
-			print("Message detected in #da-rules")
-			if not (str(message.author.id) == "805166021752520714") and not str(message.author.id) == "1150602405755502723":
-				print("Message not authorized")
-				await message.delete()
-
 	fs = str(today) + " " + str(current_time) + " "
 	messageContent = str(message.author).split("#0")[0] + ": " + message.content
 
