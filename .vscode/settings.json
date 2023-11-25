@@ -1,0 +1,25 @@
+{
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"**/.ini": true,
+		"**/__pycache__/**": true,
+		"*venv*": true,
+		"bin": true,
+		"include": true,
+		"lib": true,
+		".vscode": true,
+		"lib64": true
+	},
+	"hide-files.files": [
+		"bin",
+		"include",
+		"lib",
+		".vscode",
+		"lib64"
+	]
+}

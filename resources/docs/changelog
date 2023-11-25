@@ -1,0 +1,107 @@
+# Fritz changelog
+
+## 1.0.0
+	- I really don't know
+
+## 1.0.3
+	- Automatic responses
+	- Logging support
+	- Command support
+	- Migrated Vitz' codebase
+
+## 1.1
+	- Removed automatic responses
+	- Removed logging support
+	- Added primitive ChatGPT command
+
+## 1.15
+	- Rebuilt from the ground up
+	- Using Pycord instead of Discord.py
+	- THREADING SUPPORT (kinda)
+
+## 1.15
+	- Added PronounsPage API
+	- Enhanced ChatGPT support
+		- Removed NSFW filter
+
+## 1.19
+	- Oops, code got wiped out
+	- Rewritten from scratch (again)
+
+## 1.2
+	- Fixed threading
+	- Disabled broken ChatGPT impmentation
+	- Pomelo support
+
+## 1.3 
+	- Management commands
+
+## 1.5
+	- Re-wrote code (AGAIN)
+	- Upgraded to latest version of Pycord
+	- Midjourney support (using sdxl 1.0)
+	- Fixed critical security issues
+	- Fixed hundreds of bugs (seriously, I spent 10 hours doing that)
+	- Cleaned up code to make it more readable
+	- Added DM support (yes, the bot can now slide into your DMs)
+	- Proper multithreading support
+	- Granular permission controls
+		- Won't ask for administrator anymore
+		- Re-invite bot to remove administrator permissions
+	- Better error handling
+	- Significantly better logging support
+	- Correctly informs you if the command is wrong
+
+## 1.6
+	- Significantly better multiprocessing support
+		- Both ChatGPT and Midjourney will no longer block the main thread
+	- Switched to new, local, ChatGPT implementation
+	- Using GPT-4 now
+	- Mostly functional slash command support
+	- Deprication of prefix command support
+	- New /changelog command
+
+## 1.7
+	- [Character AI](https://c.ai) support
+		- New `cai` command
+		- New `goose` command
+	- Autofill support
+
+## 1.9
+	- NSFW Midjourney support
+	- New `goodporn` command
+	- New `dark_nights` command (lys please don't kill me...)
+	- New [Character AI](https://c.ai) characters (bryce, vsauce, taylor, daddy, proto, ralsei)
+	- Improved application response time
+	- Improved error rates with Midjourney
+	- `mj` command will no longer murder itself when you try to generate NSFW content
+		- When NSFW content is detected, it automatically falls back to the `goodporn` backend
+	- Shortened command group name from `fritz` to `f`
+	- Finally removed all references to the previous prefix-based command system
+		- Updated help messages to reflect slash commands
+
+
+## 1.10
+	- New commands: `glados`, `givecat`, `joke`, `scan_qr`, `create_qr`
+	- Enabled the ability to disable NSFW content generation (still a work in progress)
+	- Updated to g4f 0.1.8.2
+	- Performance patching
+	- Removed `Hey Fritz`, as it was broken
+
+## 1.11
+	- Moved `scan_qr` and `create_qr` to the stable branch
+	- Cleaned up source code
+	- New [Character AI](https://c.ai) characters (connor)
+	- Alphabetized Character AI list
+	- Performance patching
+	- Bug hunting
+	- Developer-only commands are now properly protected
+	- Re-wrote help command message
+	- Removed `goose` command
+	- Removed left-over code from prefix commands
+	- Audio player commands
+
+## 1.12
+	- Multithreaded audio support
+	- Brand-new, fixed, and much better audio commands
+	- 
