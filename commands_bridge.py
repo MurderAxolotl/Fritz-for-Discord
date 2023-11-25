@@ -108,8 +108,8 @@ async def joke(ctx): await oneOff.getRandomJoke(ctx)
 ### ===================================== ###
 ## QUOTEBOOK ##
 # DARK NIGHTS QUOTES #
-@fritz.command(name="dark_nights", description='Grab a randomly-selected quote from Dark Nights', pass_context = True)
-async def dnQuote(ctx, count:int=1): await darkNights.getQuote(ctx, count)
+# @fritz.command(name="dark_nights", description='Grab a randomly-selected quote from Dark Nights', pass_context = True)
+# async def dnQuote(ctx, count:int=1): await darkNights.getQuote(ctx, count)
 
 ### ===================================== ###
 ## TOOLS ##

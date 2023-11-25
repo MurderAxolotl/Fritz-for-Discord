@@ -13,13 +13,19 @@
 		"include": true,
 		"lib": true,
 		".vscode": true,
-		"lib64": true
+		"lib64": true,
+		".gitattributes": true,
+		".gitignore": true,
+		"LICENSE": true
 	},
 	"hide-files.files": [
 		"bin",
 		"include",
 		"lib",
 		".vscode",
-		"lib64"
+		"lib64",
+		".gitattributes",
+		".gitignore",
+		"LICENSE"
 	]
 }
