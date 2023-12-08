@@ -7,12 +7,6 @@ from scripts.tools.utility import *
 instances_in_memory = []
 instanceMemory = {}
 
-audioQueue = []
-audioPlaying = None
-currentAudioLink = None
-leaveAfterFinish = False
-connectedVC = None
-
 class memoryInstance():
 	memoryID = None
 	connectedVC = None
@@ -84,7 +78,7 @@ async def playAudio(ctx: discord.ApplicationContext, youtube_link:str, channel_i
 
 			if not audible_keepalive: connectedVC.send_audio_packet(b'0')
 			else: connectedVC.send_audio_packet(b'A very nifty keepalive signal; a few packets will be sent'); connectedVC.send_audio_packet(b'e#rE3E3')
-			if leaveAfterFinish: 
+			if INSTANCE.leaveAfterFinish: 
 				await connectedVC.disconnect(); await discord_response.edit("Finished playing")
 				removeFromMemory(GUILD_ID)
 				return 0
@@ -174,6 +168,8 @@ async def removeQueue(ctx, queue_item_number:int):
 
 		elif (itemTarget >= 1):
 			instance.audioQueue.pop(itemTarget)
+
+		await ctx.respond("Removed from the queue")
 	else: await ctx.respond("This server has no audio instance")
 
 async def getQueue(ctx):
@@ -189,13 +185,13 @@ async def getQueue(ctx):
 
 			contextOutput = discord.Embed(title="Queue", description="There are currently %s items queued"%str(queueLength), colour=discord.Colour.dark_purple(),)
 
-			contextOutput.add_field(name="", value="%s [playing]"% await getPageTitle(currentAudioLink), inline=False)
+			contextOutput.add_field(name="", value="%s [playing]"% await getPageTitle(instance.currentAudioLink), inline=False)
 			contextOutput.add_field(name="", value="# ============== #", inline=False)
 
-			for song in audioQueue:
+			for song in instance.audioQueue:
 				if numEmbeded <= 9:
 					songTitle = await getPageTitle(song)
-					contextOutput.add_field(name="", value=songTitle, inline=False)
+					contextOutput.add_field(name="", value="%s: %s"%(numEmbeded+1, songTitle), inline=False)
 					numEmbeded += 1
 
 			contextOutput.set_footer(text="Only up to the next 9 queued items will be shown")

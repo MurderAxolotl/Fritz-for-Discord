@@ -104,4 +104,7 @@
 ## 1.12
 	- Multithreaded audio support
 	- Brand-new, fixed, and much better audio commands
+	- Supports multiple calls at once (in separate servers)
+
+## 1.13
 	- 
