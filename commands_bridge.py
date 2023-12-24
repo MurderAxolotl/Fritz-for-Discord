@@ -1,4 +1,5 @@
 import asyncio
+import time
 import nest_asyncio
 
 from discord.ext import bridge
@@ -40,7 +41,7 @@ audio = bot.create_group("audio", "Audio tools")
 ### ===================================== ###
 ### EVENTS ###
 
-@bot.event
+@bot.event	
 async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException): await commandCheck.on_command_error(ctx, error)
 				
 @bot.event
@@ -186,6 +187,19 @@ async def help(ctx): await ctx.respond(help_messages.about_system, ephemeral=Tru
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
 async def getInvite(ctx): await ctx.respond(INVITE_URL, ephemeral=True); print(bot.get_guild(ctx.guild.id))
 
+
+@fritz.command(name='crazy')
+async def gwazyt(ctx):
+	await ctx.send("Crazy?")
+	await ctx.send("I was crazy once")
+	await ctx.send("They locked me in a room")
+	await ctx.send("A rubber room")
+	await ctx.send("A rubber room with rats")
+	await ctx.send("And rats make me crazy")
+
+@isDeveloper()
+@zdev.command(name='echo')
+async def gwaz(ctx, lel): await ctx.send(lel)
 
 ### ===================================== ###
 ## DEVELOPER ONLY ##

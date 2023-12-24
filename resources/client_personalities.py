@@ -11,8 +11,8 @@ class activities():
 		application_id=1070042394009014303
 	)
 	
-	christmas = discord.Activity(name = "Christmas", 
-		state = "Merry Chrisis", 
+	christmas = discord.Activity(name = "Yiffmas", 
+		state = "Merry Yiffmas!", 
 		type=discord.ActivityType.competing, 
 		assets={'large_image':'foxfox', 'large_text':'gay'}, 
 		application_id=1070042394009014303

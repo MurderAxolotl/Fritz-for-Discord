@@ -13,9 +13,12 @@ import scripts.tools.loadHandler as loadHandler
 import resources.client_personalities as personalities
 from scripts.tools.utility import *
 
+# Most of these are intended for specific situations. They're stupid and don't belong here
+import scripts.tools.optionalFeaturesModule as optionalFeatures
+
 PATH = sys.path[0]
 
-client_personality = personalities.Default.standard
+client_personality = personalities.Holiday.christmas
 
 client = client_personality[0]
 bot = commands.Bot(intents=intents)
@@ -65,6 +68,9 @@ async def on_message(message):
 
 	log.write(fs + messageContent + "\n")
 	log.close()
+
+	if optionalFeatures.config.blockImages == True: optionalFeatures.imageBanModule(message)
+	if optionalFeatures.config.enableCrazy == True: optionalFeatures.crazyOnce(message)
 
 ### --- Initialise the bot --- ###
 
