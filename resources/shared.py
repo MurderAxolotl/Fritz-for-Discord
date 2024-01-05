@@ -7,6 +7,7 @@ INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303
 TOKEN = os.getenv("discordToken")
 CHATGPT_TOKEN = os.getenv("chatgptToken")
 CAI_TOKEN = os.getenv("charAIToken")
+AUTHORISED_DEVELOPERS = os.getenv("developers")
 
 intents = discord.Intents(messages=True, message_content=True, voice_states=True)
 

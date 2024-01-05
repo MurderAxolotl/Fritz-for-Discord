@@ -7,18 +7,15 @@ from discord.ext import commands
 from resources.colour import *
 from resources.shared import TOKEN, intents
 
-import scripts.tools.utility as utility
+import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
 
 import resources.client_personalities as personalities
 from scripts.tools.utility import *
 
-# Most of these are intended for specific situations. They're stupid and don't belong here
-import scripts.tools.optionalFeaturesModule as optionalFeatures
-
 PATH = sys.path[0]
 
-client_personality = personalities.Holiday.christmas
+client_personality = personalities.Default.standard 	
 
 client = client_personality[0]
 bot = commands.Bot(intents=intents)
@@ -43,34 +40,19 @@ async def on_message(message):
 	now = datetime.datetime.now()
 	current_time = now.strftime("%H:%M:%S")
 	today = datetime.date.today()
-	unit = None
-
-	if await utility.check(message) == True: 
-		guild_id = str(message.author).split("#0", 1)[0]; unit = "users"
-		logPath = sys.path[0] + "/logs/%s/%s.log"%(unit, guild_id)
-
-	else: 
-		try: guild_id = str(message.guild.id)
-		except: guild_id = 0; print(RED + "Guild cache needs to be refreshed" + RESET)
-		channel_id = str(message.channel.id)
-
-		logPath = sys.path[0] + "/logs/guilds/%s/%s.log"%(guild_id, channel_id)
-
-		if not os.path.isdir(sys.path[0] + "/logs/guilds/%s"%(guild_id)):
-			print(YELLOW + "Creating dir %s"%sys.path[0] + "/logs/guilds/%s"%(guild_id))
-			os.mkdir(sys.path[0] + "/logs/guilds/%s"%(guild_id))
 
 	fs = str(today) + " " + str(current_time) + " "
-	messageContent = str(message.author).split("#0")[0] + ": " + message.content
 
-	if (os.path.isfile(logPath)): log = open(logPath, "a")
-	else: log = open(logPath, "+x")
+	logging.logMessage(message)
 
-	log.write(fs + messageContent + "\n")
-	log.close()
+	if str(message.content).lower() == "hey fritz, panic 0x30":
+		if str(message.author) in AUTHORISED_DEVELOPERS
+			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
+			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 
-	if optionalFeatures.config.blockImages == True: optionalFeatures.imageBanModule(message)
-	if optionalFeatures.config.enableCrazy == True: optionalFeatures.crazyOnce(message)
+	if str(message.guild.id) == "1064071365449228338":
+		print(MAGENTA + SEAFOAM + fs + str(message.channel.id) + YELLOW + " " + str(message.author).split("#0")[0] + DRIVES + ": " + str(message.content) + RESET)
+
 
 ### --- Initialise the bot --- ###
 

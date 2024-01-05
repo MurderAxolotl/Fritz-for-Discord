@@ -1,5 +1,6 @@
 import asyncio
 import time
+from flask import ctx
 import nest_asyncio
 
 from discord.ext import bridge
@@ -35,6 +36,7 @@ nest_asyncio.apply(loop)
 fritz = bot.create_group("f", "Fritz command group")
 inDev = bot.create_group("f_unstable", "Unstable and under development")
 zdev = bot.create_group("f_dev", "Developer-only utilities")
+manual = bot.create_group("manual", "Manual tools")
 audio = bot.create_group("audio", "Audio tools")
 
 
@@ -159,14 +161,8 @@ async def disconnectNow(ctx): await audioCommands.immediateLeave(ctx)
 @audio.command(name="debug", description="Load FEAD")
 async def loadFEAD(ctx): await audioCommands.getDebugInfo(ctx)
 
-# @audio.command(name="raw_packet", description="Send raw packets of audio instead of a stream. Auto-pauses active streams")
-# async def sendRawPacket(ctx, data:str="", count:int=25, autopause:discord.Option(bool, choices=[True, False])=True): await audioCommands.rawPacket(ctx, count, autopause, data)
-
-@audio.command(name="test_socket", description="Don't use this; it's for debugging")
-async def sendSocketTest(ctx): await audioCommands.audioSocketSyncTest(ctx)
-
-@audio.command(name="audio_test", description="Don't use this; it's for debugging")
-async def audioTest(ctx): await audioCommands.debugMode(ctx, bot)
+@audio.command(name="raw_packet", description="Send raw packets of audio instead of a stream. Auto-pauses active streams")
+async def sendRawPacket(ctx, data:str="", count:int=25, autopause:discord.Option(bool, choices=[True, False])=True): await audioCommands.rawPacket(ctx, count, autopause, data)
 
 ### ===================================== ###
 ## INFORMATION COMMANDS ##
@@ -187,30 +183,8 @@ async def help(ctx): await ctx.respond(help_messages.about_system, ephemeral=Tru
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
 async def getInvite(ctx): await ctx.respond(INVITE_URL, ephemeral=True); print(bot.get_guild(ctx.guild.id))
 
-
-@fritz.command(name='crazy')
-async def gwazyt(ctx):
-	await ctx.send("Crazy?")
-	await ctx.send("I was crazy once")
-	await ctx.send("They locked me in a room")
-	await ctx.send("A rubber room")
-	await ctx.send("A rubber room with rats")
-	await ctx.send("And rats make me crazy")
-
-@isDeveloper()
-@zdev.command(name='echo')
-async def gwaz(ctx, lel): await ctx.send(lel)
-
 ### ===================================== ###
-## DEVELOPER ONLY ##
-
-@zdev.command(name='trigger_update_warn', description='fritz.dev.trigger_update_warn', pass_context=True)
-@isDeveloper()
-async def triggerUpdateWarn(ctx): await ctx.respond(migrateToSlashCommands)
-
-@zdev.command(name='final_migration_warning', description='fritz.dev.final_migration_warning', pass_context=True)
-@isDeveloper()
-async def triggerUpdateWarn(ctx): await ctx.respond(final_migration_warning)
+## DEVELOPER ONLY ## 
 
 @zdev.command(name='shutdown', description='fritz.dev.shutdown', pass_context=True)
 @isDeveloper()
@@ -230,6 +204,17 @@ async def delete(ctx, mid):
 
 	aaa = await ctx.respond("Done", ephemeral=True)
 	await aaa.delete()
+
+@manual.command(name='type', description='fritz.manual.typing')
+@isDeveloper()
+async def setTyping(ctx, time:float=5.0):
+	with ctx.typing():
+		await asyncio.sleep(time)
+
+@manual.command(name='export', description='fritz.manual.export')
+@isDeveloper()
+async def echo(ctx, text):
+	await ctx.channel.send(text)
 
 ### ===================================== ###
 

@@ -133,9 +133,6 @@ async def playAudio(ctx: discord.ApplicationContext, youtube_link:str, channel_i
 
 	except: print(RED + "uh oh" + RESET)
 
-async def debugMode(ctx, bot):
-	await playAudio(ctx, "https://www.youtube.com/watch?v=f8mL0_4GeV0", 1064071365449228342, False, bot)
-
 async def addQueue(ctx: discord.ApplicationContext, youtube_link):
 	GUILD_ID = ctx.guild.id
 
@@ -273,61 +270,3 @@ async def getDebugInfo(ctx):
 
 		await ctx.respond(embed=contextOutput)
 	else: await ctx.respond("This server has no audio instance")
-
-def audioSocketSyncTestLoader(GUILD_ID):
-	if (GUILD_ID in instances_in_memory):
-		instance = instanceMemory[str(GUILD_ID)]
-
-		if instance.connectedVC != None:
-			for i in range(0,25): instance.connectedVC.send_audio_packet('FFFFFFFFF')
-			sleep(1)
-			randstring = ""
-			for i in range(0,500):
-				for i in range(0,random.randint(1,25)): randstring = randstring + random.choice(string.digits + string.ascii_letters + string.punctuation)
-				instance.connectedVC.send_audio_packet(bytes(randstring, "utf-8"))
-				randstring = ""
-			sleep(1)
-			for i in range(0,25): instance.connectedVC.send_audio_packet('5555555')
-
-		
-		else: NotImplemented
-	else: return -1
-
-async def audioSocketSyncTest(ctx):
-	await ctx.defer()
-	await loop.run_in_executor(ThreadPoolExecutor(), lambda: audioSocketSyncTestLoader(ctx.guild.id))
-	await ctx.respond("Socket test complete")
-
-def rawPacketLoader(count, autoPause:bool, data, GUILD_ID):
-	if (GUILD_ID in instances_in_memory):
-		instance = instanceMemory[str(GUILD_ID)]
-		counted = 0
-		should_resume = False
-
-		if instance.connectedVC != None:
-			if not instance.connectedVC.is_paused() and autoPause: instance.connectedVC.pause(); should_resume = True
-			try:
-				while count != counted:
-					randstring = data
-					for i in range(0,random.randint(1,25)): randstring = randstring + random.choice(string.digits + string.ascii_letters + string.punctuation)
-
-					instance.connectedVC.send_audio_packet(bytes(randstring, "utf-8"))
-					counted += 1
-					randstring = ""
-
-			except Exception as err:
-				# print(str(err))
-				try:instance.connectedVC.send_audio_packet(bytes(str(err), "utf-8"))
-				except:NotImplemented
-
-		else:
-			NotImplemented
-
-		if should_resume: instance.connectedVC.resume()
-	
-	else: return -1
-
-async def rawPacket(ctx, count, autopause, data):
-	await ctx.defer()
-	await loop.run_in_executor(ThreadPoolExecutor(), lambda: rawPacketLoader(count, autopause, data))
-	await ctx.respond("Raw packets were transmitted", ephemeral=True)

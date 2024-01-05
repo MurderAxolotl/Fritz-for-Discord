@@ -107,4 +107,9 @@
 	- Supports multiple calls at once (in separate servers)
 
 ## 1.13
-	- 
+	- Removed Midjourney support
+	- Cleaned up commands
+	- Fixed a whole slew of audio bugs
+	- Added new panic codes
+	- Properly protected shutdown command
+	- Moved message logging to a dedicated file
