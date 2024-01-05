@@ -1,0 +1,91 @@
+# type: ignore
+def audioSocketSyncTestLoader(GUILD_ID):
+	if (GUILD_ID in instances_in_memory):
+		instance = instanceMemory[str(GUILD_ID)]
+
+		if instance.connectedVC != None:
+			for i in range(0,25): instance.connectedVC.send_audio_packet('FFFFFFFFF')
+			sleep(1)
+			randstring = ""
+			for i in range(0,500):
+				for i in range(0,random.randint(1,25)): randstring = randstring + random.choice(string.digits + string.ascii_letters + string.punctuation)
+				instance.connectedVC.send_audio_packet(bytes(randstring, "utf-8"))
+				randstring = ""
+			sleep(1)
+			for i in range(0,25): instance.connectedVC.send_audio_packet('5555555')
+
+		
+		else: NotImplemented
+	else: return -1
+
+async def audioSocketSyncTest(ctx):
+	await ctx.defer()
+	await loop.run_in_executor(ThreadPoolExecutor(), lambda: audioSocketSyncTestLoader(ctx.guild.id))
+	await ctx.respond("Socket test complete")
+
+def rawPacketLoader(count, autoPause:bool, data, GUILD_ID):
+	if (GUILD_ID in instances_in_memory):
+		instance = instanceMemory[str(GUILD_ID)]
+		counted = 0
+		should_resume = False
+
+		if instance.connectedVC != None:
+			if not instance.connectedVC.is_paused() and autoPause: instance.connectedVC.pause(); should_resume = True
+			try:
+				while count != counted:
+					randstring = data
+					for i in range(0,random.randint(1,25)): randstring = randstring + random.choice(string.digits + string.ascii_letters + string.punctuation)
+
+					instance.connectedVC.send_audio_packet(bytes(randstring, "utf-8"))
+					counted += 1
+					randstring = ""
+
+			except Exception as err:
+				# print(str(err))
+				try:instance.connectedVC.send_audio_packet(bytes(str(err), "utf-8"))
+				except:NotImplemented
+
+		else:
+			NotImplemented
+
+		if should_resume: instance.connectedVC.resume()
+	
+	else: return -1
+
+async def rawPacket(ctx, count, autopause, data):
+	await ctx.defer()
+	await loop.run_in_executor(ThreadPoolExecutor(), lambda: rawPacketLoader(count, autopause, data))
+	await ctx.respond("Raw packets were transmitted", ephemeral=True)
+
+
+async def freebird(ctx, bot):
+	import time
+
+	with ctx.typing():
+			await downloadYoutubeVideo("https://www.youtube.com/watch?v=0LwcvjNJTuM", 666)
+
+			voice_instance = await bot.fetch_channel(1170869997325783063)
+			voice = await voice_instance.connect()
+			
+			START_TIME = 1704095705
+			# START_TIME = 1704091505
+
+			while round(time.time(), None) < START_TIME: await asyncio.sleep(0.1)
+
+			audioFile = discord.FFmpegOpusAudio(source="/home/lexi/Documents/Fritz/cache/video_cache666.opus")
+
+			voice.play(audioFile)
+
+			while voice.is_playing():
+				await asyncio.sleep(1)
+
+			await asyncio.sleep(1)
+
+			os.system("rm /home/lexi/Documents/Fritz/cache/video_cache666.opus")
+
+			await voice.disconnect()
+
+	await ctx.respond("UwU")
+
+async def debugMode(ctx, bot):
+	await playAudio(ctx, "https://www.youtube.com/watch?v=f8mL0_4GeV0", 1064071365449228342, False, bot)

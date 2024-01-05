@@ -10,7 +10,6 @@ __pycache__/
 cache
 bin
 include
-_oldCode
 logs
 pyvenv.cfg
 .env
