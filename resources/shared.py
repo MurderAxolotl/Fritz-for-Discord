@@ -8,6 +8,7 @@ TOKEN = os.getenv("discordToken")
 CHATGPT_TOKEN = os.getenv("chatgptToken")
 CAI_TOKEN = os.getenv("charAIToken")
 AUTHORISED_DEVELOPERS = os.getenv("developers")
+CT_NAMES = os.getenv("ct_name_map")
 
 intents = discord.Intents(messages=True, message_content=True, voice_states=True)
 

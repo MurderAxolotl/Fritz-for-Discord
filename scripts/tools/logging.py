@@ -1,6 +1,6 @@
 import os, sys, datetime
 
-import tools.utility as utility
+import scripts.tools.utility as utility
 from resources.colour import *
 
 async def logMessage(message):

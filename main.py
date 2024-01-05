@@ -5,7 +5,7 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, AUTHORISED_DEVELOPERS
+from resources.shared import TOKEN, intents, AUTHORISED_DEVELOPERS, CT_NAMES
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
@@ -51,8 +51,12 @@ async def on_message(message):
 			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 
 	if str(message.guild.id) == "1064071365449228338":
-		print(MAGENTA + SEAFOAM + fs + str(message.channel.id) + YELLOW + " " + str(message.author).split("#0")[0] + DRIVES + ": " + str(message.content) + RESET)
+		try:
+			if message.channel.id in CT_NAMES.keys(): channel_name = CT_NAMES[message.channel.id]
+			else: channel_name = message.channel.id
+		except Exception as err: print(RED + str(err) + RESET); channel_name = message.channel.id
 
+		print(MAGENTA + SEAFOAM + fs + channel_name + YELLOW + " " + str(message.author).split("#0")[0] + DRIVES + ": " + str(message.content) + RESET)
 
 ### --- Initialise the bot --- ###
 
