@@ -108,8 +108,14 @@
 
 ## 1.13
 	- Removed Midjourney support
-	- Cleaned up commands
+	- Removed a bunch of debugging / outdated commands
 	- Fixed a whole slew of audio bugs
 	- Added new panic codes
 	- Properly protected shutdown command
 	- Moved message logging to a dedicated file
+	- Moved commands.py to _oldCode
+	- Moved scripts/api/clyde to _oldCode
+	- Moved scripts/api/midjourney to _oldCode
+	- Moved scripts/api/stablediffusion to _oldCode
+	- Downgraded from GPT-4 to GPT-35-long
+	- Rebuilt g4f from source

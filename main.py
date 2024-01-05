@@ -5,7 +5,7 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents
+from resources.shared import TOKEN, intents, AUTHORISED_DEVELOPERS
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
@@ -46,7 +46,7 @@ async def on_message(message):
 	logging.logMessage(message)
 
 	if str(message.content).lower() == "hey fritz, panic 0x30":
-		if str(message.author) in AUTHORISED_DEVELOPERS
+		if str(message.author) in AUTHORISED_DEVELOPERS:
 			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
 			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 

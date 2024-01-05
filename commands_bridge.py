@@ -11,15 +11,12 @@ from resources.responses import *
 from resources.colour import *
 from resources.user_messages import *
 
-import scripts.tools.darkNights as darkNights
 import scripts.tools.audioCommands_multimem as audioCommands
 # import _oldCode.audioCommands as audioCommands
 
 import scripts.api.qrTools as qrTools
 import scripts.api.oneoff as oneOff
 import scripts.api.gpt as gpt
-import scripts.api.midjourney as midjourney
-import scripts.api.stablediffusion as stableDiffusion
 import scripts.api.pronouns as pronouns
 import scripts.api.spotify as spotify
 import scripts.api.characterAI as cai
@@ -36,7 +33,6 @@ nest_asyncio.apply(loop)
 fritz = bot.create_group("f", "Fritz command group")
 inDev = bot.create_group("f_unstable", "Unstable and under development")
 zdev = bot.create_group("f_dev", "Developer-only utilities")
-manual = bot.create_group("manual", "Manual tools")
 audio = bot.create_group("audio", "Audio tools")
 
 
@@ -51,7 +47,7 @@ async def on_ready(): print(MAGENTA + "[Commands]" + YELLOW + " Ready!" + RESET)
 
 ### ===================================== ###
 ## API COMMANDS ##
-## Generic APIs ##
+
 # Search PronounsPage for a user #
 @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
 async def pronounspage(ctx, query:str): await pronouns.pp_searchUser(ctx, query)
@@ -73,33 +69,17 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 @fritz.command(name="seasify", description='Search Spotify for a song', pass_context = True)
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
-## MIDJOURNEY ##
-@fritz.command(name='mj', description='Generate with Midjourney', pass_context=True) # Async
-async def mj2(ctx, prompt:str, style:discord.Option(str, choices=midjourney.modeKeys.keys(), description='What artstyle to use')='realistic'): 
-	await midjourney.generateFromPrompt(ctx,prompt,style)
-
-# STABLE DIFFUSION #
-@fritz.command(name='diffuse', description='Generate with Stable Diffusion', pass_context=True) # Async
-async def stableDiffuse(ctx, prompt:str, count:int=1): await stableDiffusion.doGen(ctx, prompt, count)
-
-# NSFW ART GENERATION #
-@fritz.command(name='goodporn', description='Generate NSFW artwork', pass_context=True, nsfw=True) # Async
-@allowedNSFW()
-async def stableDiffuse(ctx, prompt:str, style:discord.Option(str, choices=midjourney.nsfw_modeKeys.keys(), description='What artstyle to use')='hd_realism'): 
-	await midjourney.nsfwGenerate(ctx, prompt, style)
-
 ## Chat Completion ##
 @fritz.command(name='chatgpt', description='Use ChatGPT', pass_context=True) # Async
 async def chatgpt(ctx, prompt:str): await gpt.generateResponse(ctx, prompt, loop)
-
-#@zdev.command(name="clyde", description="dev.clyde.copycat")
-#async def doClyde(ctx, prompt): await clyde.doClydeShit(ctx, prompt)
 
 # CHARACTER AI #
 @fritz.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
 async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARACTERS.keys(), description='Character to interact with'), reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.doTheThing(ctx, message, character, reset)
 
-## Fun APIs ##
+### ===================================== ###
+## FUN ##
+
 # CAT PICTURE #
 @fritz.command(name="givecat", description="Get a random cat photo", pass_context = True)
 async def givecat(ctx): await oneOff.CASS(ctx)
@@ -107,12 +87,6 @@ async def givecat(ctx): await oneOff.CASS(ctx)
 # GET A JOKE #
 @fritz.command(name="joke", description="Grab a random quote from the :sparkles: internet :sparkles:", pass_context = True)
 async def joke(ctx): await oneOff.getRandomJoke(ctx)
-
-### ===================================== ###
-## QUOTEBOOK ##
-# DARK NIGHTS QUOTES #
-# @fritz.command(name="dark_nights", description='Grab a randomly-selected quote from Dark Nights', pass_context = True)
-# async def dnQuote(ctx, count:int=1): await darkNights.getQuote(ctx, count)
 
 ### ===================================== ###
 ## TOOLS ##
@@ -192,29 +166,6 @@ async def initiateShutdown(ctx):
 	await ctx.respond(":saluting_face:")
 	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
 	os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
-
-@zdev.command(name="swiper_no_swiping", description='fritz.dev.swiper_no_swiping', pass_context=True)
-@isDeveloper()
-async def delete(ctx, mid): 
-	await ctx.defer(ephemeral=True)
-	try:
-		deleteTarget = await ctx.fetch_message(mid)
-		await deleteTarget.delete()
-	except: ctx.respond("Invalid MID")
-
-	aaa = await ctx.respond("Done", ephemeral=True)
-	await aaa.delete()
-
-@manual.command(name='type', description='fritz.manual.typing')
-@isDeveloper()
-async def setTyping(ctx, time:float=5.0):
-	with ctx.typing():
-		await asyncio.sleep(time)
-
-@manual.command(name='export', description='fritz.manual.export')
-@isDeveloper()
-async def echo(ctx, text):
-	await ctx.channel.send(text)
 
 ### ===================================== ###
 

@@ -14,14 +14,14 @@ async def generateResponse(ctx, inPrompt, loop, model='text-davinci-003'):
 	await ctx.defer()
 	
 	# response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: g4f.Completion.create(model=model, prompt=inPrompt))
-	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: g4f.ChatCompletion.create(model=g4f.models.gpt_4,messages=[{"role": "user", "content": inPrompt }], ))
+	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: g4f.ChatCompletion.create(model=g4f.models.gpt_35_long, messages=[{"role": "user", "content": inPrompt }], ))
 
 	if len(str(response)) > 0: 
-		if len(str(response))>1024:
+		if len(str(response))>1800:
 			numEmbeds = 0
 			embed = discord.Embed(title="", description="%s requested: %s"%(str(ctx.author), inPrompt), colour=discord.Colour.dark_purple(),)
 
-			for msg in textwrap.wrap(response, 1000):
+			for msg in textwrap.wrap(response, 1800):
 				if numEmbeds != 9: embed.add_field(name="", value=msg, inline=False); numEmbeds += 1
 				else: embed = discord.Embed(title="", description="%s requested: %s"%(str(ctx.author), inPrompt), colour=discord.Colour.dark_purple(),); embed.add_field(name="", value=msg, inline=False); numEmbeds = 1; await ctx.respond(embed=embed)
 
@@ -33,8 +33,6 @@ async def generateResponse(ctx, inPrompt, loop, model='text-davinci-003'):
 				description="%s requested: %s"%(str(ctx.author), inPrompt),
 				colour=discord.Colour.dark_purple(),
 			)
-
-			embed.add_field(name="GPT-4's Response", value=response)
 			
 			await ctx.respond(embed=embed)
 	else: await ctx.respond("Language backend is not responding")

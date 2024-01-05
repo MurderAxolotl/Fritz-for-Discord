@@ -16,4 +16,4 @@ banned_from_nsfw = ["1170869996856016956", "1169039508193427646", "1064071365449
 registeredDevelopersU = ["murderaxo#0", "awshitherewego#0"]
 registeredDevelopers = ["1063584978081951814", "1067843602480377907"]
 
-version = "1.11"
+version = "1.13"
