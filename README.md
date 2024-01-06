@@ -15,7 +15,12 @@ A Discord bot intended for fun and utility
 *character*: defines what character totalk to. See built-in autocomplete for options\
 *reset*: whether to continue the current conversation (keep memory) or reset it
 
-> `qr scan url style`: Scan a QR code from an image. Must be publically available on the internet (such as on imgur)\
+> `qr create data style`: Create a QR code\
+*data*: the data to encode into the QR code\
+*style*: which QR style to use. Default is stylised. Set to `compatible` to make a generic QR code
+
+> `qr scan url`: Scan a QR code.  Must be publically available on the internet (such as on imgur)\
+*url*: link to an image containing the QR code
 
 > `givecat`: Get a random cat image
 
