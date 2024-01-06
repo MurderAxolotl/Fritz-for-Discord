@@ -3,7 +3,6 @@ from resources.curl_requests import pronouns_page_api
 from scripts.tools.utility import *
 
 async def pp_searchTerms(ctx, query):
-	await deleteMessage(ctx)
 
 	# statusMessage = await ctx.send("Searching PronounsPage for \"{que}\"".format(que=query))
 	await ctx.defer()
