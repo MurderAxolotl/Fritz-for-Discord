@@ -40,12 +40,21 @@ class activities():
 		application_id=1070042394009014303
 	)
 
+	generic = discord.Activity(
+		name = " ", 
+		state = "", 
+		type=discord.ActivityType.listening, 
+		assets={'large_image':'foxfox', 'large_text':'gay'}, 
+		application_id=1070042394009014303
+	)
+
 
 class Holiday:
 	halloween = [
 		discord.Client(activity=activities.halloween, intents=intents, log_level=None, log_handler=None), 
 		"SPOOKY SEASON"
 	]
+
 
 	christmas = [
 		discord.Client(activity=activities.christmas, intents=intents, log_level=None, log_handler=None), 
@@ -60,6 +69,11 @@ class Events:
 
 
 class Default:
+	none = [
+		discord.Client(activity=activities.generic, intents=intents, log_level=None, log_handler=None), 
+		"none"
+	]
+
 	standard = [
 		discord.Client(activity=activities.standard, intents=intents, log_level=None, log_handler=None), 
 		"Default"

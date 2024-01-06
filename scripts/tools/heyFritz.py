@@ -1,15 +1,28 @@
-import scripts.api.gpt as gpt
-import g4f, nest_asyncio
+import g4f, asyncio, textwrap, threading
 
-async def onHeyFritz(ctx):
-	textPrompt = str(ctx.content).split(",")[1]
+from concurrent.futures import ThreadPoolExecutor
 
-	allowed_models = ['code-davinci-002', 'text-ada-001', 'text-babbage-001', 'text-curie-001', 'text-davinci-002', 'text-davinci-003', 'palm', 'gpt-4-0613']
 
-	workMsg = await ctx.channel.send("I'm thinking, please wait...")
+async def onHeyFritz(ctx, loop):
 
-	# response = g4f.Completion.create(model  = 'text-davinci-003', prompt = textPrompt)
-	response = g4f.ChatCompletion.create(model=g4f.models.gpt_4,messages=[{"role": "user", "content": textPrompt}], )
+	sentMessage = await ctx.channel.send("Working....")
 
-	if len(str(response)) > 0: await workMsg.edit(response)
-	else: await workMsg.edit("Language backend is not responding")
+	textPrompt = str(ctx.content).split(",", 1)[1]
+
+	try:
+		response = await loop.run_in_executor(
+			ThreadPoolExecutor(), 
+			lambda: g4f.ChatCompletion.create(
+			model=g4f.models.gpt_35_turbo, 
+			messages=[{"role": "user", "content": textPrompt }], 
+		))
+	
+	except: response = "My LLM failed to respond correctly"
+
+	await sentMessage.delete()
+		
+	match [len(str(response)) > 0, len(str(response)) > 2000]:
+		case [False, _]: await ctx.channel.send("Sorry, it looks like none of my LLMs are responding. Maybe try using the `chatgpt` with `use_legacy` set?")
+		case [True, True]:  
+			for message in textwrap.wrap(response, 1900): await ctx.channel.send(message)
+		case [True, False]: await ctx.channel.send(str(response))

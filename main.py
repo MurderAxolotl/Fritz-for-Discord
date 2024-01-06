@@ -1,21 +1,24 @@
 import sys, os, datetime
+from types import NoneType
 import nest_asyncio, asyncio
 
 from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, AUTHORISED_DEVELOPERS, CT_NAMES
+from resources.shared import TOKEN, intents, AUTHORISED_DEVELOPERS, CT_NAMES, TEST_NAMES
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
+import scripts.tools.heyFritz as heyFritz
+
+from scripts.tools.utility import *
 
 import resources.client_personalities as personalities
-from scripts.tools.utility import *
 
 PATH = sys.path[0]
 
-client_personality = personalities.Default.standard 	
+client_personality = personalities.Default.none 	
 
 client = client_personality[0]
 bot = commands.Bot(intents=intents)
@@ -31,9 +34,9 @@ async def on_command_error(ctx, error):
 	else:
 		await ctx.send(str(error))
 
-
 @client.event
-async def on_ready(): print(MAGENTA + "[Main] " + YELLOW + "Ready with personality %s"%client_personality[1] + RESET)
+async def on_ready(): 
+	print(MAGENTA + "[Main] " + YELLOW + "Ready with personality %s"%client_personality[1] + RESET)
 
 @client.event
 async def on_message(message):
@@ -42,21 +45,26 @@ async def on_message(message):
 	today = datetime.date.today()
 
 	fs = str(today) + " " + str(current_time) + " "
-
-	logging.logMessage(message)
+	
+	await logging.logMessage(message)
 
 	if str(message.content).lower() == "hey fritz, panic 0x30":
 		if str(message.author) in AUTHORISED_DEVELOPERS:
 			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
 			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 
-	if str(message.guild.id) == "1064071365449228338":
-		try:
-			if message.channel.id in CT_NAMES.keys(): channel_name = CT_NAMES[message.channel.id]
-			else: channel_name = message.channel.id
-		except Exception as err: print(RED + str(err) + RESET); channel_name = message.channel.id
+	if "hey fritz," in str(message.content).lower(): await heyFritz.onHeyFritz(message, loop)
 
-		print(MAGENTA + SEAFOAM + fs + channel_name + YELLOW + " " + str(message.author).split("#0")[0] + DRIVES + ": " + str(message.content) + RESET)
+	if await check(message) == False:
+		if isinstance(message.guild, NoneType): print(RED + "Guild is NoneType, an unacceptable value")
+
+		if str(message.guild.id) == "1064071365449228338":
+			try:
+				if str(message.channel.id) in CT_NAMES.keys(): channel_name = CT_NAMES[str(message.channel.id)]
+				else: channel_name = message.channel.id
+			except Exception as err: print(RED + str(err) + RESET); channel_name = str(message.channel.id) + 	"e"
+
+			print(f"{MAGENTA}{str(fs)}{SEAFOAM}{str(channel_name)}{YELLOW} {str(message.author).split('#0')[0]}: {DRIVES}{str(message.content)}{RESET}")
 
 ### --- Initialise the bot --- ###
 

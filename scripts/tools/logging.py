@@ -11,12 +11,16 @@ async def logMessage(message):
 	unit = None
 
 	if await utility.check(message) == True: 
-		guild_id = str(message.author).split("#0", 1)[0]; unit = "users"
-		logPath = sys.path[0] + "/logs/%s/%s.log"%(unit, guild_id)
+		guild_id = str(message.author).split("#0", 1)[0]
+
+		logPath = sys.path[0] + "/logs/users/%s.log"%(guild_id)
 
 	else: 
 		try: guild_id = str(message.guild.id)
-		except: guild_id = 0; print(RED + "Guild cache needs to be refreshed. Messages will not be logged" + RESET); return -1
+		except: 
+			print(RED + "Guild cache needs to be refreshed. Messages will not be logged" + RESET)
+			return -1
+		
 		channel_id = str(message.channel.id)
 
 		logPath = sys.path[0] + "/logs/guilds/%s/%s.log"%(guild_id, channel_id)

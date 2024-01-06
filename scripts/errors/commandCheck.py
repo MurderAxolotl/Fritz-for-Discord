@@ -7,7 +7,8 @@ from resources.colour import *
 from scripts.tools.utility import *
 
 async def on_command_error(ctx, error):
-	delay_time = 10
+	# delay_time = 10
+	delay_time = -1
 
 	try:
 		if isinstance(error, commands.NotOwner) or isinstance(error, swiperNoSwipingError): await ctx.respond("Insufficient permission to execute command")

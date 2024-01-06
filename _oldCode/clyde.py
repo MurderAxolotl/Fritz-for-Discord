@@ -11,7 +11,7 @@ async def doClydeShit(ctx, message):
 		"message": message,
 		"userid": "1234",
 		"key": "1234",
-		"X-RapidAPI-Key": "cb543111a2mshb402f0d41b25d48p11cd7bjsn555d65f484a1",
+		"X-RapidAPI-Key": "",
 		"X-RapidAPI-Host": "google-bard1.p.rapidapi.com"
 	}
 

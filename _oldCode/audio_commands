@@ -64,7 +64,7 @@ async def freebird(ctx, bot):
 	with ctx.typing():
 			await downloadYoutubeVideo("https://www.youtube.com/watch?v=0LwcvjNJTuM", 666)
 
-			voice_instance = await bot.fetch_channel(1170869997325783063)
+			voice_instance = await bot.fetch_channel(0000000000000000000)
 			voice = await voice_instance.connect()
 			
 			START_TIME = 1704095705
@@ -72,7 +72,7 @@ async def freebird(ctx, bot):
 
 			while round(time.time(), None) < START_TIME: await asyncio.sleep(0.1)
 
-			audioFile = discord.FFmpegOpusAudio(source="/home/lexi/Documents/Fritz/cache/video_cache666.opus")
+			audioFile = discord.FFmpegOpusAudio(source="/home/x/Documents/Fritz/cache/video_cache666.opus")
 
 			voice.play(audioFile)
 
@@ -81,7 +81,7 @@ async def freebird(ctx, bot):
 
 			await asyncio.sleep(1)
 
-			os.system("rm /home/lexi/Documents/Fritz/cache/video_cache666.opus")
+			os.system("rm /home/x/Documents/Fritz/cache/video_cache666.opus")
 
 			await voice.disconnect()
 

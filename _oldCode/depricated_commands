@@ -1,0 +1,32 @@
+#type: ignore
+### ===================================== ###
+## AUDIO PLAYER ##
+@audio.command(name="play", description="Plays audio from supported websites in a VC", pass_context=True)
+async def pad(ctx: discord.ApplicationContext, audio_link, channel_id): await audioCommands.playAudio(ctx, audio_link, channel_id, False, bot)
+
+@audio.command(name="queue", description="Add something to the queue", pass_context=True)
+async def addQueue(ctx: discord.ApplicationContext, audio_link): await audioCommands.addQueue(ctx, audio_link)
+
+@audio.command(name="delete_queue_item", description="Remove something from the queue. queue_item_number must be a number larger than zero, or -1 for all")
+async def removeQueue(ctx, queue_item_number:int): await audioCommands.removeQueue(ctx, queue_item_number)
+
+@audio.command(name="get_queue", description="Get the current queue", pass_context=True)
+async def getQueue(ctx): await audioCommands.getQueue(ctx)
+
+@audio.command(name="disconnect_when_done", description="Set Fritz to disconnect after the queue finishes", pass_context=True)
+async def getQueue(ctx): await audioCommands.allowLeave(ctx)
+
+@audio.command(name="pause_play", description="Basically a pause/play button")
+async def togglePause(ctx): await audioCommands.pauseToggle(ctx)
+
+@audio.command(name="skip", description="Skip current track")
+async def skipTrack(ctx): await audioCommands.stopTrack(ctx)
+
+@audio.command(name="disconnect", description="Disconnect immediately")
+async def disconnectNow(ctx): await audioCommands.immediateLeave(ctx)
+
+@audio.command(name="debug", description="Load FEAD")
+async def loadFEAD(ctx): await audioCommands.getDebugInfo(ctx)
+
+@audio.command(name="raw_packet", description="Send raw packets of audio instead of a stream. Auto-pauses active streams")
+async def sendRawPacket(ctx, data:str="", count:int=25, autopause:discord.Option(bool, choices=[True, False])=True): await audioCommands.rawPacket(ctx, count, autopause, data)

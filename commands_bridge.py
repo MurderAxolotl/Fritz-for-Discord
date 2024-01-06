@@ -1,18 +1,11 @@
 import asyncio
-import time
-from flask import ctx
 import nest_asyncio
-
-from discord.ext import bridge
 
 from resources.curl_requests import *
 from resources.shared import *
 from resources.responses import *
 from resources.colour import *
 from resources.user_messages import *
-
-import scripts.tools.audioCommands_multimem as audioCommands
-# import _oldCode.audioCommands as audioCommands
 
 import scripts.api.qrTools as qrTools
 import scripts.api.oneoff as oneOff
@@ -30,10 +23,11 @@ loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
 ### COMMAND GROUPS ###
+audio = bot.create_group("audio", "Audio tools")
 fritz = bot.create_group("f", "Fritz command group")
 inDev = bot.create_group("f_unstable", "Unstable and under development")
-zdev = bot.create_group("f_dev", "Developer-only utilities")
-audio = bot.create_group("audio", "Audio tools")
+qr    = bot.create_group("qr", "Tools relating to QR codes")
+zdev  = bot.create_group("f_dev", "Developer-only utilities")
 
 
 ### ===================================== ###
@@ -56,26 +50,29 @@ async def pronounspage(ctx, query:str): await pronouns.pp_searchUser(ctx, query)
 @fritz.command(name="pp_terms", description='Search PronounsPage for a tern', pass_context=True)
 async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query)
 
-# SCAN A QR CODE #
-@fritz.command(name="scan_qr", description="Scan a QR code", pass_context=True)
-async def scanQR(ctx, qr_image_url): await qrTools.read(ctx, qr_image_url)
-
-# CREATE A QR CODE #
-@fritz.command(name="create_qr", description="Make a QR code", pass_context=True)
-async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): 
-	await qrTools.createQR(ctx, qr_data, style_mode)
-
 # SEARCH SPOTIFY #
 @fritz.command(name="seasify", description='Search Spotify for a song', pass_context = True)
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
 ## Chat Completion ##
 @fritz.command(name='chatgpt', description='Use ChatGPT', pass_context=True) # Async
-async def chatgpt(ctx, prompt:str): await gpt.generateResponse(ctx, prompt, loop)
+async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Legacy mode select")="none"): await gpt.generateResponse(ctx, prompt, loop, legacy_mode)
 
 # CHARACTER AI #
 @fritz.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
 async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARACTERS.keys(), description='Character to interact with'), reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.doTheThing(ctx, message, character, reset)
+
+### ===================================== ###
+## QR CODES ##
+
+# SCAN A QR CODE #
+@qr.command(name="scan", description="Scan a QR code", pass_context=True)
+async def scanQR(ctx, qr_image_url): await qrTools.read(ctx, qr_image_url)
+
+# CREATE A QR CODE #
+@qr.command(name="create", description="Make a QR code", pass_context=True)
+async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): 
+	await qrTools.createQR(ctx, qr_data, style_mode)
 
 ### ===================================== ###
 ## FUN ##
@@ -87,13 +84,6 @@ async def givecat(ctx): await oneOff.CASS(ctx)
 # GET A JOKE #
 @fritz.command(name="joke", description="Grab a random quote from the :sparkles: internet :sparkles:", pass_context = True)
 async def joke(ctx): await oneOff.getRandomJoke(ctx)
-
-### ===================================== ###
-## TOOLS ##
-# Check current NSFW access level
-@fritz.command(name="check_nsfw_allowed", description='Check if you can use NSFW commands in this server', pass_context = True)
-async def checkNSFWAccess(ctx): 
-	await ctx.send("NSFW content is allowed on this server" if manCheckAllowedNSFW(ctx) == True else "NSFW content is not allowed on this server")
 	 
 
 ### ===================================== ###
@@ -105,38 +95,6 @@ async def checkNSFWAccess(ctx):
 @fritz.command(name='ping', description='Get Fritz\'s current ping', pass_context=True)
 async def ping(ctx):
 	latency = round(bot.latency * 1000); await ctx.respond('Current latency: ' + str(latency) + "ms")
-
-### ===================================== ###
-## AUDIO PLAYER ##
-@audio.command(name="play", description="Plays audio from supported websites in a VC", pass_context=True)
-async def pad(ctx: discord.ApplicationContext, audio_link, channel_id): await audioCommands.playAudio(ctx, audio_link, channel_id, False, bot)
-
-@audio.command(name="queue", description="Add something to the queue", pass_context=True)
-async def addQueue(ctx: discord.ApplicationContext, audio_link): await audioCommands.addQueue(ctx, audio_link)
-
-@audio.command(name="delete_queue_item", description="Remove something from the queue. queue_item_number must be a number larger than zero, or -1 for all")
-async def removeQueue(ctx, queue_item_number:int): await audioCommands.removeQueue(ctx, queue_item_number)
-
-@audio.command(name="get_queue", description="Get the current queue", pass_context=True)
-async def getQueue(ctx): await audioCommands.getQueue(ctx)
-
-@audio.command(name="disconnect_when_done", description="Set Fritz to disconnect after the queue finishes", pass_context=True)
-async def getQueue(ctx): await audioCommands.allowLeave(ctx)
-
-@audio.command(name="pause_play", description="Basically a pause/play button")
-async def togglePause(ctx): await audioCommands.pauseToggle(ctx)
-
-@audio.command(name="skip", description="Skip current track")
-async def skipTrack(ctx): await audioCommands.stopTrack(ctx)
-
-@audio.command(name="disconnect", description="Disconnect immediately")
-async def disconnectNow(ctx): await audioCommands.immediateLeave(ctx)
-
-@audio.command(name="debug", description="Load FEAD")
-async def loadFEAD(ctx): await audioCommands.getDebugInfo(ctx)
-
-@audio.command(name="raw_packet", description="Send raw packets of audio instead of a stream. Auto-pauses active streams")
-async def sendRawPacket(ctx, data:str="", count:int=25, autopause:discord.Option(bool, choices=[True, False])=True): await audioCommands.rawPacket(ctx, count, autopause, data)
 
 ### ===================================== ###
 ## INFORMATION COMMANDS ##
@@ -152,10 +110,12 @@ async def help(ctx): await ctx.respond(help_messages.about, ephemeral=True)
 
 ## Get advanced info about Fritz ##
 @fritz.command(name="system", description="Advanced system info", pass_context=True)
+@isDeveloper()
 async def help(ctx): await ctx.respond(help_messages.about_system, ephemeral=True)
 
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
-async def getInvite(ctx): await ctx.respond(INVITE_URL, ephemeral=True); print(bot.get_guild(ctx.guild.id))
+async def getInvite(ctx): 
+	await ctx.respond(INVITE_URL, ephemeral=True)
 
 ### ===================================== ###
 ## DEVELOPER ONLY ## 

@@ -13,7 +13,7 @@ nsfw_modeKeys = {"furry1":"yiffymix_v34", "furry2":"furry", "hyperrealism":"real
 BASE_URL = "https://paint.api.wombo.ai/api/v2/tasks/"
 
 class blocking():
-	def b1(): return requests.post("https://securetoken.googleapis.com/v1/token?key=AIzaSyDCvp5MTJLUdtBYEKYWXJrlLzu1zuKM6Xw", data={"grant_type":"refresh_token", "refresh_token":"AMf-vByJN5w_25CU2YzNCCgyuRwo_JXOp8YF_mAVOJYf0vfzaFVmF1PCcqVMErbtJOpBAJE6UPRooY1srtZMf2cYiWtRyTJonKytyZxia0YQi4Rq2bgliqlxxkS8cSakvl7Q_uis14XIkBlOO2z-SUnNunMBh29V1EfLHgs7nnrDFLwjkiXRvMQ"}).text
+	def b1(): return requests.post("https://securetoken.googleapis.com/v1/token?key=", data={"grant_type":"refresh_token", "refresh_token":""}).text
 
 def threadedPost(kwargs):
 	requests.post(**kwargs)

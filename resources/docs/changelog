@@ -114,8 +114,17 @@
 	- Properly protected shutdown command
 	- Moved message logging to a dedicated file
 	- Moved commands.py to _oldCode
-	- Moved scripts/api/clyde to _oldCode
-	- Moved scripts/api/midjourney to _oldCode
-	- Moved scripts/api/stablediffusion to _oldCode
+	- Moved `scripts/api/clyde`` to _oldCode
+	- Moved `scripts/api/midjourney`` to _oldCode
+	- Moved `scripts/api/stablediffusion`` to _oldCode
 	- Downgraded from GPT-4 to GPT-35-long
 	- Rebuilt g4f from source
+
+## 1.14
+	- Patched a few bugs in the `gpt` module
+	- Depricated the audio commands
+	- Fixed a bunch of bugs
+	- Cleaned up codebase again
+	- Updated to latest g4f again
+	- Re-enabled *hey fritz* support
+		- Now you can type "hey fritz, <prompt>" to interact with ChatGPT

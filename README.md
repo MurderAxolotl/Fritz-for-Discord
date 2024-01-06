@@ -1,4 +1,30 @@
 # Fritz
-### A simple & fun Discord bot
+A Discord bot intended for fun and utility
 
-Commands are listed by the built-in help command. Discord's upcoming `command explorer` should also be quite handy. You can enable it in `Settings > Experiments > App Launcher - Desktop` by setting it to `Treatment 1`
+### Command Documentation
+> `pp_users query_string`: Query Pronouns Page for a user\
+> `pp_terms query_string`: Query Pronouns Page for a term
+
+> `seasify song_title count`: Search Spotify for a song\
+*count*: int between 1 and 25
+
+> `chatgpt prompt legacy_mode`: Interact with ChatGPT\
+*legacy_mode*: allows you to use a legacy LLM. See built-in autocomplete for options
+
+> `cai message character reset`: Interact with a Character AI character\
+*character*: defines what character totalk to. See built-in autocomplete for options\
+*reset*: whether to continue the current conversation (keep memory) or reset it
+
+> `qr scan url style`: Scan a QR code from an image. Must be publically available on the internet (such as on imgur)\
+
+> `givecat`: Get a random cat image
+
+> `joke`: Get a random joke from the internet
+
+> `check_nsfw_allowed`
+
+> `ping`: Check the bot's ping in milliseconds
+
+> `about`: Get the bot's current version
+
+> `invite`: Get the bot's invite URL

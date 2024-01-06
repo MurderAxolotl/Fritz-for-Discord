@@ -2,7 +2,7 @@ import sys
 from io import StringIO
 
 async def evaluate(ctx, *, args=None):
-	if "murderaxolotl" == ctx.message.author:
+	if "" == ctx.message.author:
 		await ctx.message.delete()
 
 		prev = sys.stdout
