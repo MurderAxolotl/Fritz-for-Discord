@@ -1,6 +1,8 @@
 # Fritz
 A Discord bot intended for fun and utility
 
+[![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
+
 ### Command Documentation
 > `pp_users query_string`: Query Pronouns Page for a user\
 > `pp_terms query_string`: Query Pronouns Page for a term
