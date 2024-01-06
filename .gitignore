@@ -6,6 +6,7 @@ __pycache__/
 # C extensions
 *.so
 
+private
 .vscode
 cache
 bin
@@ -13,8 +14,8 @@ include
 logs
 pyvenv.cfg
 .env
-.gitignore
 .gitattributes
+
 
 # Distribution / packaging
 .Python

@@ -2,7 +2,8 @@ import os, asyncio, requests
 import discord, datetime, sys
 from discord.ext import commands
 from resources.colour import *
-from resources.shared import banned_from_nsfw, registeredDevelopers
+
+from resources.shared import registeredDevelopers
 
 from discord.ext.bridge import BridgeContext
 from discord.ext import commands
@@ -31,15 +32,6 @@ class swiperNoSwipingError(commands.CheckFailure): NotImplemented
 
 
 ### CUSTOM COMMAND CHECK PREDICATES ###
-def allowedNSFW():
-	async def predicate(ctx):
-		if not ctx.guild is None:
-			if str(ctx.guild.id) in banned_from_nsfw: raise bannedFromNSFW("NSFW content generation is forbidden on this server")
-			return True
-		
-		else: return True
-	
-	return commands.check(predicate)
 
 def swiperNoSwiping():
 	async def predicate(ctx):
@@ -57,15 +49,6 @@ def isDeveloper():
 		
 	
 	return commands.check(predicate)
-
-def manCheckAllowedNSFW(ctx, onlyReturnCheck=False):
-	if not ctx.guild is None:
-		if str(ctx.guild.id) in banned_from_nsfw: 
-			if not onlyReturnCheck: raise bannedFromNSFW("NSFW content generation is forbidden on this server")
-			else: return False
-		return True
-	
-	else: return True
 
 async def downloadYoutubeVideo(video_url, id):
 	string = 'yt-dlp "' + video_url + '" -x -q -N 25 -o video_cache' + str(id) + " --path /home/%s/Documents/Fritz/cache"%os.getlogin()

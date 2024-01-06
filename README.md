@@ -1,6 +1,8 @@
 # Fritz
 A Discord bot intended for fun and utility
 
+Requires Python 3.10+
+
 [![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
 
 ### Command Documentation

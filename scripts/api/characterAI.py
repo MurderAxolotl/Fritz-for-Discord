@@ -1,6 +1,6 @@
 from characterai import PyAsyncCAI
 
-from resources.shared import CAI_TOKEN
+from resources.shared import CAI_TOKEN, AI_BLACKLIST, NoneType
 
 CHARACTERS = {
 	"bryce the bear":"GXGDvaTDHSF77mgVh2e8HOz4b_LC76bp9qYAePOLquo",
@@ -29,6 +29,12 @@ CHARACTERS = {
 }
 
 async def doTheThing(ctx, prompt, character, reset):
+
+	match not isinstance(ctx.guild, NoneType):
+		case True:
+			match ctx.guild.id in AI_BLACKLIST:
+				case True: await ctx.respond("That command is disabled on this server"); return -1
+
 	await ctx.defer()
 	opts = CHARACTERS
 

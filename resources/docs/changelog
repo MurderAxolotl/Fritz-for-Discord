@@ -128,3 +128,8 @@
 	- Updated to latest g4f again
 	- Re-enabled *hey fritz* support
 		- Now you can type "hey fritz, <prompt>" to interact with ChatGPT
+		- Uses gpt-35-long
+	- Moved some extra code into `private/ci_private` to keep code clean
+
+### 1.14.1
+	- Added blacklist features for AI commands

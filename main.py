@@ -1,16 +1,18 @@
-import sys, os, datetime
+import sys, os, datetime, nest_asyncio, asyncio
+
 from types import NoneType
-import nest_asyncio, asyncio
 
 from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, AUTHORISED_DEVELOPERS, CT_NAMES, TEST_NAMES
+from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
 import scripts.tools.heyFritz as heyFritz
+
+import private.ci_private
 
 from scripts.tools.utility import *
 
@@ -45,26 +47,26 @@ async def on_message(message):
 	today = datetime.date.today()
 
 	fs = str(today) + " " + str(current_time) + " "
-	
-	await logging.logMessage(message)
+	match [ENABLE_LOGGING, not isinstance(message.guild, NoneType)]:
+		case [True, True]: 
+			match message.guild.id in LOGGING_BLACKLIST:
+				case False: await logging.logMessage(message)
+				case True: NotImplemented
 
-	if str(message.content).lower() == "hey fritz, panic 0x30":
-		if str(message.author) in AUTHORISED_DEVELOPERS:
+	match [str(message.content).lower() == "hey fritz, panic 0x30", str(message.author.id) in registeredDevelopers]:
+		case [True, True]:
 			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
 			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 
-	if "hey fritz," in str(message.content).lower(): await heyFritz.onHeyFritz(message, loop)
+	match ["hey fritz," in str(message.content).lower(), not isinstance(message.guild, NoneType)]:
+		case [True, True]: # This is a guild
+			match [not message.guild.id in AI_BLACKLIST]:
+				case [True]: await heyFritz.onHeyFritz(message, loop)
+				case [False]: await message.channel.send("That function is disabled on this server")
+		
+		case [True, False]: await heyFritz.onHeyFritz(message, loop) # This is a DM or GM. Wait how did Fritz get into a GM-
 
-	if await check(message) == False:
-		if isinstance(message.guild, NoneType): print(RED + "Guild is NoneType, an unacceptable value")
-
-		if str(message.guild.id) == "1064071365449228338":
-			try:
-				if str(message.channel.id) in CT_NAMES.keys(): channel_name = CT_NAMES[str(message.channel.id)]
-				else: channel_name = message.channel.id
-			except Exception as err: print(RED + str(err) + RESET); channel_name = str(message.channel.id) + 	"e"
-
-			print(f"{MAGENTA}{str(fs)}{SEAFOAM}{str(channel_name)}{YELLOW} {str(message.author).split('#0')[0]}: {DRIVES}{str(message.content)}{RESET}")
+	await private.ci_private.ciPrint(message, fs)
 
 ### --- Initialise the bot --- ###
 

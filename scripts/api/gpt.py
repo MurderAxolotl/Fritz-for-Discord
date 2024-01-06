@@ -2,9 +2,19 @@ import textwrap, g4f
 from concurrent.futures import ThreadPoolExecutor
 from scripts.tools.utility import *
 
+from types import NoneType
+
+from resources.shared import AI_BLACKLIST
+
 LEGACY_MODES = ["none", "turbo", "davinci"]
 
 async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
+
+	match not isinstance(ctx.guild, NoneType):
+		case True:
+			match ctx.guild.id in AI_BLACKLIST:
+				case True: await ctx.respond("That command is disabled on this server"); return -1
+
 	if   legacy_mode == "none"   : MODEL = g4f.models.gpt_35_long
 	elif legacy_mode == "turbo"  : MODEL = g4f.models.gpt_35_turbo
 	elif legacy_mode == "davinci": MODEL = g4f.models.text_davinci_003

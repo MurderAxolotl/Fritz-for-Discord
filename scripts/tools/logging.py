@@ -18,7 +18,7 @@ async def logMessage(message):
 	else: 
 		try: guild_id = str(message.guild.id)
 		except: 
-			print(RED + "Guild cache needs to be refreshed. Messages will not be logged" + RESET)
+			print(RED + "Guild cache needs to be refreshed. Message will not be logged" + RESET)
 			return -1
 		
 		channel_id = str(message.channel.id)
