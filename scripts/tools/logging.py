@@ -36,4 +36,9 @@ async def logMessage(message):
 	else: log = open(logPath, "+x")
 
 	log.write(fs + messageContent + "\n")
+
+	if len(message.attachments) != 0:
+		for i in message.attachments:
+			print(f"{str(i.url)}\n")
+
 	log.close()

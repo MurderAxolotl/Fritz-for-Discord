@@ -38,7 +38,7 @@ async def on_command_error(ctx, error):
 
 @client.event
 async def on_ready(): 
-	print(MAGENTA + "[Main] " + YELLOW + "Ready with personality %s"%client_personality[1] + RESET)
+	print(MAGENTA + "[  Main  ] " + YELLOW + "Ready with personality %s"%client_personality[1] + RESET)
 
 @client.event
 async def on_message(message):

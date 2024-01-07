@@ -1,4 +1,4 @@
-import asyncio
+import asyncio, string
 import nest_asyncio
 
 from resources.curl_requests import *
@@ -13,6 +13,8 @@ import scripts.api.gpt as gpt
 import scripts.api.pronouns as pronouns
 import scripts.api.spotify as spotify
 import scripts.api.characterAI as cai
+import scripts.api.voiceLink as voiceLink
+import scripts.api.discord as discord_fancy
 import scripts.errors.commandCheck as commandCheck
 
 from scripts.tools.utility import *
@@ -41,6 +43,9 @@ async def on_ready(): print(MAGENTA + "[Commands]" + YELLOW + " Ready!" + RESET)
 
 ### ===================================== ###
 ## API COMMANDS ##
+
+# @audio.command(name="voice_bridge", description='Bridge two voice channels together')
+# async def initSync(ctx, vc_id_1, vc_id_2): await voiceLink.bridgeVoiceChannels(ctx, bot, vc_id_1, vc_id_2)
 
 # Search PronounsPage for a user #
 @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
@@ -126,6 +131,24 @@ async def initiateShutdown(ctx):
 	await ctx.respond(":saluting_face:")
 	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
 	os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
+
+@zdev.command(name='download_messages', description='fritz.dev.download_messages')
+@isDeveloper()
+async def downloadMessages(ctx, id):
+	await ctx.defer()
+
+	messageList = await discord_fancy.query_messages(id)
+
+	authorList  = await discord_fancy.parse_tools.messages.authors(messageList)
+	contentList = await discord_fancy.parse_tools.messages.content(messageList)
+
+	index = 0
+
+	for author in authorList:
+		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
+		index += 1
+
+	await ctx.respond("Dumped to console")
 
 ### ===================================== ###
 

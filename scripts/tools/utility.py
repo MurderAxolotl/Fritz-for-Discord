@@ -44,7 +44,6 @@ def isDeveloper():
 	async def predicate(ctx):
 		if not str(ctx.author.id) in registeredDevelopers: raise commands.NotOwner
 		
-		print(str(ctx.author) + " triggered a developer-only action")
 		return True
 		
 	
