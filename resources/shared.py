@@ -20,7 +20,7 @@ REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"]
 ENABLE_LOGGING    = True # True / False; whether to log messages sent to channels Fritz has read access to
 LOGGING_BLACKLIST = [] # A list of NON-QUOTED server IDs to block logging
 
-AI_BLACKLIST = [1192958435608760321] # A list of NON-QUOTED server IDs to block logging
+AI_BLACKLIST = [1192958435608760321, 999923183840940042] # A list of NON-QUOTED server IDs to block logging
 
 # Why aren't these constants? #
 intents = discord.Intents(messages=True, message_content=True, voice_states=True)

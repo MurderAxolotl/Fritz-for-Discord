@@ -83,8 +83,8 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 ## FUN ##
 
 # CAT PICTURE #
-@fritz.command(name="givecat", description="Get a random cat photo", pass_context = True)
-async def givecat(ctx): await oneOff.CASS(ctx)
+@fritz.command(name="givecat", description="Get a random cat photo")
+async def givecat(ctx): await oneOff.giveCat(ctx)
 
 # GET A JOKE #
 @fritz.command(name="joke", description="Grab a random quote from the :sparkles: internet :sparkles:", pass_context = True)
@@ -156,6 +156,5 @@ try:
 	bot.run(TOKEN)
 
 except Exception as err:
-	print(MAGENTA + "Commands: " + RED + "[FATAL] - Unable to create instance of command processor")
+	print(MAGENTA + "Commands: " + RED + "[FATAL] - Failed to initialise commands")
 	print("   -> " + str(err) + RESET)
-	os.abort()

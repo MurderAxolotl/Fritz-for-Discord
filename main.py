@@ -79,6 +79,5 @@ try:
 	client.run(TOKEN)
 
 except Exception as err:
-	print(MAGENTA + "Main: " + RED + "[FATAL] - Unable to create instance of main")
+	print(MAGENTA + "Main: " + RED + "[FATAL] - Failed to initalise base client")
 	print("   -> " + str(err) + RESET)
-	os.abort()
