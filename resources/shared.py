@@ -2,6 +2,7 @@ import discord, dotenv, os, json
 
 from types import NoneType
 
+
 dotenv.load_dotenv(".env")
 
 INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303&permissions=535260691552&scope=bot"
@@ -15,6 +16,7 @@ TEST_NAMES = json.loads(os.getenv("test_name_map"))
 
 # Globals #
 REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"]
+PATH = os.getenv("systemPath")
 
 # Configuration Parameters
 ENABLE_LOGGING    = True # True / False; whether to log messages sent to channels Fritz has read access to

@@ -69,8 +69,7 @@ async def generateFromPrompt(ctx, prompt, mode='realistic'):
 	elif ("\"is_nsfw\":true" in response.text):
 		# await ctx.respond("NSFW is a premium feature, and I am NOT paying so you can get some AI-generated porn. Here's a few porn sites instead: [PornHub](<https://pornhub.com) [e621](<https://e621.net>) [xhamster](<https://xhamster.com>)")
 		# await ctx.respond("NSFW is a premium feature provided by the backend. Switching to NSFW API...")
-
-		manCheckAllowedNSFW(ctx)
+		
 		await nsfwGenerate(ctx, prompt, "hd_realism")
 
 	else: 

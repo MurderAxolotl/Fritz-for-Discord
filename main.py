@@ -6,7 +6,7 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST
+from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
@@ -17,8 +17,6 @@ import private.ci_private
 from scripts.tools.utility import *
 
 import resources.client_personalities as personalities
-
-PATH = sys.path[0]
 
 client_personality = personalities.Default.none 	
 
@@ -72,7 +70,7 @@ async def on_message(message):
 
 loadHandler.prepBot()
 
-def commandprocess(): os.system("python3 %s/commands_bridge.py" % os.getcwd())
+def commandprocess(): os.system("python3 %s/commands_bridge.py" % PATH)
 
 try:
 	td(target=commandprocess).start()

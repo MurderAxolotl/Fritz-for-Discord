@@ -69,6 +69,32 @@ async def get_guild(ID, key):
 	try: return json.loads(response.text)[key]
 	except Exception as err:
 		print(str(err)); return 404
+	
+async def get_audit_log(id):
+	ENDPOINT = url + f"/guilds/{id}/audit-logs"
+
+	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
+	except Exception as err: 
+		print(RED + str(err) + RESET)
+
+		return -1
+	
+	try: return json.loads(response.text)
+	except Exception as err:
+		print(str(err)); return 404
+	
+async def get_guild_members(id):
+	ENDPOINT = url + f"/guilds/{id}/members"
+
+	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
+	except Exception as err: 
+		print(RED + str(err) + RESET)
+
+		return -1
+	
+	try: return json.loads(response.text)
+	except Exception as err:
+		print(str(err)); return 404
 
 async def query_messages(ID):
 	""" Use the Discord API to download the last 50 messages in a channel """

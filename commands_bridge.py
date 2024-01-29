@@ -17,6 +17,8 @@ import scripts.api.voiceLink as voiceLink
 import scripts.api.discord as discord_fancy
 import scripts.errors.commandCheck as commandCheck
 
+import _oldCode.midjourney as midjourney
+
 from scripts.tools.utility import *
 
 
@@ -34,12 +36,12 @@ zdev  = bot.create_group("f_dev", "Developer-only utilities")
 
 ### ===================================== ###
 ### EVENTS ###
-
 @bot.event	
 async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException): await commandCheck.on_command_error(ctx, error)
 				
 @bot.event
-async def on_ready(): print(MAGENTA + "[Commands]" + YELLOW + " Ready!" + RESET)
+async def on_ready(): 
+	print(MAGENTA + "[Commands]" + YELLOW + " Ready!" + RESET)
 
 ### ===================================== ###
 ## API COMMANDS ##
@@ -61,11 +63,11 @@ async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx
 
 ## Chat Completion ##
 @fritz.command(name='chatgpt', description='Use ChatGPT', pass_context=True) # Async
-async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Legacy mode select")="none"): await gpt.generateResponse(ctx, prompt, loop, legacy_mode)
+async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Legacy mode select")="none"): await gpt.generateResponse(ctx, prompt, loop, legacy_mode) #type:ignore
 
 # CHARACTER AI #
 @fritz.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
-async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARACTERS.keys(), description='Character to interact with'), reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.doTheThing(ctx, message, character, reset)
+async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARACTERS.keys(), description='Character to interact with'), reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.doTheThing(ctx, message, character, reset) #type:ignore
 
 ### ===================================== ###
 ## QR CODES ##
@@ -76,7 +78,7 @@ async def scanQR(ctx, qr_image_url): await qrTools.read(ctx, qr_image_url)
 
 # CREATE A QR CODE #
 @qr.command(name="create", description="Make a QR code", pass_context=True)
-async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): 
+async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): #type:ignore
 	await qrTools.createQR(ctx, qr_data, style_mode)
 
 ### ===================================== ###
@@ -124,13 +126,17 @@ async def getInvite(ctx):
 
 ### ===================================== ###
 ## DEVELOPER ONLY ## 
+	
+@zdev.command(name='pain', description=".")
+@isDeveloper()
+async def do(ctx, msg): await ctx.channel.send(msg)
 
 @zdev.command(name='shutdown', description='fritz.dev.shutdown', pass_context=True)
 @isDeveloper()
 async def initiateShutdown(ctx):
 	await ctx.respond(":saluting_face:")
-	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
-	os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
+	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon %s/fritzSystemIcon.jpeg -e"%PATH)
+	os.system("pkill %s -f"%PATH)
 
 @zdev.command(name='download_messages', description='fritz.dev.download_messages')
 @isDeveloper()
