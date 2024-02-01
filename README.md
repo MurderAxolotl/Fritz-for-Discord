@@ -1,9 +1,12 @@
 # Fritz
+
+[![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
+
 A Discord bot intended for fun and utility
 
 Requires Python 3.10+
 
-[![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
+`scripts/api/discord.py` is pretty nifty, it adds some bindings to the Discord API in a very user-friendly way. Also, it lets you do simple crap (like getting guild info) which PyCord seeems ***INCAPABLE*** of doing correctly. Also it's reasonably self-documenting and understandable (again, looking at you PyCord, your docs are so far out of date it's not even funny)
 
 ### Command Documentation
 > `pp_users query_string`: Query Pronouns Page for a user\
