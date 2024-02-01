@@ -13,11 +13,8 @@ import scripts.api.gpt as gpt
 import scripts.api.pronouns as pronouns
 import scripts.api.spotify as spotify
 import scripts.api.characterAI as cai
-import scripts.api.voiceLink as voiceLink
 import scripts.api.discord as discord_fancy
 import scripts.errors.commandCheck as commandCheck
-
-import _oldCode.midjourney as midjourney
 
 from scripts.tools.utility import *
 
