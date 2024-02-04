@@ -133,3 +133,8 @@
 
 ### 1.14.1
 	- Added blacklist features for AI commands
+	- Added a bunch of config options
+	- Added QOL features
+	- Added LyricLoader (custom phrases)
+	- Added Hey Fritz invocation help message
+	- Fixed Hey Fritz self-invocation

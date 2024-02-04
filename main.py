@@ -6,7 +6,7 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, cached_lyrics, REDUCE_DISK_READS
+from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, REDUCE_DISK_READS, LYRIC_BLACKLIST
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
@@ -26,6 +26,8 @@ bot = commands.Bot(intents=intents)
 loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
+cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
+
 @bot.event
 async def on_command_error(ctx, error):
 	if isinstance(error, commands.errors.CheckFailure):
@@ -40,6 +42,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+	global cached_lyrics
+
 	now = datetime.datetime.now()
 	current_time = now.strftime("%H:%M:%S")
 	today = datetime.date.today()
@@ -53,7 +57,13 @@ async def on_message(message):
 
 	if not REDUCE_DISK_READS: cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
 
-	match [str(message.content).lower() in cached_lyrics, str(message.author.id) != "1070042394009014303", not message.guild.id in AI_BLACKLIST]:
+	if str(message.content) == "INTERNAL_FLAG::::__update_lyrcache":
+		await message.delete()
+		cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
+		
+		log("Re-cached lyrics directory")
+
+	match [str(message.content).lower() in cached_lyrics, str(message.author.id) != "1070042394009014303", not message.guild.id in LYRIC_BLACKLIST]:
 		case [True, True, True]: 
 			await heyFritz.lyricLoader(message)
 
@@ -62,13 +72,20 @@ async def on_message(message):
 			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
 			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 
-	match ["hey fritz," in str(message.content).lower(), not isinstance(message.guild, NoneType)]:
-		case [True, True]: # This is a guild
+	match ["hey fritz," in str(message.content).lower(), not isinstance(message.guild, NoneType), "hey fritz" in str(message.content).lower(), str(message.author.id) != "1070042394009014303"]:
+		case [True, True, _, True]: # This is a guild
 			match [not message.guild.id in AI_BLACKLIST]:
 				case [True]: await heyFritz.onHeyFritz(message, loop)
 				case [False]: await message.channel.send("That function is disabled on this server")
+
+		case [False, _, True, True]: 
+			await message.channel.send("It looks like you were trying to invoke me", silent=True); await asyncio.sleep(0.5)
+			await message.channel.send("However, you did not use the correct format", silent=True); await asyncio.sleep(0.5)
+			await message.channel.send("Here's an example of the correct format: `Hey Fritz, this is a cool prompt`", silent=True); await asyncio.sleep(0.5)
+			await message.channel.send("You must include a comma immediately after Fritz, without a space: `Fritz,`", silent=True); await asyncio.sleep(0.5)
+			await message.channel.send("Capitalisation does not matter, this is still valid: `HeY fRitZ, CoOl ProMpT`", silent=True)
 		
-		case [True, False]: await heyFritz.onHeyFritz(message, loop) # This is a DM or GM. Wait how did Fritz get into a GM-
+		case [True, False, _, True]: await heyFritz.onHeyFritz(message, loop) # This is a DM or GM. Wait how did Fritz get into a GM-
 
 	await private.ci_private.ciPrint(message, fs)
 

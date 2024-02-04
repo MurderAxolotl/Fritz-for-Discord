@@ -16,6 +16,8 @@ import scripts.api.characterAI as cai
 import scripts.api.discord as discord_fancy
 import scripts.errors.commandCheck as commandCheck
 
+import scripts.tools.lyricLoader as keyphrase
+
 from scripts.tools.utility import *
 
 
@@ -24,10 +26,10 @@ loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
 ### COMMAND GROUPS ###
-audio = bot.create_group("audio", "Audio tools")
 fritz = bot.create_group("f", "Fritz command group")
 inDev = bot.create_group("f_unstable", "Unstable and under development")
 qr    = bot.create_group("qr", "Tools relating to QR codes")
+kw    = bot.create_group("phrase", "Tools relating to reaction phrases")
 zdev  = bot.create_group("f_dev", "Developer-only utilities")
 
 
@@ -77,6 +79,24 @@ async def scanQR(ctx, qr_image_url): await qrTools.read(ctx, qr_image_url)
 @qr.command(name="create", description="Make a QR code", pass_context=True)
 async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): #type:ignore
 	await qrTools.createQR(ctx, qr_data, style_mode)
+
+### ===================================== ###
+## KEYPHRASES ##
+	
+@kw.command(name="create", description="Create a reaction phrase ")
+async def createRP(ctx, trigger_phrase, response): await ctx.respond(await keyphrase.createKeyword(ctx, trigger_phrase, response))
+
+@kw.command(name="delete", description="Delete a reaction phrase ")
+async def createRP(ctx, trigger_phrase): await ctx.respond(await keyphrase.deleteKeyword(trigger_phrase))
+
+@kw.command(name="read", description="Read the contents of a reaction phrase ")
+async def createRP(ctx, trigger_phrase): await ctx.respond(await keyphrase.readKeyword(trigger_phrase))
+
+@kw.command(name="edit", description="Edit the contents of a reaction phrase ")
+async def createRP(ctx, trigger_phrase, new_content): await ctx.respond(await keyphrase.editKeyword(trigger_phrase, new_content))
+
+@kw.command(name="list", description="List all reaction phrases")
+async def createRP(ctx): await ctx.respond(await keyphrase.listKeywords())
 
 ### ===================================== ###
 ## FUN ##

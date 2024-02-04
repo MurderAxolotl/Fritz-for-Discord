@@ -1,5 +1,6 @@
-import g4f, asyncio, textwrap, threading, sys, os
+""" Provides on-message features, such as the `Hey Fritz` prompt """
 
+import g4f, asyncio, textwrap, sys
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -31,6 +32,11 @@ async def lyricLoader(ctx):
 	# print(sys.path[0] + "/resources/docs/lyrics/%s"%str(ctx.content))
 	# print(str(ctx.content), ": ", str(ctx.content).lower() in os.listdir(sys.path[0] + "/resources/docs/lyrics/"))
 
-	for line in open(sys.path[0] + "/resources/docs/lyrics/%s"%str(ctx.content).lower(), "r").read().splitlines():
-		await ctx.channel.send(line, silent=True)
+	lyric_target = sys.path[0] + "/resources/docs/lyrics/" + str(ctx.content).lower()
+
+	for line in open(lyric_target, "r").read().splitlines():
+		if len(line) != 0:
+			try: await ctx.channel.send(line, silent=True)
+			except: NotImplemented # Skip the line, it's probably not valid
+
 		await asyncio.sleep(1)
