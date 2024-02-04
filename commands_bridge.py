@@ -87,7 +87,7 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 async def createRP(ctx, trigger_phrase, response): await ctx.respond(await keyphrase.createKeyword(ctx, trigger_phrase, response))
 
 @kw.command(name="delete", description="Delete a reaction phrase ")
-async def createRP(ctx, trigger_phrase): await ctx.respond(await keyphrase.deleteKeyword(trigger_phrase))
+async def createRP(ctx, trigger_phrase): await ctx.respond(await keyphrase.deleteKeyword(ctx, trigger_phrase))
 
 @kw.command(name="read", description="Read the contents of a reaction phrase ")
 async def createRP(ctx, trigger_phrase): await ctx.respond(await keyphrase.readKeyword(trigger_phrase))
@@ -144,9 +144,11 @@ async def getInvite(ctx):
 ### ===================================== ###
 ## DEVELOPER ONLY ## 
 	
-@zdev.command(name='pain', description=".")
-@isDeveloper()
-async def do(ctx, msg): await ctx.channel.send(msg)
+@zdev.command(name='initiate_dm', description="Initiates a DM with user_id")
+async def do(ctx, message_content): 
+	await ctx.author.send(message_content)
+
+	await ctx.respond("DM created")
 
 @zdev.command(name='shutdown', description='fritz.dev.shutdown', pass_context=True)
 @isDeveloper()

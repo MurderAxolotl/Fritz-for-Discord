@@ -4,6 +4,9 @@ from types import NoneType
 
 from threading import Thread as td
 from discord.ext import commands
+from io import StringIO
+import io
+from contextlib import redirect_stdout
 
 from resources.colour import *
 from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, REDUCE_DISK_READS, LYRIC_BLACKLIST
@@ -11,6 +14,7 @@ from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
 import scripts.tools.heyFritz as heyFritz
+import scripts.tools.lyricLoader as keyphrase
 
 import private.ci_private
 
@@ -26,10 +30,15 @@ bot = commands.Bot(intents=intents)
 loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
+STDOUT_RECOVERY = sys.stdout
+
 cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
+shellMode:int = 0 # 0: off 1: python 2: bash
 
 @bot.event
 async def on_command_error(ctx, error):
+	global shellMode 
+
 	if isinstance(error, commands.errors.CheckFailure):
 		await ctx.send('You don\'t have the required role')
 
@@ -42,7 +51,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	global cached_lyrics
+	global cached_lyrics, shellMode
+
+
+	### LOG THE MESSAGE TO THE APPROPRIATE FILE, REGARDLESS OF CONTENT ###
+
 
 	now = datetime.datetime.now()
 	current_time = now.strftime("%H:%M:%S")
@@ -55,23 +68,32 @@ async def on_message(message):
 				case False: await logging.logMessage(message)
 				case True: NotImplemented
 
-	if not REDUCE_DISK_READS: cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
 
+	### ============================================================= ###
+
+	
+	## Re-cache the lyrics directory ##
 	if str(message.content) == "INTERNAL_FLAG::::__update_lyrcache":
 		await message.delete()
-		cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
-		
+		cached_lyrics = str(os.listdir(keyphrase.BASEPATH))
+
 		log("Re-cached lyrics directory")
 
-	match [str(message.content).lower() in cached_lyrics, str(message.author.id) != "1070042394009014303", not message.guild.id in LYRIC_BLACKLIST]:
-		case [True, True, True]: 
-			await heyFritz.lyricLoader(message)
+	
+	## Lyrics / Responses ##
+	match [str(message.content).lower() in cached_lyrics, str(message.author.id) != "1070042394009014303", not isinstance(message.guild, NoneType)]:
+		case [True, True]: 
+			if not message.guild.id in LYRIC_BLACKLIST: await heyFritz.lyricLoader(message)
 
+
+	## Panic exit ##
 	match [str(message.content).lower() == "hey fritz, panic 0x30", str(message.author.id) in registeredDevelopers]:
 		case [True, True]:
 			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
 			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
 
+
+	## Hey Fritz invocation ##
 	match ["hey fritz," in str(message.content).lower(), not isinstance(message.guild, NoneType), "hey fritz" in str(message.content).lower(), str(message.author.id) != "1070042394009014303"]:
 		case [True, True, _, True]: # This is a guild
 			match [not message.guild.id in AI_BLACKLIST]:
@@ -87,6 +109,7 @@ async def on_message(message):
 		
 		case [True, False, _, True]: await heyFritz.onHeyFritz(message, loop) # This is a DM or GM. Wait how did Fritz get into a GM-
 
+	## Private ##
 	await private.ci_private.ciPrint(message, fs)
 
 ### --- Initialise the bot --- ###

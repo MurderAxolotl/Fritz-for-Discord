@@ -2,6 +2,8 @@
 
 import os, sys, string
 
+BASEPATH = sys.path[0] + "/resources/docs/lyrics/"
+
 illegal = ""
 
 def sanitiseInput(input:str):
@@ -18,7 +20,7 @@ def sanitiseInput(input:str):
 async def createKeyword(ctx, triggerWord, content):
 	global illegal 
 
-	targetFile = sys.path[0] + "/resources/docs/lyrics/" + sanitiseInput(triggerWord)
+	targetFile = BASEPATH + sanitiseInput(triggerWord)
 
 	if not os.path.exists(targetFile):
 		file = open(targetFile, "x")
@@ -31,7 +33,7 @@ async def createKeyword(ctx, triggerWord, content):
 	else: return "Reaction phrase already exists"
 
 async def deleteKeyword(ctx, triggerWord):
-	targetFile = sys.path[0] + "/resources/docs/lyrics/" + sanitiseInput(triggerWord)
+	targetFile = BASEPATH + sanitiseInput(triggerWord)
 
 	if os.path.exists(targetFile): 
 		os.remove(targetFile)
@@ -43,7 +45,7 @@ async def deleteKeyword(ctx, triggerWord):
 	else: return "Reaction phrase not found"
 
 async def readKeyword(triggerWord):
-	targetFile = sys.path[0] + "/resources/docs/lyrics/" + sanitiseInput(triggerWord)
+	targetFile = BASEPATH + sanitiseInput(triggerWord)
 
 	if os.path.exists(targetFile):
 		content = open(targetFile, "r").read()
@@ -53,10 +55,10 @@ async def readKeyword(triggerWord):
 
 	else: return "Reaction phrase not found"
 
-async def listKeywords(): return str(os.listdir(sys.path[0] + "/resources/docs/lyrics/"))
+async def listKeywords(): return str(os.listdir(BASEPATH))
 
 async def editKeyword(triggerWord, newContent):
-	targetFile = sys.path[0] + "/resources/docs/lyrics/" + sanitiseInput(triggerWord)
+	targetFile = BASEPATH + sanitiseInput(triggerWord)
 
 	if os.path.exists(targetFile): 
 		file = open(targetFile, "w")
