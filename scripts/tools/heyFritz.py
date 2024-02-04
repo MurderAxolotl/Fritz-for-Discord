@@ -1,4 +1,4 @@
-import g4f, asyncio, textwrap, threading
+import g4f, asyncio, textwrap, threading, sys, os
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -26,3 +26,11 @@ async def onHeyFritz(ctx, loop):
 		case [True, True]:  
 			for message in textwrap.wrap(response, 1900): await ctx.channel.send(message)
 		case [True, False]: await ctx.channel.send(str(response))
+
+async def lyricLoader(ctx):
+	# print(sys.path[0] + "/resources/docs/lyrics/%s"%str(ctx.content))
+	# print(str(ctx.content), ": ", str(ctx.content).lower() in os.listdir(sys.path[0] + "/resources/docs/lyrics/"))
+
+	for line in open(sys.path[0] + "/resources/docs/lyrics/%s"%str(ctx.content).lower(), "r").read().splitlines():
+		await ctx.channel.send(line, silent=True)
+		await asyncio.sleep(1)

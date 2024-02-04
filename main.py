@@ -6,7 +6,7 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH
+from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, cached_lyrics, REDUCE_DISK_READS
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
@@ -50,6 +50,12 @@ async def on_message(message):
 			match message.guild.id in LOGGING_BLACKLIST:
 				case False: await logging.logMessage(message)
 				case True: NotImplemented
+
+	if not REDUCE_DISK_READS: cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
+
+	match [str(message.content).lower() in cached_lyrics, str(message.author.id) != "1070042394009014303", not message.guild.id in AI_BLACKLIST]:
+		case [True, True, True]: 
+			await heyFritz.lyricLoader(message)
 
 	match [str(message.content).lower() == "hey fritz, panic 0x30", str(message.author.id) in registeredDevelopers]:
 		case [True, True]:

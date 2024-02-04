@@ -1,4 +1,4 @@
-import discord, dotenv, os, json
+import discord, dotenv, os, json, sys
 
 from types import NoneType
 
@@ -19,6 +19,7 @@ REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"]
 PATH = os.getenv("systemPath")
 
 # Configuration Parameters
+REDUCE_DISK_READS = True
 ENABLE_LOGGING    = True # True / False; whether to log messages sent to channels Fritz has read access to
 LOGGING_BLACKLIST = [] # A list of NON-QUOTED server IDs to block logging
 
@@ -30,3 +31,6 @@ version = "1.14.1"
 
 # Mappings because I can't be bothered to fix stuff #
 registeredDevelopers = REGISTERED_DEVELOPERS
+
+# Other shit I don't feel like labeling well
+cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
