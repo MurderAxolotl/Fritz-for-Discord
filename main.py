@@ -4,9 +4,6 @@ from types import NoneType
 
 from threading import Thread as td
 from discord.ext import commands
-from io import StringIO
-import io
-from contextlib import redirect_stdout
 
 from resources.colour import *
 from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, REDUCE_DISK_READS, LYRIC_BLACKLIST
@@ -30,10 +27,7 @@ bot = commands.Bot(intents=intents)
 loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
-STDOUT_RECOVERY = sys.stdout
-
 cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
-shellMode:int = 0 # 0: off 1: python 2: bash
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -51,7 +45,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	global cached_lyrics, shellMode
+	global cached_lyrics
 
 
 	### LOG THE MESSAGE TO THE APPROPRIATE FILE, REGARDLESS OF CONTENT ###
@@ -60,13 +54,15 @@ async def on_message(message):
 	now = datetime.datetime.now()
 	current_time = now.strftime("%H:%M:%S")
 	today = datetime.date.today()
-
 	fs = str(today) + " " + str(current_time) + " "
+
+	## Log the message to the disk ##
 	match [ENABLE_LOGGING, not isinstance(message.guild, NoneType)]:
 		case [True, True]: 
 			match message.guild.id in LOGGING_BLACKLIST:
 				case False: await logging.logMessage(message)
-				case True: NotImplemented
+
+		case [True, False]: await logging.logMessage(message)
 
 
 	### ============================================================= ###
@@ -82,8 +78,9 @@ async def on_message(message):
 	
 	## Lyrics / Responses ##
 	match [str(message.content).lower() in cached_lyrics, str(message.author.id) != "1070042394009014303", not isinstance(message.guild, NoneType)]:
-		case [True, True]: 
+		case [True, True, True]: 
 			if not message.guild.id in LYRIC_BLACKLIST: await heyFritz.lyricLoader(message)
+		case [True, True, False]: await heyFritz.lyricLoader(message)
 
 
 	## Panic exit ##

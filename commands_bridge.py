@@ -1,4 +1,4 @@
-import asyncio, string
+import asyncio
 import nest_asyncio
 
 from resources.curl_requests import *
@@ -19,7 +19,6 @@ import scripts.errors.commandCheck as commandCheck
 import scripts.tools.lyricLoader as keyphrase
 
 from scripts.tools.utility import *
-
 
 bot = discord.Bot()
 loop = asyncio.get_event_loop()

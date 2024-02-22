@@ -37,8 +37,8 @@ async def logMessage(message):
 
 	log.write(fs + messageContent + "\n")
 
-	if len(message.attachments) != 0:
-		for i in message.attachments:
-			print(f"{str(i.url)}\n")
+	# if len(message.attachments) != 0:
+	# 	for i in message.attachments:
+	# 		print(f"{str(i.url)}\n")
 
 	log.close()

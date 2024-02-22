@@ -1,10 +1,12 @@
 """ Provides custom triggers for specific words """
 
-import os, sys, string
+import os, sys, string, lyricsgenius
+from resources.shared import GENIUS_TOKEN
 
 BASEPATH = sys.path[0] + "/resources/docs/lyrics/"
 
 illegal = ""
+genius = lyricsgenius.Genius(GENIUS_TOKEN)
 
 def sanitiseInput(input:str):
 	global illegal
@@ -16,6 +18,11 @@ def sanitiseInput(input:str):
 		else: illegal = illegal + char
 
 	return final
+
+async def createFromSongLyrics(ctx, triggerWord, songTitle):
+	targetFile = BASEPATH + sanitiseInput(triggerWord)
+
+	print(genius.search_lyrics(songTitle))
 
 async def createKeyword(ctx, triggerWord, content):
 	global illegal 

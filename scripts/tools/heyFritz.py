@@ -35,6 +35,7 @@ async def lyricLoader(ctx):
 	lyric_target = sys.path[0] + "/resources/docs/lyrics/" + str(ctx.content).lower()
 
 	for line in open(lyric_target, "r").read().splitlines():
+		await ctx.send_typing()
 		if len(line) != 0:
 			try: await ctx.channel.send(line, silent=True)
 			except: NotImplemented # Skip the line, it's probably not valid

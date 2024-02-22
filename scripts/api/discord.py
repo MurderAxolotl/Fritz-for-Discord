@@ -39,6 +39,12 @@ class parse_tools():
 			authorContents.reverse()
 
 			return authorContents
+		
+async def SET_ANIMATED_PROFILE_ICON():
+	ENDPOINT = url + "/users/@me"
+
+	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.patch(ENDPOINT, headers=HEADERS))
+	except Exception as err: print(RED + str(err) + RESET)
 
 ### MESSAGE TOOLS ###
 

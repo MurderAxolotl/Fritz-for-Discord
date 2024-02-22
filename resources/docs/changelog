@@ -138,3 +138,9 @@
 	- Added LyricLoader (custom phrases)
 	- Added Hey Fritz invocation help message
 	- Fixed Hey Fritz self-invocation
+
+### 1.15
+	- Partial implementation for Genius Lyrics (still a work in progress, don't bother rn)
+	- Added GPT-4 support
+	- Hey Fritz will hit trigger_typing now
+	- Logging was fixed (AGAIN)

@@ -6,7 +6,7 @@ from types import NoneType
 
 from resources.shared import AI_BLACKLIST
 
-LEGACY_MODES = ["none", "turbo", "davinci"]
+LEGACY_MODES = ["none", "turbo", "davinci", "gpt4"]
 
 async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
 
@@ -18,6 +18,7 @@ async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
 	if   legacy_mode == "none"   : MODEL = g4f.models.gpt_35_long
 	elif legacy_mode == "turbo"  : MODEL = g4f.models.gpt_35_turbo
 	elif legacy_mode == "davinci": MODEL = g4f.models.text_davinci_003
+	elif legacy_mode == "gpt4"   : MODEL = g4f.models.gpt_4
 
 	await ctx.respond("Working...", ephemeral=True)
 
@@ -33,7 +34,7 @@ async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
 
 				embed = discord.Embed(
 					title="", 
-					description="%s requested: %s"%(author, inPrompt), 
+					description="%s requested: %s"%(author, inPrompt          ), 
 					colour=discord.Colour.dark_purple(),
 				)
 

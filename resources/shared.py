@@ -11,7 +11,7 @@ INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303
 TOKEN         = os.getenv("discordToken")
 CHATGPT_TOKEN = os.getenv("chatgptToken")
 CAI_TOKEN     = os.getenv("charAIToken")
-GENIUS_CREDS  = os.getenv("geniusLyrics")
+GENIUS_TOKEN  = os.getenv("geniusLyrics")
 CT_NAMES      = json.loads(os.getenv("ct_name_map"))
 TEST_NAMES    = json.loads(os.getenv("test_name_map"))
 
