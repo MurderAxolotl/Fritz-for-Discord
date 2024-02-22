@@ -54,3 +54,13 @@ To change this behaviour, open `shared.py` and set `REDUCE_DISK_READS` to `False
 > `about`: Get the bot's current version
 
 > `invite`: Get the bot's invite URL
+
+> `phrase create trigger_phrase response`: Create a new automatic response phrase
+
+> `phrase delete trigger_phrase`: Delete an automatic response phrase
+
+> `phrase read trigger_phrase`: Check what an automatic response phrase's contents are
+
+> `phrase edit trigger_phrase new_content`: Replace an existing automatic response phrase's content
+
+> `phrase list`: List existing automatic response phrases
