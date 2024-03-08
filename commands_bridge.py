@@ -105,9 +105,12 @@ async def createRP(ctx): await ctx.respond(await keyphrase.listKeywords())
 async def givecat(ctx): await oneOff.giveCat(ctx)
 
 # GET A JOKE #
-@fritz.command(name="joke", description="Grab a random quote from the :sparkles: internet :sparkles:", pass_context = True)
+@fritz.command(name="joke", description="Grab a random joke from the :sparkles: internet :sparkles:", pass_context = True)
 async def joke(ctx): await oneOff.getRandomJoke(ctx)
-	 
+
+# GET A QUOTE #
+@fritz.command(name="quote", description="Grab a random quote from the :sparkles: internet :sparkles:")
+async def quote(ctx): await oneOff.getRandomQuote(ctx)
 
 ### ===================================== ###
 ## USER MANAGEMENT ##

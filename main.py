@@ -77,7 +77,7 @@ async def on_message(message):
 
 	
 	## Lyrics / Responses ##
-	match [str(message.content).lower() in cached_lyrics, str(message.author.id) != "1070042394009014303", not isinstance(message.guild, NoneType)]:
+	match [(str(message.content).lower() in cached_lyrics), str(message.author.id) != "1070042394009014303", not isinstance(message.guild, NoneType)]:
 		case [True, True, True]: 
 			if not message.guild.id in LYRIC_BLACKLIST: await heyFritz.lyricLoader(message)
 		case [True, True, False]: await heyFritz.lyricLoader(message)
@@ -91,8 +91,9 @@ async def on_message(message):
 
 
 	## Hey Fritz invocation ##
-	match ["hey fritz," in str(message.content).lower(), not isinstance(message.guild, NoneType), "hey fritz" in str(message.content).lower(), str(message.author.id) != "1070042394009014303"]:
-		case [True, True, _, True]: # This is a guild
+	match ["hey fritz," in str(message.content).lower(), not isinstance(message.guild, NoneType), "hey fritz" in str(message.content).lower(), str(message.author.id) != "1070042394009014303", "panic" in str(message.content)]:
+		case [_, _, _, _, True]: NotImplemented
+		case [True, True, _, True, _]: # This is a guild
 			match [not message.guild.id in AI_BLACKLIST]:
 				case [True]: await heyFritz.onHeyFritz(message, loop)
 				case [False]: await message.channel.send("That function is disabled on this server")
@@ -108,6 +109,7 @@ async def on_message(message):
 
 	## Private ##
 	await private.ci_private.ciPrint(message, fs)
+	await private.ci_private.autoquote(message)
 
 ### --- Initialise the bot --- ###
 

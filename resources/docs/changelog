@@ -144,3 +144,10 @@
 	- Added GPT-4 support
 	- Hey Fritz will hit trigger_typing now
 	- Logging was fixed (AGAIN)
+
+### 1.16
+	- Added "quote" command
+	- Added a philosphy module, available for select servers
+	- Fixed a bug where a panic code could still trigger hey fritz behaviour
+	- Patched more bugs with Hey Fritz
+	- 
