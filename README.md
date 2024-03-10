@@ -11,7 +11,7 @@ A Discord bot intended for fun and utility
 
 ### Setup
 - Download and extract source code
-- Find and remove these lines:
+- Open `main.py`, then find and remove these lines:
   - `import private.ci_private`
   - `await private.ci_private.ciPrint(message, fs)`
   - `await private.ci_private.autoquote(message)`
