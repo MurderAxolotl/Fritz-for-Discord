@@ -8,6 +8,7 @@ A Discord bot intended for fun and utility
 - Python 3.10 or newer
 - PyCord (`pip install py-cord`)
 - DotEnv (`pip install python-dotenv`)
+- g4f (`pip install g4f`)
 
 ### Setup
 - Download and extract source code
