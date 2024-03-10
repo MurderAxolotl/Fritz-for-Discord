@@ -20,20 +20,11 @@ A Discord bot intended for fun and utility
 - In `resources/shared.py`, set `INVITE_URL` to your bot's URL, and `REGISTERED_DEVELOPERS` to your UUID
 - In `resources/shared.py`, set `AI_BLACKLIST` and `LYRIC_BLACKLIST`
 
-### Stuff you can steal
+### Portable Modules
 
-`scripts/api/discord.py` is pretty nifty, it adds some bindings to the Discord API in a very user-friendly way. Also, it lets you do simple crap (like getting guild info) which PyCord seeems ***INCAPABLE*** of doing correctly. Also it's reasonably self-documenting and understandable (again, looking at you PyCord, your docs are so far out of date it's not even funny)
+These are .py files you can use in your own projects. Please give credit!
 
-### Lyric Loader
-
-This stupid little module allows you to drop any text file into `resources/docs/lyrics` and do some fancy stuff. It's best if I explain like so:\
-- Place a file named `welcome to the underground` in the lyrics folder (note the lack of a file extension)
-- Put some words in it (for example, copy the lyrics for `To the Bone`... Strip the blank spaces though! NO BLANK LINES!)
-- Restart the bot [1]
-- Go to Discord and type `welcome to the underground`
-
-Pretty cool, yeah?\
-Did you see how the trigger words `welcome to the underground` in Discord is the same as the file name? That's how it works! The file name will be the trigger word for this lyric spam
+`scripts/api/discord.py`: an up-to-date and easy to use API wrapper for extremely common use-cases. Designed to fill the gaps of PyCord; it is NOT a replacement for PyCord
 
 [1] - By default, the bot will take measures to reduce disk IO. This means that lyrics are only cached when the bot starts.\
 To change this behaviour, open `shared.py` and set `REDUCE_DISK_READS` to `False`. This will cause the lyrics to be re-cached on EVERY SINGLE MESSAGE EVENT, meaning you get drag-and-drop support :3 (and also a destroyed disk...)
