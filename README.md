@@ -26,9 +26,6 @@ These are .py files you can use in your own projects. Please give credit!
 
 `scripts/api/discord.py`: an up-to-date and easy to use API wrapper for extremely common use-cases. Designed to fill the gaps of PyCord; it is NOT a replacement for PyCord
 
-[1] - By default, the bot will take measures to reduce disk IO. This means that lyrics are only cached when the bot starts.\
-To change this behaviour, open `shared.py` and set `REDUCE_DISK_READS` to `False`. This will cause the lyrics to be re-cached on EVERY SINGLE MESSAGE EVENT, meaning you get drag-and-drop support :3 (and also a destroyed disk...)
-
 ### Command Documentation
 
 To get a list of all commands, use Fritz's `help` slash command
