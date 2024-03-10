@@ -1,3 +1,16 @@
+"""
+
+THIS MODULE WAS CREATED BY MURDERAXOLOTL
+https://github.com/psychon-night
+
+SOURCE: https://github.com/psychon-night/Fritz-for-Discord/blob/main/scripts/api/discord.py
+
+WHEN USED IN YOUR OWN PROJECT, PLEASE PLEASE GIVE CREDIT
+
+COVERED BY THE GPL-3.0 LICENSE: https://github.com/psychon-night/Fritz-for-Discord?tab=GPL-3.0-1-ov-file
+
+"""
+
 import requests, json
 from concurrent.futures import ThreadPoolExecutor
 
@@ -39,12 +52,6 @@ class parse_tools():
 			authorContents.reverse()
 
 			return authorContents
-		
-async def SET_ANIMATED_PROFILE_ICON():
-	ENDPOINT = url + "/users/@me"
-
-	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.patch(ENDPOINT, headers=HEADERS))
-	except Exception as err: print(RED + str(err) + RESET)
 
 ### MESSAGE TOOLS ###
 
