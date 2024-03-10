@@ -147,6 +147,9 @@ async def help(ctx): await ctx.respond(help_messages.about_system, ephemeral=Tru
 async def getInvite(ctx): 
 	await ctx.respond(INVITE_URL, ephemeral=True)
 
+@fritz.command(name='github_url', description='Get Fritz\'s Github URL')
+async def getGit(ctx): await ctx.respond(GIT_URL)
+
 ### ===================================== ###
 ## DEVELOPER ONLY ## 
 	
