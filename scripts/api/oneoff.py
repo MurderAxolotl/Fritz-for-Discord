@@ -1,5 +1,7 @@
 import requests, asyncio, json, sys, random, discord
+
 from concurrent.futures import ThreadPoolExecutor
+from types import NoneType
 
 from resources.colour import *
 
@@ -44,3 +46,28 @@ async def getRandomQuote(ctx):
 			fails += 1
 
 	await ctx.respond("Quote API refused to connect")
+
+
+async def quoteMe(ctx):
+	with ctx.typing():
+
+		if isinstance(ctx.guild, NoneType): ctx.respond("Must be in a guild"); return
+		
+		guildDir = sys.path[0] + f"/logs/guilds/{str(ctx.guild.id)}"
+		selectedLog = open(guildDir + f"/{str(ctx.channel.id)}.log", "r")
+
+		userMessages = []
+
+		for message in selectedLog.readlines():
+			if str(ctx.author).split("#")[0] in message: 
+				userMessages.append(message)
+
+		if len(userMessages) == 0: 
+			await ctx.respond("Couldn't get any quotes. Try again, maybe?")
+			return
+
+		msg = userMessages[random.randint(0,len(userMessages)-1)]
+		msg = msg.split(maxsplit=2)
+		oncesaid = str(msg[2]).split(":", maxsplit=1)[1]
+
+		await ctx.respond(f"*You once said...* {oncesaid}")

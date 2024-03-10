@@ -60,7 +60,7 @@ async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
 ## Chat Completion ##
-@fritz.command(name='chatgpt', description='Use ChatGPT', pass_context=True) # Async
+@fritz.command(name='assistant', description='Launch the AI assistant', pass_context=True) # Async
 async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Legacy mode select")="none"): await gpt.generateResponse(ctx, prompt, loop, legacy_mode) #type:ignore
 
 # CHARACTER AI #
@@ -112,6 +112,10 @@ async def joke(ctx): await oneOff.getRandomJoke(ctx)
 @fritz.command(name="quote", description="Grab a random quote from the :sparkles: internet :sparkles:")
 async def quote(ctx): await oneOff.getRandomQuote(ctx)
 
+# QUOTE URSELF #
+@fritz.command(name="quoteme", description="Get a random quote from yourself")
+async def qm(ctx): await oneOff.quoteMe(ctx)
+
 ### ===================================== ###
 ## USER MANAGEMENT ##
 
@@ -146,11 +150,13 @@ async def getInvite(ctx):
 ### ===================================== ###
 ## DEVELOPER ONLY ## 
 	
-@zdev.command(name='initiate_dm', description="Initiates a DM with user_id")
-async def do(ctx, message_content): 
-	await ctx.author.send(message_content)
+@fritz.command(name='initiate_dm', description="Initiates a DM with the current user")
+async def do(ctx): 
+	await ctx.author.send("Hey! I'm Fritz, your friendly assistant! How can I help you?")
+	await ctx.author.send("Remember: you can ask me anything. Just say: `Hey Fritz, it's nice to meet you!`")
+	await ctx.author.send("You can also use the *assistant* slash command")
 
-	await ctx.respond("DM created")
+	await ctx.respond("DM created", ephemeral=True)
 
 @zdev.command(name='shutdown', description='fritz.dev.shutdown', pass_context=True)
 @isDeveloper()
@@ -183,5 +189,6 @@ try:
 	bot.run(TOKEN)
 
 except Exception as err:
-	print(MAGENTA + "Commands: " + RED + "[FATAL] - Failed to initialise commands")
+	print(MAGENTA + "[Commands] " + RED + "Failed to start slash command features")
 	print("   -> " + str(err) + RESET)
+	print(YELLOW + "Slash commands are unavailable" + RESET)

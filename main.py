@@ -41,7 +41,7 @@ async def on_command_error(ctx, error):
 
 @client.event
 async def on_ready(): 
-	print(MAGENTA + "[  Main  ] " + YELLOW + "Ready with personality %s"%client_personality[1] + RESET)
+	print(MAGENTA + "[  Main  ] " + YELLOW + "Ready!" + RESET)
 
 @client.event
 async def on_message(message):
@@ -118,9 +118,11 @@ loadHandler.prepBot()
 def commandprocess(): os.system("python3 %s/commands_bridge.py" % PATH)
 
 try:
+	print(MAGENTA + "Starting with personality %s"%client_personality[1] + RESET)
 	td(target=commandprocess).start()
 	client.run(TOKEN)
 
 except Exception as err:
-	print(MAGENTA + "Main: " + RED + "[FATAL] - Failed to initalise base client")
+	print(MAGENTA + "[  Main  ] " + RED + "Failed to start main process")
 	print("   -> " + str(err) + RESET)
+	print(YELLOW + "Logging, Hey Fritz, and panic codes are unavailable" + RESET)

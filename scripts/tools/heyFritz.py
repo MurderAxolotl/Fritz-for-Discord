@@ -14,7 +14,7 @@ async def onHeyFritz(ctx, loop):
 		response = await loop.run_in_executor(
 			ThreadPoolExecutor(), 
 			lambda: g4f.ChatCompletion.create(
-			model=g4f.models.gpt_35_long, 
+			model=g4f.models.gpt_35_turbo, 
 			messages=[{"role": "user", "content": textPrompt }], 
 		))
 	

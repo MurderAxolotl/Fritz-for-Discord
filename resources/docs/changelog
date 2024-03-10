@@ -150,4 +150,9 @@
 	- Added a philosphy module, available for select servers
 	- Fixed a bug where a panic code could still trigger hey fritz behaviour
 	- Patched more bugs with Hey Fritz
-	- 
+
+### 1.16.1
+	- Renamed the ChatGPT command to "assistant"
+	- Added "quoteme" command
+	- Removed old commands from helptext
+	- Added new commands for the past 4-5 updates to the helptext
