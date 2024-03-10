@@ -1,7 +1,5 @@
 import discord, dotenv, os, json, sys
-
 from types import NoneType
-
 
 dotenv.load_dotenv(".env")
 
@@ -9,9 +7,7 @@ INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303
 
 # Secrets #
 TOKEN         = os.getenv("discordToken")
-CHATGPT_TOKEN = os.getenv("chatgptToken")
 CAI_TOKEN     = os.getenv("charAIToken")
-GENIUS_TOKEN  = os.getenv("geniusLyrics")
 CT_NAMES      = json.loads(os.getenv("ct_name_map"))
 TEST_NAMES    = json.loads(os.getenv("test_name_map"))
 
