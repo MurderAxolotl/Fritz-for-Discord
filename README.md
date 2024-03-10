@@ -4,7 +4,23 @@
 
 A Discord bot intended for fun and utility
 
-Requires Python 3.10+
+### Dependencies
+- Python 3.10 or newer
+- PyCord (`pip install py-cord`)
+- DotEnv (`pip install python-dotenv`)
+
+### Setup
+- Download and extract source code
+- Open `main.py`, then find and remove these lines:
+  - `import private.ci_private`
+  - `await private.ci_private.ciPrint(message, fs)`
+  - `await private.ci_private.autoquote(message)`
+- At the root of the project, create a file named `.env`
+- Use the [.env template](https://github.com/psychon-night/Fritz-for-Discord/blob/main/.env.template) and set your env variables
+- In `resources/shared.py`, set `INVITE_URL` to your bot's URL, and `REGISTERED_DEVELOPERS` to your UUID
+- In `resources/shared.py`, set `AI_BLACKLIST` and `LYRIC_BLACKLIST`
+
+### Stuff you can steal
 
 `scripts/api/discord.py` is pretty nifty, it adds some bindings to the Discord API in a very user-friendly way. Also, it lets you do simple crap (like getting guild info) which PyCord seeems ***INCAPABLE*** of doing correctly. Also it's reasonably self-documenting and understandable (again, looking at you PyCord, your docs are so far out of date it's not even funny)
 
@@ -23,44 +39,5 @@ Did you see how the trigger words `welcome to the underground` in Discord is the
 To change this behaviour, open `shared.py` and set `REDUCE_DISK_READS` to `False`. This will cause the lyrics to be re-cached on EVERY SINGLE MESSAGE EVENT, meaning you get drag-and-drop support :3 (and also a destroyed disk...)
 
 ### Command Documentation
-> `pp_users query_string`: Query Pronouns Page for a user\
-> `pp_terms query_string`: Query Pronouns Page for a term
 
-> `seasify song_title count`: Search Spotify for a song\
-*count*: int between 1 and 25
-
-> `chatgpt prompt legacy_mode`: Interact with ChatGPT\
-*legacy_mode*: allows you to use a legacy LLM. See built-in autocomplete for options
-
-> `cai message character reset`: Interact with a Character AI character\
-*character*: defines what character totalk to. See built-in autocomplete for options\
-*reset*: whether to continue the current conversation (keep memory) or reset it
-
-> `qr create data style`: Create a QR code\
-*data*: the data to encode into the QR code\
-*style*: which QR style to use. Default is stylised. Set to `compatible` to make a generic QR code
-
-> `qr scan url`: Scan a QR code.  Must be publically available on the internet (such as on imgur)\
-*url*: link to an image containing the QR code
-
-> `givecat`: Get a random cat image
-
-> `joke`: Get a random joke from the internet
-
-> `check_nsfw_allowed`
-
-> `ping`: Check the bot's ping in milliseconds
-
-> `about`: Get the bot's current version
-
-> `invite`: Get the bot's invite URL
-
-> `phrase create trigger_phrase response`: Create a new automatic response phrase
-
-> `phrase delete trigger_phrase`: Delete an automatic response phrase
-
-> `phrase read trigger_phrase`: Check what an automatic response phrase's contents are
-
-> `phrase edit trigger_phrase new_content`: Replace an existing automatic response phrase's content
-
-> `phrase list`: List existing automatic response phrases
+To get a list of all commands, use Fritz's `help` slash command
