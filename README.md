@@ -2,7 +2,8 @@
 
 [![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
 
-A Discord bot intended for fun and utility
+A Discord bot intended for fun and utility\
+Built on Python 3.11.6
 
 ### Dependencies
 - Python 3.10 or newer
