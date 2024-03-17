@@ -34,10 +34,10 @@ async def getRandomQuote(ctx):
 
 	while keepgoing != 1 and fails < 6:
 		try:
-			response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.quotable.io/quotes?limit=150&page=%s"%random.randint(1,10)))
+			response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.quotable.io/quotes?limit=40&page=%s"%random.randint(1,25)))
 			
 			quotes = json.loads(response.text)
-			await ctx.respond(quotes["results"][random.randint(0,30)]["content"])
+			await ctx.respond(quotes["results"][random.randint(0,40)]["content"])
 			
 			return 0
 
@@ -48,18 +48,31 @@ async def getRandomQuote(ctx):
 	await ctx.respond("Quote API refused to connect")
 
 
-async def quoteMe(ctx):
+async def quoteMe(ctx, uname):
 	with ctx.typing():
 
 		if isinstance(ctx.guild, NoneType): ctx.respond("Must be in a guild"); return
+
+		allc = []
+
+		for file in os.listdir(sys.path[0] + f"/logs/guilds/{str(ctx.guild.id)}"):
+			allc.append(file)
+
+		channel = allc[random.randint(0,len(allc)-1)]
 		
 		guildDir = sys.path[0] + f"/logs/guilds/{str(ctx.guild.id)}"
-		selectedLog = open(guildDir + f"/{str(ctx.channel.id)}.log", "r")
+		# selectedLog = open(guildDir + f"/{channel}", "r")
+		selectedLog = open(guildDir + f"/{ctx.channel.id}.log", "r")
 
 		userMessages = []
+		me = True
+
+		if uname == None: 
+			uname = str(ctx.author).split("#")[0]
+		else: me = False
 
 		for message in selectedLog.readlines():
-			if str(ctx.author).split("#")[0] in message: 
+			if uname in message: 
 				userMessages.append(message)
 
 		if len(userMessages) == 0: 
@@ -70,4 +83,5 @@ async def quoteMe(ctx):
 		msg = msg.split(maxsplit=2)
 		oncesaid = str(msg[2]).split(":", maxsplit=1)[1]
 
-		await ctx.respond(f"*You once said...* {oncesaid}")
+		if me: await ctx.respond(f"*You once said...* {oncesaid}")
+		else: await ctx.respond(f"*{uname} once said...* {oncesaid}")

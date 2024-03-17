@@ -16,7 +16,8 @@
 		"lib64": true,
 		".gitattributes": true,
 		".gitignore": true,
-		"LICENSE": true
+		"LICENSE": true,
+		".github": true
 	},
 	"hide-files.files": [
 		"bin",
@@ -26,6 +27,7 @@
 		"lib64",
 		".gitattributes",
 		".gitignore",
-		"LICENSE"
+		"LICENSE",
+		".github"
 	]
 }

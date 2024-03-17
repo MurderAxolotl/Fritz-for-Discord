@@ -156,3 +156,8 @@
 	- Added "quoteme" command
 	- Removed old commands from helptext
 	- Added new commands for the past 4-5 updates to the helptext
+
+### 1.16.3
+	- Updated g4f to 0.2.5.4
+	- Fixed HEY FRITZ again
+	- Updated HF to gpt4

@@ -1,4 +1,4 @@
-import sys, os, datetime, nest_asyncio, asyncio
+import sys, os, datetime, nest_asyncio, asyncio, json
 
 from types import NoneType
 
@@ -109,7 +109,12 @@ async def on_message(message):
 
 	## Private ##
 	await private.ci_private.ciPrint(message, fs)
-	await private.ci_private.autoquote(message)
+	# await private.ci_private.autoquote(message)
+
+	# if "gay" in str(message.content).lower():
+	# 	req = requests.get('https://icanhazdadjoke.com', headers={'Accept': 'application/json',})
+
+	# 	await message.channel.send(json.loads(req.text)["joke"])
 
 ### --- Initialise the bot --- ###
 

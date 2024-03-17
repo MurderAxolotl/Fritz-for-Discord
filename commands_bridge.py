@@ -114,7 +114,7 @@ async def quote(ctx): await oneOff.getRandomQuote(ctx)
 
 # QUOTE URSELF #
 @fritz.command(name="quoteme", description="Get a random quote from yourself")
-async def qm(ctx): await oneOff.quoteMe(ctx)
+async def qm(ctx, username:str=None): await oneOff.quoteMe(ctx, username)
 
 ### ===================================== ###
 ## USER MANAGEMENT ##

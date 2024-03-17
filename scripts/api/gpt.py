@@ -6,7 +6,7 @@ from types import NoneType
 
 from resources.shared import AI_BLACKLIST
 
-LEGACY_MODES = ["none", "turbo", "davinci", "gpt4"]
+LEGACY_MODES = ["none", "turbo", "davinci", "fast"]
 
 async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
 
@@ -15,10 +15,9 @@ async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
 			match ctx.guild.id in AI_BLACKLIST:
 				case True: await ctx.respond("That command is disabled on this server"); return -1
 
-	if   legacy_mode == "none"   : MODEL = g4f.models.gpt_35_long
+	if   legacy_mode == "none"   : MODEL = g4f.models.gpt_4
 	elif legacy_mode == "turbo"  : MODEL = g4f.models.gpt_35_turbo
-	elif legacy_mode == "davinci": MODEL = g4f.models.text_davinci_003
-	elif legacy_mode == "gpt4"   : MODEL = g4f.models.gpt_4
+	elif legacy_mode == "fast"   : MODEL = g4f.models.gpt_35_long
 
 	await ctx.respond("Working...", ephemeral=True)
 

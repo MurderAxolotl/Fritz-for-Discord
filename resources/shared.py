@@ -26,7 +26,7 @@ LYRIC_BLACKLIST = [1192958435608760321, 999923183840940042] # A list of NON-QUOT
 
 # Why aren't these constants? #
 intents = discord.Intents(messages=True, message_content=True, voice_states=True)
-version = "1.16.1"
+version = "1.16.3"
 
 # Mappings because I can't be bothered to fix stuff #
 registeredDevelopers = REGISTERED_DEVELOPERS

@@ -3,6 +3,8 @@
 import g4f, asyncio, textwrap, sys, requests, json, random
 from concurrent.futures import ThreadPoolExecutor
 
+from resources.colour import *
+
 
 async def onHeyFritz(ctx, loop):
 
@@ -12,13 +14,13 @@ async def onHeyFritz(ctx, loop):
 
 	try:
 		response = await loop.run_in_executor(
-			ThreadPoolExecutor(), 
-			lambda: g4f.ChatCompletion.create(
-			model=g4f.models.gpt_35_turbo, 
-			messages=[{"role": "user", "content": textPrompt }], 
-		))
+			ThreadPoolExecutor(),
+			lambda: g4f.ChatCompletion.create(model=g4f.models.gpt_4, messages=[{"role": "user", "content": textPrompt }], )
+		)
 	
-	except: response = "My LLM failed to respond correctly"
+	except Exception as err: 
+		response = "My LLM failed to respond correctly"
+		print(RED + "LLM ERR: " + str(err) + RESET)
 
 	await sentMessage.delete()
 		
