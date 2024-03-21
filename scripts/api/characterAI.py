@@ -59,8 +59,10 @@ async def doTheThing(ctx, prompt, character, reset):
 		data = await client.chat.send_message(chat['external_id'], tgt, message)
 		name = data['src_char']['participant']['name']	
 		text = data['replies'][0]['text']
+
+		author = str(ctx.author).split("#", maxsplit=1)[0]
 		
-		await ctx.respond(f"""{str(ctx.author)}: {prompt}
+		await ctx.respond(f"""{str(author)}: {prompt}
 {name}: {text}""")
 		
 	except:
@@ -82,5 +84,7 @@ async def doTheThing(ctx, prompt, character, reset):
 				)
 		text = data['turn']['candidates'][0]['raw_content']
 
-		await ctx.respond(f"""{str(ctx.author)}: {prompt}
+		author = str(ctx.author).split("#", maxsplit=1)[0]
+
+		await ctx.respond(f"""{author}: {prompt}
 {character}: {text}""")

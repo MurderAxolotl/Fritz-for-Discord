@@ -123,7 +123,8 @@ loadHandler.prepBot()
 def commandprocess(): os.system("python3 %s/commands_bridge.py" % PATH)
 
 try:
-	print(MAGENTA + "Starting with personality %s"%client_personality[1] + RESET)
+	if not client_personality[1] == "none": print(MAGENTA + "Starting with personality %s"%client_personality[1] + RESET)
+	else: print(MAGENTA + "Starting with no personality" + RESET)
 	td(target=commandprocess).start()
 	client.run(TOKEN)
 

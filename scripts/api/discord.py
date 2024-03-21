@@ -14,7 +14,7 @@ COVERED BY THE GPL-3.0 LICENSE: https://github.com/psychon-night/Fritz-for-Disco
 import requests, json
 from concurrent.futures import ThreadPoolExecutor
 
-from resources.shared import TOKEN
+from resources.shared import TOKEN, APPLICATIONID
 from resources.colour import *
 
 from scripts.tools.utility import loop
@@ -86,6 +86,16 @@ async def trigger_typing(channel):
 		print(str(err)); return 404
 	
 ### MEMBER TOOLS ###
+
+### COMMAND TOOLS ###
+async def allowInDMs(COMMAND_ID):
+	ENDPOINT = url + f"applications/{APPLICATIONID}/commands/{COMMAND_ID}"
+
+	try: 
+		response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.patch(ENDPOINT, headers=HEADERS, json={"contexts": [0,1,2], "integration_types": [0,1]}))
+
+	except Exception as err:
+		print(str(err)); return 404
 
 ### GUILD TOOLS ###
 

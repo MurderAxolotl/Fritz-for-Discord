@@ -18,6 +18,8 @@ import scripts.errors.commandCheck as commandCheck
 
 import scripts.tools.lyricLoader as keyphrase
 
+import scripts.hooks.commandsEverywhere as ceMixin
+
 from scripts.tools.utility import *
 
 bot = discord.Bot()
@@ -40,6 +42,9 @@ async def on_application_command_error(ctx: discord.ApplicationContext, error: d
 @bot.event
 async def on_ready(): 
 	print(MAGENTA + "[Commands]" + YELLOW + " Ready!" + RESET)
+	# await ceMixin.hook()
+
+	
 
 ### ===================================== ###
 ## API COMMANDS ##
@@ -60,7 +65,7 @@ async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
 ## Chat Completion ##
-@fritz.command(name='assistant', description='Launch the AI assistant', pass_context=True) # Async
+@fritz.command(name='assistant', description='Launch Fritz\'s AI assistant', pass_context=True) # Async
 async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Legacy mode select")="none"): await gpt.generateResponse(ctx, prompt, loop, legacy_mode) #type:ignore
 
 # CHARACTER AI #
@@ -122,7 +127,7 @@ async def qm(ctx, username:str=None): await oneOff.quoteMe(ctx, username)
 
 ### ===================================== ###
 ## BOT UTILITIES ##
-@fritz.command(name='ping', description='Get Fritz\'s current ping', pass_context=True)
+@fritz.command(name='ping', description='Get Fritz\'s current ping', guild_only=False)
 async def ping(ctx):
 	latency = round(bot.latency * 1000); await ctx.respond('Current latency: ' + str(latency) + "ms")
 

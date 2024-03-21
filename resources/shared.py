@@ -7,6 +7,7 @@ INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303
 GIT_URL = "https://github.com/psychon-night/Fritz-for-Discord"
 
 # Secrets #
+APPLICATIONID = os.getenv("applicationID")
 TOKEN         = os.getenv("discordToken")
 CAI_TOKEN     = os.getenv("charAIToken")
 CT_NAMES      = json.loads(os.getenv("ct_name_map"))

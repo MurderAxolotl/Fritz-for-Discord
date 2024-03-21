@@ -160,4 +160,11 @@
 ### 1.16.3
 	- Updated g4f to 0.2.5.4
 	- Fixed HEY FRITZ again
-	- Updated HF to gpt4
+	- Updated HEY FRITZ to gpt4
+
+### 1.17
+	- Manually added support for Commands Everywhere
+		- PyCord still doesn't support this, so it's done through the API
+	- Bugfixes
+	- Updated Character AI to use Pomelo names instead of discriminators (no more #0 at the end of your username!)
+	- Fixed assistant command
