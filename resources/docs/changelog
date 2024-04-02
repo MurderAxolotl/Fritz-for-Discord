@@ -177,3 +177,8 @@
 	- Renamed scripts/api/oneoff.py to scripts/api/fun.py
 	- Reading a QR code uses a file attachment now
 	- Updated QR_READ to use a much better local implementation
+
+### 1.17.25
+	- Cleaned up unused code
+	- Removed old, unused imports
+	- Fixed 2000+ char QR error
