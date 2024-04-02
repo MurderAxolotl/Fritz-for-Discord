@@ -15,11 +15,11 @@ Built on Python 3.11.6
 - Nest Asyncio (`pip install nest_asyncio`)
 - Asyncio (`pip install asyncio`)
 - Pillow (`pip install pillow`)
+- BS4 (`pip install bs4`)
 
 ### Setup
 - Download and extract source code
 - Create a folder named `cache`
-- In the `cache` folder, make a `qr` folder
 - Open `main.py`, then find and remove these lines:
   - `import private.ci_private`
   - `await private.ci_private.ciPrint(message, fs)`
