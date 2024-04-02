@@ -12,6 +12,9 @@ Built on Python 3.11.6
 - g4f (`pip install g4f`)
 - zbar (`pip install pyzbar`)
 - CAI (`pip install characterai`)
+- Nest Asyncio (`pip install nest_asyncio`)
+- Asyncio (`pip install asyncio`)
+- Pillow (`pip install pillow`)
 
 ### Setup
 - Download and extract source code
