@@ -125,7 +125,7 @@ async def ping(ctx):
 async def help(ctx): await ctx.respond(help_messages.commands, ephemeral=True)
 
 @fritz.command(name="changelog", description="See recent and past changes to Fritz", pass_context=True)
-async def changelog(ctx): await ctx.respond(help_messages.changelog, ephemeral=True)
+async def changelog(ctx): await ctx.respond(file=help_messages.changelog, ephemeral=True)
 
 ## Get basic info about Fritz ##
 @fritz.command(name="about", description="Get some pretty basic info about Fritz", pass_context=True)

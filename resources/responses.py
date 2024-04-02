@@ -1,4 +1,4 @@
-import sys
+import sys, discord
 from resources.shared import version
 import os, platform
 
@@ -56,4 +56,4 @@ class help_messages():
   CWD: **{cwd}**
 """.format(ver=version, backend=(platform.platform(True) + " " + platform.architecture()[0] + " (" + platform.machine() + ") "), cwd=os.getcwd(), pyVer=platform.python_version())
   
-	with open(sys.path[0] + "/resources/docs/changelog", "r") as clfile: changelog = clfile.read()
+	with open(sys.path[0] + "/resources/docs/changelog", "r") as clfile: changelog = discord.File(sys.path[0] + "/resources/docs/changelog")
