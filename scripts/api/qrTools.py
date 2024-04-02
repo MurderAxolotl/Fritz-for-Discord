@@ -1,5 +1,5 @@
-import requests, json, sys
-import requests, asyncio
+import requests, json, sys, discord, os
+import asyncio
 from urllib import parse
 
 from io import BytesIO
@@ -47,10 +47,13 @@ async def read_cv(ctx, qr_image):
 	qrs = decode(img)
 
 	if len(qrs) != 0: 
-		try: await ctx.respond("QR SCANNED. Data: " + str(qrs[0].data.decode()))
+		try: await ctx.respond("QR Data: " + str(qrs[0].data.decode()))
 		except: 
-			try: await ctx.channel.send("QR SCANNED. Data: " +  str(qrs[0].data.decode()))
-			except: await ctx.channel.send("QR data was scanned, but it cannot be sent. Does the QR's data exceed 2000 chars?")
+			try: await ctx.channel.send("QR Data: " +  str(qrs[0].data.decode()))
+			except: 
+				with open(sys.path[0] + "/cache/qr_data_extracted.txt", "x") as writeFile: writeFile.write(str(qrs[0].data.decode()))
+				await ctx.channel.send(file=discord.File(sys.path[0] + "/cache/qr_data_extracted.txt"))
+				os.remove(sys.path[0] + "/cache/qr_data_extracted.txt")
 	else: await ctx.respond("Couldn't detect any QR codes or barcodes")
 
 async def read(ctx, qr_image_url):

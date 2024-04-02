@@ -19,11 +19,8 @@ Built on Python 3.11.6
 
 ### Setup
 - Download and extract source code
+- Install dependencies: `pip install py-cord python-dotenv g4f pyzbar characterai asyncio nest_asyncio pillow bs4`
 - Create a folder named `cache`
-- Open `main.py`, then find and remove these lines:
-  - `import private.ci_private`
-  - `await private.ci_private.ciPrint(message, fs)`
-  - `await private.ci_private.autoquote(message)`
 - At the root of the project, create a file named `.env`
 - Use the [.env template](https://github.com/psychon-night/Fritz-for-Discord/blob/main/.env.template) and set your env variables
 - In `resources/shared.py`, set `INVITE_URL` to your bot's URL, and `REGISTERED_DEVELOPERS` to your UUID

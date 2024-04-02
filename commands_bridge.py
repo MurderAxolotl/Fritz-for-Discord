@@ -1,21 +1,19 @@
 import asyncio
 import nest_asyncio
 
-from PIL import Image
-
 from resources.curl_requests import *
 from resources.shared import *
 from resources.responses import *
 from resources.colour import *
 from resources.user_messages import *
 
-import scripts.api.qrTools as qrTools
-import scripts.api.fun as oneOff
-import scripts.api.gpt as gpt
-import scripts.api.pronouns as pronouns
-import scripts.api.spotify as spotify
-import scripts.api.characterAI as cai
-import scripts.api.discord as discord_fancy
+import scripts.api.qrTools         as qrTools
+import scripts.api.fun             as oneOff
+import scripts.api.gpt             as gpt
+import scripts.api.pronouns        as pronouns
+import scripts.api.spotify         as spotify
+import scripts.api.characterAI     as cai
+import scripts.api.discord         as discord_fancy
 import scripts.errors.commandCheck as commandCheck
 
 import scripts.hooks.commandsEverywhere as ceMixin
@@ -147,20 +145,6 @@ async def getGit(ctx): await ctx.respond(GIT_URL)
 
 ### ===================================== ###
 ## DEVELOPER ONLY ## 
-
-@zdev.command(name='ehe')
-@isDeveloper()
-async def eheeh(ctx):
-	await ctx.defer()
-
-	await discord_fancy.unban_member(943626107809316895, 1063584978081951814)
-
-	await ctx.respond("https://discord.gg/se3JnGtxkX")
-
-@zdev.command(name='ehe2')
-@isDeveloper()
-async def ehe2(ctx):
-	await discord_fancy
 	
 @fritz.command(name='initiate_dm', description="Initiates a DM with the current user")
 async def do(ctx): 

@@ -28,7 +28,7 @@ BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users"))) # A list of
 
 # Why aren't these constants? #
 intents = discord.Intents(messages=True, message_content=True, voice_states=True)
-version = "1.17.2"
+version = "1.17.25"
 
 # Mappings because I can't be bothered to fix stuff #
 registeredDevelopers = REGISTERED_DEVELOPERS

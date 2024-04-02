@@ -12,8 +12,6 @@ import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
 import scripts.tools.heyFritz as heyFritz
 
-import private.ci_private
-
 from scripts.tools.utility import *
 
 import resources.client_personalities as personalities
@@ -28,8 +26,6 @@ nest_asyncio.apply(loop)
 
 @bot.event
 async def on_command_error(ctx, error):
-	global shellMode 
-
 	if isinstance(error, commands.errors.CheckFailure):
 		await ctx.send('You don\'t have the required role')
 
@@ -92,8 +88,6 @@ async def on_message(message):
 		
 		case [True, False, _, True]: await heyFritz.onHeyFritz(message, loop) # This is a DM or GM. Wait how did Fritz get into a GM-
 
-	## Private ##
-	await private.ci_private.ciPrint(message, fs)
 
 ### --- Initialise the bot --- ###
 
