@@ -11,7 +11,6 @@ from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
 import scripts.tools.heyFritz as heyFritz
-import scripts.tools.lyricLoader as keyphrase
 
 import private.ci_private
 
@@ -26,8 +25,6 @@ bot = commands.Bot(intents=intents)
 
 loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
-
-cached_lyrics = str(os.listdir(sys.path[0] + "/resources/docs/lyrics"))
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -65,24 +62,12 @@ async def on_message(message):
 		case [True, False]: await logging.logMessage(message)
 
 
+	## If the user is banned, no code past this point should run ##
+	if message.author.id in BLACKLISTED_USERS:
+		return
+
+
 	### ============================================================= ###
-
-	
-	## Re-cache the lyrics directory ##
-	if str(message.content) == "INTERNAL_FLAG::::__update_lyrcache":
-		await message.delete()
-		cached_lyrics = str(os.listdir(keyphrase.BASEPATH))
-
-		log("Re-cached lyrics directory")
-
-	
-	## Lyrics / Responses ##
-	match [(str(message.content).lower() in cached_lyrics), str(message.author.id) != "1070042394009014303", not isinstance(message.guild, NoneType)]:
-		case [True, True, True]: 
-			if not message.guild.id in LYRIC_BLACKLIST: await heyFritz.lyricLoader(message)
-		case [True, True, False]: await heyFritz.lyricLoader(message)
-
-
 	## Panic exit ##
 	match [str(message.content).lower() == "hey fritz, panic 0x30", str(message.author.id) in registeredDevelopers]:
 		case [True, True]:
@@ -109,12 +94,6 @@ async def on_message(message):
 
 	## Private ##
 	await private.ci_private.ciPrint(message, fs)
-	# await private.ci_private.autoquote(message)
-
-	# if "gay" in str(message.content).lower():
-	# 	req = requests.get('https://icanhazdadjoke.com', headers={'Accept': 'application/json',})
-
-	# 	await message.channel.send(json.loads(req.text)["joke"])
 
 ### --- Initialise the bot --- ###
 

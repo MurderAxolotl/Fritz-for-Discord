@@ -1,6 +1,8 @@
 import asyncio
 import nest_asyncio
 
+from PIL import Image
+
 from resources.curl_requests import *
 from resources.shared import *
 from resources.responses import *
@@ -8,15 +10,13 @@ from resources.colour import *
 from resources.user_messages import *
 
 import scripts.api.qrTools as qrTools
-import scripts.api.oneoff as oneOff
+import scripts.api.fun as oneOff
 import scripts.api.gpt as gpt
 import scripts.api.pronouns as pronouns
 import scripts.api.spotify as spotify
 import scripts.api.characterAI as cai
 import scripts.api.discord as discord_fancy
 import scripts.errors.commandCheck as commandCheck
-
-import scripts.tools.lyricLoader as keyphrase
 
 import scripts.hooks.commandsEverywhere as ceMixin
 
@@ -33,6 +33,13 @@ qr    = bot.create_group("qr", "Tools relating to QR codes")
 kw    = bot.create_group("phrase", "Tools relating to reaction phrases")
 zdev  = bot.create_group("f_dev", "Developer-only utilities")
 
+### GLOBAL CHECKS ###
+@bot.check
+async def global_isbanned_check(ctx):
+	if ctx.author.id in BLACKLISTED_USERS: raise bannedUser("You are banned from using Fritz")
+	
+	return True
+
 
 ### ===================================== ###
 ### EVENTS ###
@@ -44,13 +51,13 @@ async def on_ready():
 	print(MAGENTA + "[Commands]" + YELLOW + " Ready!" + RESET)
 	# await ceMixin.hook()
 
+	if len(BLACKLISTED_USERS) != 0:
+		print(YELLOW + f"[Commands] INFO: {len(BLACKLISTED_USERS)} users in blacklist" + RESET)
+
 	
 
 ### ===================================== ###
 ## API COMMANDS ##
-
-# @audio.command(name="voice_bridge", description='Bridge two voice channels together')
-# async def initSync(ctx, vc_id_1, vc_id_2): await voiceLink.bridgeVoiceChannels(ctx, bot, vc_id_1, vc_id_2)
 
 # Search PronounsPage for a user #
 @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
@@ -77,30 +84,13 @@ async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARA
 
 # SCAN A QR CODE #
 @qr.command(name="scan", description="Scan a QR code", pass_context=True)
-async def scanQR(ctx, qr_image_url): await qrTools.read(ctx, qr_image_url)
+async def scanQR(ctx, qr_code_image: discord.Attachment):
+	await qrTools.read_cv(ctx, qr_code_image.url)
 
 # CREATE A QR CODE #
 @qr.command(name="create", description="Make a QR code", pass_context=True)
 async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): #type:ignore
 	await qrTools.createQR(ctx, qr_data, style_mode)
-
-### ===================================== ###
-## KEYPHRASES ##
-	
-@kw.command(name="create", description="Create a reaction phrase ")
-async def createRP(ctx, trigger_phrase, response): await ctx.respond(await keyphrase.createKeyword(ctx, trigger_phrase, response))
-
-@kw.command(name="delete", description="Delete a reaction phrase ")
-async def createRP(ctx, trigger_phrase): await ctx.respond(await keyphrase.deleteKeyword(ctx, trigger_phrase))
-
-@kw.command(name="read", description="Read the contents of a reaction phrase ")
-async def createRP(ctx, trigger_phrase): await ctx.respond(await keyphrase.readKeyword(trigger_phrase))
-
-@kw.command(name="edit", description="Edit the contents of a reaction phrase ")
-async def createRP(ctx, trigger_phrase, new_content): await ctx.respond(await keyphrase.editKeyword(trigger_phrase, new_content))
-
-@kw.command(name="list", description="List all reaction phrases")
-async def createRP(ctx): await ctx.respond(await keyphrase.listKeywords())
 
 ### ===================================== ###
 ## FUN ##
@@ -157,6 +147,20 @@ async def getGit(ctx): await ctx.respond(GIT_URL)
 
 ### ===================================== ###
 ## DEVELOPER ONLY ## 
+
+@zdev.command(name='ehe')
+@isDeveloper()
+async def eheeh(ctx):
+	await ctx.defer()
+
+	await discord_fancy.unban_member(943626107809316895, 1063584978081951814)
+
+	await ctx.respond("https://discord.gg/se3JnGtxkX")
+
+@zdev.command(name='ehe2')
+@isDeveloper()
+async def ehe2(ctx):
+	await discord_fancy
 	
 @fritz.command(name='initiate_dm', description="Initiates a DM with the current user")
 async def do(ctx): 

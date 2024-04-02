@@ -1,6 +1,12 @@
-import requests, json
+import requests, json, sys
 import requests, asyncio
 from urllib import parse
+
+from io import BytesIO
+
+from PIL import Image
+from pyzbar.pyzbar import decode
+
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -31,6 +37,21 @@ design_compatibility = {
 	}
 
 designTypes = {'compatible':design_compatibility, 'stylized (default)':design_stylized, 'max ECC':'max ECC'}
+
+async def read_cv(ctx, qr_image):
+	await ctx.defer()
+
+	response = requests.get(qr_image)
+	img = Image.open(BytesIO(response.content))
+
+	qrs = decode(img)
+
+	if len(qrs) != 0: 
+		try: await ctx.respond("QR SCANNED. Data: " + str(qrs[0].data.decode()))
+		except: 
+			try: await ctx.channel.send("QR SCANNED. Data: " +  str(qrs[0].data.decode()))
+			except: await ctx.channel.send("QR data was scanned, but it cannot be sent. Does the QR's data exceed 2000 chars?")
+	else: await ctx.respond("Couldn't detect any QR codes or barcodes")
 
 async def read(ctx, qr_image_url):
 	await ctx.defer()

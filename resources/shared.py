@@ -22,12 +22,13 @@ REDUCE_DISK_READS = True
 ENABLE_LOGGING    = True # True / False; whether to log messages sent to channels Fritz has read access to
 LOGGING_BLACKLIST = [] # A list of NON-QUOTED server IDs to block logging
 
-AI_BLACKLIST    = [1192958435608760321] # A list of NON-QUOTED server IDs to block logging
-LYRIC_BLACKLIST = [1192958435608760321, 999923183840940042] # A list of NON-QUOTED server IDs to block lyrics
+AI_BLACKLIST      = [1192958435608760321] # A list of NON-QUOTED server IDs to block logging
+LYRIC_BLACKLIST   = [1192958435608760321, 999923183840940042] # A list of NON-QUOTED server IDs to block lyrics
+BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users"))) # A list of NON-QUOTED user IDs to ban from using the bot
 
 # Why aren't these constants? #
 intents = discord.Intents(messages=True, message_content=True, voice_states=True)
-version = "1.16.3"
+version = "1.17.2"
 
 # Mappings because I can't be bothered to fix stuff #
 registeredDevelopers = REGISTERED_DEVELOPERS

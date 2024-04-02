@@ -3,7 +3,7 @@ import discord, datetime, sys
 from discord.ext import commands
 from resources.colour import *
 
-from resources.shared import registeredDevelopers
+from resources.shared import BLACKLISTED_USERS, registeredDevelopers
 
 from discord.ext.bridge import BridgeContext
 from discord.ext import commands
@@ -29,7 +29,8 @@ def log(input):
 
 class bannedFromNSFW(commands.CheckFailure): NotImplemented
 class swiperNoSwipingError(commands.CheckFailure): NotImplemented
-
+class bannedUser(commands.CheckFailure): pass
+class aprilfools(commands.CheckFailure): pass
 
 ### CUSTOM COMMAND CHECK PREDICATES ###
 
@@ -48,6 +49,8 @@ def isDeveloper():
 		
 	
 	return commands.check(predicate)
+
+## Misc utilities ## 
 
 async def downloadYoutubeVideo(video_url, id):
 	string = 'yt-dlp "' + video_url + '" -x -q -N 25 -o video_cache' + str(id) + " --path /home/%s/Documents/Fritz/cache"%os.getlogin()

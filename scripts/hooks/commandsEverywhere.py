@@ -24,7 +24,7 @@ async def hook():
 	try:
 		jtext = json.loads(response.text)
 		for COMMAND_NAME in jtext:
-			await asyncio.sleep(1)
+			await asyncio.sleep(0.15)
 			print(YELLOW + "[COMMAND MIXIN] Processing for " + COMMAND_NAME["id"] + RESET)
 			try: await discord_fancy.allowInDMs(COMMAND_NAME["id"])
 			except Exception as err: print(RED + str(err) + RESET)

@@ -168,3 +168,12 @@
 	- Bugfixes
 	- Updated Character AI to use Pomelo names instead of discriminators (no more #0 at the end of your username!)
 	- Fixed assistant command
+
+### 1.17.2
+	- Bugfixes (mainly with ChatGPT)
+	- Added user blacklist functionality
+	- Removed keywords
+	- Cleaned up old code
+	- Renamed scripts/api/oneoff.py to scripts/api/fun.py
+	- Reading a QR code uses a file attachment now
+	- Updated QR_READ to use a much better local implementation

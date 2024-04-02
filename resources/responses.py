@@ -18,15 +18,8 @@ class help_messages():
   **quote**: get a random quote (from the internet)
   **quoteme**: get a random quote from you in the current channel
 
-  **\# KEYWORDS #**
-  **create** *<phrase> <response>*: Create a new trigger. Like Carl-Bot's little quirps thing
-  **delete** *<phrase>*: Deletes <phrase>
-  **read** *<phrase>*: Manually trigger the phrase and play-back the content
-  **edit** *<phrase> <new content>*: Replaces the content of <phrase> with <new content>
-  **list**: Lists available keywords
-
   **\# QR TOOLS \#**
-  **scan_qr** *<imageURL>*: scan the image at *image URL* and process any readable QR Codes
+  **scan_qr** *<image>*: scan the image at *image URL* and process any readable QR Codes
   **create_qr** *<content>* *[style]*: Create a QR code. The "style" controls appearance and ECC levels, defaulting to *stylized*
 
   **\# BOT MANAGEMENT #**
@@ -49,7 +42,6 @@ class help_messages():
 	about = """Fritz | Simple utility bot for Chaos Incorporated
 
   Current version: **{ver}**
-  Current prefix: *Depricated*
 
   To get started, run /help
   """.format(ver=version)
