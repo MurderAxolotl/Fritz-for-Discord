@@ -38,9 +38,6 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	global cached_lyrics
-
-
 	### LOG THE MESSAGE TO THE APPROPRIATE FILE, REGARDLESS OF CONTENT ###
 
 

@@ -182,3 +182,10 @@
 	- Cleaned up unused code
 	- Removed old, unused imports
 	- Fixed 2000+ char QR error
+
+### 1.17.5
+	- Cleaned up imports
+	- Modified Character AI code
+	- New `animal_images.py` module, for animal image APIs
+	- Updated to support Commands Everywhere properly
+	- Cleaned `main.py`

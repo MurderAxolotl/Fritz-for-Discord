@@ -5,10 +5,15 @@
 A Discord bot intended for fun and utility\
 Built on Python 3.11.6
 
+### WARNINGS
+- Currently uses a beta version of PyCord!
+	- Install PyCord, then run `pip install git+https://github.com/Pycord-Development/pycord@feat/ua`
+
 ### Dependencies
-- Python 3.10 or newer
+- Python 3.10 or newer (`sudo apt install python3.11-full python3.11-dev`)
+- Venv (`sudo apt install python3.11-venv`)
 - PyCord (`pip install py-cord`)
-- DotEnv (`pip install python-dotenv`)
+- DotEnv (`sudo apt install python-dotenv`)
 - g4f (`pip install g4f`)
 - zbar (`pip install pyzbar`)
 - CAI (`pip install characterai`)
@@ -23,6 +28,8 @@ Built on Python 3.11.6
 - Create a folder named `cache`
 - At the root of the project, create a file named `.env`
 - Use the [.env template](https://github.com/psychon-night/Fritz-for-Discord/blob/main/.env.template) and set your env variables
+
+### Configure
 - In `resources/shared.py`, set `INVITE_URL` to your bot's URL, and `REGISTERED_DEVELOPERS` to your UUID
 - In `resources/shared.py`, set `AI_BLACKLIST` and `LYRIC_BLACKLIST`
 

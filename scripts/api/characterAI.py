@@ -88,3 +88,61 @@ async def doTheThing(ctx, prompt, character, reset):
 
 		await ctx.respond(f"""{author}: {prompt}
 {character}: {text}""")
+		
+
+async def six(ctx, prompt, reset):
+
+	match not isinstance(ctx.guild, NoneType):
+		case True:
+			match ctx.guild.id in AI_BLACKLIST:
+				case True: await ctx.respond("That command is disabled on this server"); return -1
+
+	await ctx.defer()
+	opts = CHARACTERS
+
+	try:
+		client = PyAsyncCAI(CAI_TOKEN)
+
+		char = "Vohv3F4oEjVKaDmD5quQYYQtcST0VqKGIfXAcewuZ-o"
+
+		if reset: await client.chat.new_chat(char)
+
+		chat = await client.chat.get_chat(char)
+		participants = chat['participants']
+
+		if not participants[0]['is_human']:
+			tgt = participants[0]['user']['username']
+		else:
+			tgt = participants[1]['user']['username']
+
+		message = prompt
+
+		data = await client.chat.send_message(chat['external_id'], tgt, message)
+		name = data['src_char']['participant']['name']	
+		text = data['replies'][0]['text']
+
+		author = str(ctx.author).split("#", maxsplit=1)[0]
+		
+		await ctx.respond(f"""{name}""")
+		
+	except:
+		client = PyAsyncCAI(CAI_TOKEN)
+		char = "Vohv3F4oEjVKaDmD5quQYYQtcST0VqKGIfXAcewuZ-o"
+
+		if reset: await client.chat2.new_chat(char)
+
+		chat = await client.chat2.get_chat(char)
+		author = {'author_id': chat['chats'][0]['creator_id']}
+
+		msg1 = prompt
+
+		async with client.connect() as chat2:
+				data = await chat2.send_message(
+						char, chat['chats'][0]['chat_id'], 
+						msg1, author
+				)
+		text = data['turn']['candidates'][0]['raw_content']
+
+		author = str(ctx.author).split("#", maxsplit=1)[0]
+
+		await ctx.respond(f"""{text}""")

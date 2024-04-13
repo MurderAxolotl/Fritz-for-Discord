@@ -15,6 +15,15 @@ TEST_NAMES    = json.loads(os.getenv("test_name_map"))
 
 # Globals #
 REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"]
+INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True)
+
+CONTEXTS = {discord.InteractionContextType.bot_dm, discord.InteractionContextType.guild, discord.InteractionContextType.private_channel}
+INTEGRATION_TYPES={discord.IntegrationType.guild_install, discord.IntegrationType.user_install}
+
+CONTEXTS_SERVER_ONLY = {discord.InteractionContextType.guild}
+INTEGRATION_TYPES_SERVER_ONLY = {discord.IntegrationType.guild_install}
+
+
 PATH = os.getenv("systemPath")
 
 # Configuration Parameters
@@ -27,8 +36,8 @@ LYRIC_BLACKLIST   = [1192958435608760321, 999923183840940042] # A list of NON-QU
 BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users"))) # A list of NON-QUOTED user IDs to ban from using the bot
 
 # Why aren't these constants? #
-intents = discord.Intents(messages=True, message_content=True, voice_states=True)
-version = "1.17.25"
+intents = INTENTS
+version = "1.17.4"
 
 # Mappings because I can't be bothered to fix stuff #
 registeredDevelopers = REGISTERED_DEVELOPERS

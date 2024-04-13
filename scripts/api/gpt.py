@@ -21,7 +21,8 @@ async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
 	elif legacy_mode == "turbo"  : MODEL = g4f.models.gpt_35_turbo
 	elif legacy_mode == "fast"   : MODEL = g4f.models.gpt_35_long
 
-	await ctx.defer()
+	try: await ctx.defer()
+	except: NotImplemented
 
 	await asyncio.sleep(1)
 	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: g4f.ChatCompletion.create(model=MODEL, messages=[{"role": "user", "content": inPrompt }], ))
