@@ -1,3 +1,8 @@
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 from time import sleep
 import discord.ext.commands as commands
 import discord

@@ -1,5 +1,10 @@
 """ Provides on-message features, such as the `Hey Fritz` prompt """
 
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 import g4f, asyncio, textwrap, sys, requests, json, random
 from concurrent.futures import ThreadPoolExecutor
 

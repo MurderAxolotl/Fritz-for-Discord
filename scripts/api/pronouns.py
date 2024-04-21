@@ -1,3 +1,8 @@
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 import requests, time, json
 from resources.curl_requests import pronouns_page_api
 from scripts.tools.utility import *

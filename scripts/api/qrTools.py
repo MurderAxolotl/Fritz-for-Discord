@@ -1,3 +1,8 @@
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 import requests, json, sys, discord, os
 import asyncio
 from urllib import parse

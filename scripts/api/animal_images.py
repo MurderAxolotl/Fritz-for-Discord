@@ -1,3 +1,8 @@
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 from concurrent.futures import ThreadPoolExecutor
 
 import asyncio, json, requests

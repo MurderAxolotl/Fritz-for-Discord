@@ -1,3 +1,8 @@
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 import sys, os, datetime, nest_asyncio, asyncio, json
 
 from types import NoneType

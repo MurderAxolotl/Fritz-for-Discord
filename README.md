@@ -30,8 +30,9 @@ Built on Python 3.11.6
 - Use the [.env template](https://github.com/psychon-night/Fritz-for-Discord/blob/main/.env.template) and set your env variables
 
 ### Configure
-- In `resources/shared.py`, set `INVITE_URL` to your bot's URL, and `REGISTERED_DEVELOPERS` to your UUID
+- In `resources/shared.py`, set `INVITE_URL` to your bot's URL, `GIT_URL` to your GitHub URL, and `REGISTERED_DEVELOPERS` to your UUID
 - In `resources/shared.py`, set `AI_BLACKLIST` and `LYRIC_BLACKLIST`
+- In `resources/shared.py`, set `ENABLE_LOGGING`, `LOGGING_BLACKLIST`, and `BLACKLISTED_USERS`
 
 ### Portable Modules
 

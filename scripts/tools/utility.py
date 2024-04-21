@@ -1,3 +1,8 @@
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 import os, asyncio, requests
 import discord, datetime, sys
 from discord.ext import commands

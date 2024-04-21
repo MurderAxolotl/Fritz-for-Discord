@@ -1,4 +1,8 @@
-""" Run functions in order to get ready to initialize the bot """
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 import os
 
 def prepBot():

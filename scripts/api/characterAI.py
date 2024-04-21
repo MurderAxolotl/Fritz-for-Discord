@@ -1,3 +1,8 @@
+"""
+Original code created by MurderAxolotl.
+Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
+"""
+
 from characterai import PyAsyncCAI
 
 from resources.shared import CAI_TOKEN, AI_BLACKLIST, NoneType
