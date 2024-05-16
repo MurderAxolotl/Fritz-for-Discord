@@ -12,15 +12,20 @@ from resources.responses import *
 from resources.colour import *
 from resources.user_messages import *
 
-import scripts.api.qrTools         as qrTools
-import scripts.api.fun             as oneOff
-import scripts.api.animal_images   as animals
-import scripts.api.gpt             as gpt
-import scripts.api.pronouns        as pronouns
-import scripts.api.spotify         as spotify
-import scripts.api.characterAI     as cai
-import scripts.api.discord         as discord_fancy
-import scripts.errors.commandCheck as commandCheck
+from _oldCode import midjourney
+from _oldCode import stablediffusion
+
+import scripts.api.qrTools            as qrTools
+import scripts.api.fun                as oneOff
+import scripts.api.animal_images      as animals
+import scripts.api.gpt                as gpt
+import scripts.api.pronouns           as pronouns
+import scripts.api.spotify            as spotify
+import scripts.api.characterAI        as cai
+import scripts.api.discord            as discord_fancy
+import scripts.api.dalle              as dalle
+import scripts.errors.commandCheck    as commandCheck
+import scripts.tools.advanced_logging as logging
 
 from scripts.tools.utility import *
 
@@ -63,6 +68,9 @@ async def on_ready():
 ### ===================================== ###
 ## API COMMANDS ##
 
+@inDev.command(name='dalle', description='Generate 9 images using Dall-E 2 v3')
+async def go(ctx, prompt:str): await dalle.generate(ctx, prompt)
+
 # Search PronounsPage for a user #
 @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
 async def pronounspage(ctx, query:str): await pronouns.pp_searchUser(ctx, query)
@@ -77,7 +85,7 @@ async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx
 
 ## Chat Completion ##
 @fritz.command(name='assistant', description='Launch Fritz\'s AI assistant', pass_context=True) # Async
-async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Which model variant to use. Default GPT-4")="none"): await gpt.generateResponse(ctx, prompt, loop, legacy_mode) #type:ignore
+async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Which model variant to use. Default GPT-4")="none"): logging.quick.log_assistant(ctx, prompt); await gpt.generateResponse(ctx, prompt, loop, legacy_mode) #type:ignore
 
 # CHARACTER AI #
 @fritz.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)

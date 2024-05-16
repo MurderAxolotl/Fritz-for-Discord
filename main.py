@@ -3,6 +3,9 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
+""" First-run automatic directory setup """
+import scripts.hooks.firstRun
+
 import sys, os, datetime, nest_asyncio, asyncio, json
 
 from types import NoneType

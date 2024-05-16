@@ -1,5 +1,4 @@
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTkzMzYwMjQsInVzZXJfaWQiOiI2NTQ5Y2Y1NzgzNWExZjVmN2Y3YWNhZWQifQ.d0UKzdEr5gymk-jQePyaizBH6B0A0fU6tV4tILRWGO0"
-
+from private.tok import SD_TOK
 import json, asyncio, os, random, requests, json, base64
 from PIL import Image
 from io import BytesIO
@@ -29,7 +28,7 @@ async def doGen(ctx, prompt, count):
 		})
 		headers = {
 		'Content-Type': 'application/json',
-		'Authorization': 'Bearer %s'%token
+		'Authorization': 'Bearer %s'%SD_TOK
 		}
 
 

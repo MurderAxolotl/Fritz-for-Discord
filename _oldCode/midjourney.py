@@ -2,6 +2,8 @@ import json, asyncio
 import random
 import requests
 
+from private.tok import TKEN, GK
+
 from concurrent.futures import ThreadPoolExecutor
 
 from scripts.tools.utility import *
@@ -13,7 +15,7 @@ nsfw_modeKeys = {"furry1":"yiffymix_v34", "furry2":"furry", "hyperrealism":"real
 BASE_URL = "https://paint.api.wombo.ai/api/v2/tasks/"
 
 class blocking():
-	def b1(): return requests.post("https://securetoken.googleapis.com/v1/token?key=", data={"grant_type":"refresh_token", "refresh_token":""}).text
+	def b1(): return requests.post("https://securetoken.googleapis.com/v1/token?key=" + GK, data={"grant_type":"refresh_token", "refresh_token":TKEN}).text
 
 def threadedPost(kwargs):
 	requests.post(**kwargs)

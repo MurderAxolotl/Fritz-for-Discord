@@ -75,7 +75,9 @@ async def doTheThing(ctx, prompt, character, reset):
 		if character in str(opts.keys()): char = opts[character]
 		else: char = opts["scaramouche"]
 
-		if reset: await client.chat2.new_chat(char)
+		charac = char
+
+		if reset: await client.chat2.new_chat(char = charac)
 
 		chat = await client.chat2.get_chat(char)
 		author = {'author_id': chat['chats'][0]['creator_id']}
