@@ -189,3 +189,12 @@
 	- New `animal_images.py` module, for animal image APIs
 	- Updated to support Commands Everywhere properly
 	- Cleaned `main.py`
+
+### 1.18
+	- Fixed Character AI
+	- Bugfixes
+	- Fixed one-line logging bugs
+	- Implemented log2f
+	- New Six command
+		- Added for a friend
+	- 

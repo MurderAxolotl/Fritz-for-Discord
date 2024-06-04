@@ -11,7 +11,12 @@ def _dateTime() -> str:
 
 def log2f(log_file_name:str, logtext):
 	"""Log to `logs/system/log_file_name.log`"""
-	raise NotImplementedError("Currently not needed. Will be implemented once useful")
+
+	if not os.path.isfile(PATH + f"/logs/system/{log_file_name}.log"):
+		open(PATH + f"/logs/system/{log_file_name}.log", "x")
+	
+	with open(PATH + f"/logs/system/{log_file_name}.log", "a") as file:
+		file.write(_dateTime() + logtext + "\n")
 
 
 ### Shortcuts

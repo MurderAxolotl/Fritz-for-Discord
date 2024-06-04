@@ -91,6 +91,9 @@ async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.L
 @fritz.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
 async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARACTERS.keys(), description='Character to interact with'), reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.characterPrompt(ctx, message, character, reset) #type:ignore
 
+@fritz.command(name="six", description='Talk to Six')
+async def six(ctx, message:str, reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.sixPrompt(ctx, message, reset) #type:ignore
+
 ### ===================================== ###
 ## QR CODES ##
 
