@@ -22,7 +22,7 @@ class quick:
 		if not os.path.isfile(PATH + "/logs/system/assistant.log"): file = open(PATH + "/logs/system/assistant.log", "x")
 		else: file = open(PATH + "/logs/system/assistant.log", "a")
 
-		file.write(_dateTime() + user + ": " + prompt)
+		file.write("\n" + _dateTime() + user + ": " + prompt)
 		file.close()
 
 	def log_general(ctx, command, prompt):
@@ -31,5 +31,12 @@ class quick:
 		if not os.path.isfile(PATH + "/logs/system/commands.log"): file = open(PATH + "/logs/system/commands.log", "x")
 		else: file = open(PATH + "/logs/system/commands.log", "a")
 
-		file.write(_dateTime() + user + " " + command + ": " + prompt)
+		file.write("\n" + _dateTime() + user + " " + command + ": " + prompt)
+		file.close()
+
+	def logText(command, text):
+		if not os.path.isfile(PATH + "/logs/system/commands.log"): file = open(PATH + "/logs/system/commands.log", "x")
+		else: file = open(PATH + "/logs/system/commands.log", "a")
+
+		file.write("\n" + _dateTime() + command + ": " + text)
 		file.close()

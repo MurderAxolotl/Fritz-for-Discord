@@ -3,11 +3,14 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
-from characterai import PyAsyncCAI
+from characterai import aiocai
 
 from resources.shared import CAI_TOKEN, AI_BLACKLIST, NoneType
 
+from scripts.tools.advanced_logging import quick
+
 CHARACTERS = {
+	"assistant":"YntB_ZeqRq2l_aVf2gWDCZl4oBttQzDvhj9cXafWcF8",
 	"bryce the bear":"GXGDvaTDHSF77mgVh2e8HOz4b_LC76bp9qYAePOLquo",
 	"caine": "99iPJ7tzD_HoaJyNi3lRDq3diOJZ7EI90vtUu-XkjW4",
 	"childe":"qUyZhAJhbQ9UQWLv-zwrUibvhAT3uV6iJPWRPmPao-Y",
@@ -33,123 +36,37 @@ CHARACTERS = {
 	"zhongli":"yXx1xCuVxFPb8zLdTGRQmwL4zezxgGILs2yfu8YN5sQ",
 }
 
-async def doTheThing(ctx, prompt, character, reset):
-
-	match not isinstance(ctx.guild, NoneType):
-		case True:
-			match ctx.guild.id in AI_BLACKLIST:
-				case True: await ctx.respond("That command is disabled on this server"); return -1
+async def characterPrompt(ctx, prompt, character, reset):
+	if not isinstance(ctx.guild, NoneType):
+		if ctx.guild.id in AI_BLACKLIST: await ctx.respond("That command is disabled on this server"); return -1
 
 	await ctx.defer()
-	opts = CHARACTERS
 
 	try:
-		client = PyAsyncCAI(CAI_TOKEN)
+		client = aiocai.Client(CAI_TOKEN)
+		user = await client.get_me()
 
-		if character in str(opts.keys()): char = opts[character]
-		else: char = opts["scaramouche"]
+		bot = CHARACTERS[character] if character in str(CHARACTERS.keys()) else CHARACTERS["assistant"]
 
-		if reset: await client.chat.new_chat(char)
+		async with await client.connect() as chat:
+			match reset:
+				case True:
+					quick.logText("cai", f"Requesting new chat for {bot}")
 
-		chat = await client.chat.get_chat(char)
-		participants = chat['participants']
+					chatID, null = await chat.new_chat(char=bot, creator_id=user.id)
+					response = await chat.send_message(bot, chatID.chat_id, prompt)
 
-		if not participants[0]['is_human']:
-			tgt = participants[0]['user']['username']
-		else:
-			tgt = participants[1]['user']['username']
+					await ctx.respond(f"*{response.name}*: " + response.text)
 
-		message = prompt
+				case False: 
+					quick.logText("cai", f"Connecting to most recent chat for {bot}")
 
-		data = await client.chat.send_message(chat['external_id'], tgt, message)
-		name = data['src_char']['participant']['name']	
-		text = data['replies'][0]['text']
+					chatID = await client.get_chat(char=bot)
+					response = await chat.send_message(char=bot, chat_id=chatID.chat_id, text=prompt)
 
-		author = str(ctx.author).split("#", maxsplit=1)[0]
-		
-		await ctx.respond(f"""{str(author)}: {prompt}
-{name}: {text}""")
-		
-	except:
-		client = PyAsyncCAI(CAI_TOKEN)
-		if character in str(opts.keys()): char = opts[character]
-		else: char = opts["scaramouche"]
+					await ctx.respond(f"*{response.name}*: " + response.text)
 
-		charac = char
+	except Exception as err:
+		await ctx.send("Something went wrong while communicating with CharacterAI's servers")
 
-		if reset: await client.chat2.new_chat(char = charac)
-
-		chat = await client.chat2.get_chat(char)
-		author = {'author_id': chat['chats'][0]['creator_id']}
-
-		msg1 = prompt
-
-		async with client.connect() as chat2:
-				data = await chat2.send_message(
-						char, chat['chats'][0]['chat_id'], 
-						msg1, author
-				)
-		text = data['turn']['candidates'][0]['raw_content']
-
-		author = str(ctx.author).split("#", maxsplit=1)[0]
-
-		await ctx.respond(f"""{author}: {prompt}
-{character}: {text}""")
-		
-
-async def six(ctx, prompt, reset):
-
-	match not isinstance(ctx.guild, NoneType):
-		case True:
-			match ctx.guild.id in AI_BLACKLIST:
-				case True: await ctx.respond("That command is disabled on this server"); return -1
-
-	await ctx.defer()
-	opts = CHARACTERS
-
-	try:
-		client = PyAsyncCAI(CAI_TOKEN)
-
-		char = "Vohv3F4oEjVKaDmD5quQYYQtcST0VqKGIfXAcewuZ-o"
-
-		if reset: await client.chat.new_chat(char)
-
-		chat = await client.chat.get_chat(char)
-		participants = chat['participants']
-
-		if not participants[0]['is_human']:
-			tgt = participants[0]['user']['username']
-		else:
-			tgt = participants[1]['user']['username']
-
-		message = prompt
-
-		data = await client.chat.send_message(chat['external_id'], tgt, message)
-		name = data['src_char']['participant']['name']	
-		text = data['replies'][0]['text']
-
-		author = str(ctx.author).split("#", maxsplit=1)[0]
-		
-		await ctx.respond(f"""{name}""")
-		
-	except:
-		client = PyAsyncCAI(CAI_TOKEN)
-		char = "Vohv3F4oEjVKaDmD5quQYYQtcST0VqKGIfXAcewuZ-o"
-
-		if reset: await client.chat2.new_chat(char)
-
-		chat = await client.chat2.get_chat(char)
-		author = {'author_id': chat['chats'][0]['creator_id']}
-
-		msg1 = prompt
-
-		async with client.connect() as chat2:
-				data = await chat2.send_message(
-						char, chat['chats'][0]['chat_id'], 
-						msg1, author
-				)
-		text = data['turn']['candidates'][0]['raw_content']
-
-		author = str(ctx.author).split("#", maxsplit=1)[0]
-
-		await ctx.respond(f"""{text}""")
+		quick.logText("cai", "ERROR: " + str(err))
