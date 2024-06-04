@@ -8,6 +8,17 @@ Built on Python 3.11.6
 ### WARNINGS
 - Currently uses a beta version of PyCord!
 	- Install PyCord, then run `pip install git+https://github.com/Pycord-Development/pycord@feat/ua`
+- Some commands do not respect the ENABLE_LOGGING setting
+- Versions of Python other than 3.11.6 are **untested**
+- Intended for use on **Linux**. Windows and MacOS is **untested**
+
+### Requirements
+- Linux (only **Ubuntu** and **Debian** have been tested)
+- Python 3.10 or newer
+- Approximately 1 GB disk space
+	- 300-500 MB for source code
+	- 500 MB for dependencies
+	- Extra space for cache and logs
 
 ### Dependencies
 - Python 3.10 or newer (`sudo apt install python3.11-full python3.11-dev`)
@@ -16,18 +27,19 @@ Built on Python 3.11.6
 - DotEnv (`sudo apt install python-dotenv`)
 - g4f (`pip install g4f`)
 - zbar (`pip install pyzbar`)
-- CAI (`pip install characterai`)
+- KramCat's CharacterAI (`pip install git+https://github.com/kramcat/CharacterAI.git`)
 - Nest Asyncio (`pip install nest_asyncio`)
 - Asyncio (`pip install asyncio`)
 - Pillow (`pip install pillow`)
 - BS4 (`pip install bs4`)
 
 ### Setup
-- Download and extract source code
-- Install dependencies: `pip install py-cord python-dotenv g4f pyzbar characterai asyncio nest_asyncio pillow bs4`
-- Create a folder named `cache`
-- At the root of the project, create a file named `.env`
-- Use the [.env template](https://github.com/psychon-night/Fritz-for-Discord/blob/main/.env.template) and set your env variables
+1. Download and extract source code
+2. Create your Venv or Anaconda environment
+3. Install [dependencies](#dependencies)
+4. Create a folder named `cache`
+5. At the root of the project, create a file named `.env`
+6. Use the [.env template](https://github.com/psychon-night/Fritz-for-Discord/blob/main/.env.template) and set your env variables
 
 ### Configure
 - In `resources/shared.py`, set `INVITE_URL` to your bot's URL, `GIT_URL` to your GitHub URL, and `REGISTERED_DEVELOPERS` to your UUID
