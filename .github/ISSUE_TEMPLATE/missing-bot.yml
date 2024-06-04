@@ -1,9 +1,8 @@
 
 name: 'Missing Bot'
-about: 'Use when you get a Missing Bot error'
+description: 'Use when you get a Missing Bot error'
 title: 'Missing Character'
 labels: 'missing character'
-assignees: ''
 
 body: 
 - type: input
