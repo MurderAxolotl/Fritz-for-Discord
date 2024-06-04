@@ -5,8 +5,6 @@ title: ''
 labels: missing character
 assignees: ''
 
----
-
 body: 
 - type: input
 id: cid
@@ -15,3 +13,4 @@ attributes:
   description: "The CID in the error message"
 validations:
   required: true
+---
