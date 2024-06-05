@@ -7,7 +7,6 @@ Built on Python 3.11.6
 
 ### WARNINGS
 - Currently uses a beta version of PyCord!
-	- Install PyCord, then run `pip install git+https://github.com/Pycord-Development/pycord@feat/ua`
 - Some commands do not respect the ENABLE_LOGGING setting
 - Versions of Python other than 3.11.6 are **untested**
 - Intended for use on **Linux**. Windows and MacOS is **untested**
@@ -23,7 +22,9 @@ Built on Python 3.11.6
 ### Dependencies
 - Python 3.10 or newer (`sudo apt install python3.11-full python3.11-dev`)
 - Venv (`sudo apt install python3.11-venv`)
-- PyCord (`pip install py-cord`)
+- PyCord
+	1. Install PyCord: `pip install py-cord`
+	2. Install the UA features: `pip install git+https://github.com/Pycord-Development/pycord@feat/ua`
 - DotEnv (`sudo apt install python-dotenv`)
 - g4f (`pip install g4f`)
 - zbar (`pip install pyzbar`)
@@ -32,6 +33,8 @@ Built on Python 3.11.6
 - Asyncio (`pip install asyncio`)
 - Pillow (`pip install pillow`)
 - BS4 (`pip install bs4`)
+
+Obviously, if your system has a package manager like `yay`, use that instead
 
 ### Setup
 1. Download and extract source code
