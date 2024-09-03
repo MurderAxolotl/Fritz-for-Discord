@@ -12,22 +12,22 @@
 		"bin": true,
 		"include": true,
 		"lib": true,
-		".vscode": true,
 		"lib64": true,
 		".gitattributes": true,
 		".gitignore": true,
 		"LICENSE": true,
-		".github": true
+		".github": true,
+		".vscode": true
 	},
 	"hide-files.files": [
 		"bin",
 		"include",
 		"lib",
-		".vscode",
 		"lib64",
 		".gitattributes",
 		".gitignore",
 		"LICENSE",
-		".github"
+		".github",
+		".vscode"
 	]
 }

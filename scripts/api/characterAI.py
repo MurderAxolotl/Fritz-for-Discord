@@ -108,7 +108,14 @@ async def sixPrompt(ctx, prompt, reset):
 	except Exception as err: await crashHandler(ctx, err, "Vohv3F4oEjVKaDmD5quQYYQtcST0VqKGIfXAcewuZ-o")
 
 async def crashHandler(ctx, err, character):
-	if "'chats'" in str(err):
+	log2f("cai", "ERROR: " + str(err))
+
+	if "validation error for BotAnswer" in str(err):
+		await ctx.respond("Character AI returned a malformed response. Cannot proceed")
+
+		return -1
+
+	elif "'chats'" in str(err):
 			try: bot = CHARACTERS[character] if character in str(CHARACTERS.keys()) else CHARACTERS["assistant"]
 			except: bot = character
 
@@ -117,5 +124,3 @@ async def crashHandler(ctx, err, character):
 			return 404
 
 	await ctx.respond("Something went wrong while communicating with CharacterAI's servers")
-
-	log2f("cai", "ERROR: " + str(err))
