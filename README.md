@@ -9,7 +9,7 @@ Built on Python 3.11.6
 - Currently uses a beta version of PyCord!
 - Some commands do not respect the ENABLE_LOGGING setting
 - Versions of Python other than 3.11.6 are **untested**
-- Intended for use on **Linux**. Windows and MacOS is **untested**
+- Intended for use on **Linux**. Windows and MacOS are **untested**
 
 ### Requirements
 - Linux (only **Ubuntu** and **Debian** have been tested)
