@@ -25,16 +25,13 @@ Built on Python 3.11.6, unfortunately tested on 3.12
 - Venv (`sudo apt install python3.11-venv`)
 - PyCord (`pip install py-cord`)
 - DotEnv (`sudo apt install python-dotenv`)
-- g4f (`pip install g4f`)
 - zbar (`sudo apt-get install libzbar0 && pip install pyzbar`)
-- KramCat's CharacterAI (`pip install git+https://github.com/kramcat/CharacterAI.git`)
 - Nest Asyncio (`pip install nest_asyncio`)
 - Asyncio (`pip install asyncio`)
 - Pillow (`pip install pillow`)
 - BS4 (`pip install bs4`)
-- CraiyonPy (`pip install craiyon.py`)
 
-Complete pip install string: `pip install py-cord g4f pyzbar nest_asyncio asyncio pillow bs4 craiyon.py git+https://github.com/kramcat/CharacterAI.git`
+Complete pip install string: `pip install py-cord pyzbar nest_asyncio asyncio pillow bs4`
 
 Obviously, if your system has a package manager like `yay`, use that instead
 
