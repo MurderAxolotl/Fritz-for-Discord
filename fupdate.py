@@ -12,6 +12,7 @@ def downloadUpdate():
 	# Ensure the core is updated
 	os.system(f"cd {PATH} && wget -q --show-progress --progress=bar:force {BASE_URL}/main.py")
 	os.system(f"cd {PATH} && wget -q --show-progress --progress=bar:force {BASE_URL}/commands_bridge.py")
+	os.system(f"cd {PATH} && wget -q --show-progress --progress=bar:force {BASE_URL}/fupdate.py")
 
 	# Now the scary clobber-y part!
 
