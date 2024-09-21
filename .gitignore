@@ -14,7 +14,7 @@ logs
 pyvenv.cfg
 .env
 .gitattributes
-
+credentials.json
 
 # Distribution / packaging
 .Python

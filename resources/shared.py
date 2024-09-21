@@ -3,6 +3,8 @@ from types import NoneType
 
 dotenv.load_dotenv(".env")
 
+IS_DEBUGGING = True
+
 INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303&permissions=535260691552&scope=bot"
 GIT_URL = "https://github.com/psychon-night/Fritz-for-Discord"
 
@@ -22,7 +24,6 @@ INTEGRATION_TYPES={discord.IntegrationType.guild_install, discord.IntegrationTyp
 
 CONTEXTS_SERVER_ONLY = {discord.InteractionContextType.guild}
 INTEGRATION_TYPES_SERVER_ONLY = {discord.IntegrationType.guild_install}
-
 
 PATH = os.getenv("systemPath")
 

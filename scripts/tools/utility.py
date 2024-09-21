@@ -73,3 +73,6 @@ async def getPageTitle(URL):
 	except Exception as err: 
 		print(str(err)); return "UNKNOWN"
 
+async def depricatedCommand(ctx):
+	""" Sends a depricated command warning """
+	await ctx.channel.send("NOTE: This command is depricated and will be removed in an upcoming release")

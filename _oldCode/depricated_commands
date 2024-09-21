@@ -47,3 +47,6 @@ async def createRP(ctx, trigger_phrase, new_content): await ctx.respond(await ke
 
 @kw.command(name="list", description="List all reaction phrases")
 async def createRP(ctx): await ctx.respond(await keyphrase.listKeywords())
+
+@fritz.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
+async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARACTERS.keys(), description='Character to interact with'), reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.characterPrompt(ctx, message, character, reset) #type:ignore

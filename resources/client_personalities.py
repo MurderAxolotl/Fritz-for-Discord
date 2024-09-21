@@ -48,6 +48,14 @@ class activities():
 		application_id=1070042394009014303
 	)
 
+	debug = discord.Activity(
+		name = "DEBUG MODE", 
+		state = "Fritz is running in debug mode. Features may be broken", 
+		type=discord.ActivityType.playing, 
+		assets={'large_image':'foxfox', 'large_text':'gay'}, 
+		application_id=1070042394009014303
+	)
+
 
 class Holiday:
 	halloween = [
@@ -72,6 +80,11 @@ class Default:
 	none = [
 		discord.Client(activity=activities.generic, intents=intents, log_level=None, log_handler=None), 
 		"none"
+	]
+
+	debug = [
+		discord.Client(activity=activities.debug, intents=intents, log_level=None, log_handler=None), 
+		"Debug"
 	]
 
 	standard = [

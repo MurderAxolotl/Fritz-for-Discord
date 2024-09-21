@@ -3,10 +3,9 @@
 [![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
 
 A Discord bot intended for fun and utility\
-Built on Python 3.11.6
+Built on Python 3.11.6, unfortunately tested on 3.12
 
 ### WARNINGS
-- Currently uses a beta version of PyCord!
 - Some commands do not respect the ENABLE_LOGGING setting
 - Versions of Python other than 3.11.6 are **untested**
 - Intended for use on **Linux**. Windows and MacOS are **untested**
@@ -22,17 +21,18 @@ Built on Python 3.11.6
 ### Dependencies
 - Python 3.10 or newer (`sudo apt install python3.11-full python3.11-dev`)
 - Venv (`sudo apt install python3.11-venv`)
-- PyCord
-	1. Install PyCord: `pip install py-cord`
-	2. Install the UA features: `pip install git+https://github.com/Pycord-Development/pycord@feat/ua`
+- PyCord (`pip install py-cord`)
 - DotEnv (`sudo apt install python-dotenv`)
 - g4f (`pip install g4f`)
-- zbar (`pip install pyzbar`)
+- zbar (`sudo apt-get install libzbar0 && pip install pyzbar`)
 - KramCat's CharacterAI (`pip install git+https://github.com/kramcat/CharacterAI.git`)
 - Nest Asyncio (`pip install nest_asyncio`)
 - Asyncio (`pip install asyncio`)
 - Pillow (`pip install pillow`)
 - BS4 (`pip install bs4`)
+- CraiyonPy (`pip install craiyon.py`)
+
+Complete pip install string: `pip install py-cord g4f pyzbar nest_asyncio asyncio pillow bs4 craiyon.py git+https://github.com/kramcat/CharacterAI.git`
 
 Obviously, if your system has a package manager like `yay`, use that instead
 

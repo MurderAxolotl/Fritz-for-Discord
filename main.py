@@ -14,17 +14,19 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, REDUCE_DISK_READS, LYRIC_BLACKLIST
+from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, IS_DEBUGGING
 
 import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
-import scripts.tools.heyFritz as heyFritz
+
+from resources.responses import help_messages
 
 from scripts.tools.utility import *
 
 import resources.client_personalities as personalities
 
-client_personality = personalities.Default.none 	
+if not IS_DEBUGGING: client_personality = personalities.Default.none 	
+else:                client_personality = personalities.Default.debug
 
 client = client_personality[0]
 bot = commands.Bot(intents=intents)
@@ -47,7 +49,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
 	### LOG THE MESSAGE TO THE APPROPRIATE FILE, REGARDLESS OF CONTENT ###
-
+	if str(message.content).lower() == "all stay strong":
+		await message.channel.send("We live eternally")
 
 	now = datetime.datetime.now()
 	current_time = now.strftime("%H:%M:%S")
@@ -77,21 +80,7 @@ async def on_message(message):
 
 
 	## Hey Fritz invocation ##
-	match ["hey fritz," in str(message.content).lower(), not isinstance(message.guild, NoneType), "hey fritz" in str(message.content).lower(), str(message.author.id) != "1070042394009014303", "panic" in str(message.content)]:
-		case [_, _, _, _, True]: NotImplemented
-		case [True, True, _, True, _]: # This is a guild
-			match [not message.guild.id in AI_BLACKLIST]:
-				case [True]: await heyFritz.onHeyFritz(message, loop)
-				case [False]: await message.channel.send("That function is disabled on this server")
-
-		case [False, _, True, True]: 
-			await message.channel.send("It looks like you were trying to invoke me", silent=True); await asyncio.sleep(0.5)
-			await message.channel.send("However, you did not use the correct format", silent=True); await asyncio.sleep(0.5)
-			await message.channel.send("Here's an example of the correct format: `Hey Fritz, this is a cool prompt`", silent=True); await asyncio.sleep(0.5)
-			await message.channel.send("You must include a comma immediately after Fritz, without a space: `Fritz,`", silent=True); await asyncio.sleep(0.5)
-			await message.channel.send("Capitalisation does not matter, this is still valid: `HeY fRitZ, CoOl ProMpT`", silent=True)
-		
-		case [True, False, _, True]: await heyFritz.onHeyFritz(message, loop) # This is a DM or GM. Wait how did Fritz get into a GM-
+	if "hey fritz," in str(message.content).lower(): await message.channel.send(help_messages.MACHINE_LEARNING_NOTICE)
 
 
 ### --- Initialise the bot --- ###
@@ -100,7 +89,14 @@ loadHandler.prepBot()
 
 def commandprocess(): os.system("python3 %s/commands_bridge.py" % PATH)
 
+# Do a cheeky little advertisement #
+if not os.path.exists(PATH + "/cache/gabrielPrompt"):
+	print(YELLOW + "If you're using Fritz primarily for logging, you should migrate to Gabriel" + RESET)
+	print(MAGENTA + "You can find Gabriel at https://github.com/psychon-night/Gabriel-for-Discord" + RESET)
+	os.system(f"touch {PATH}/cache/gabrielPrompt")
+
 try:
+	if IS_DEBUGGING: print(RED + "Overriding selected personality (debug flag set to True)" + RESET)
 	if not client_personality[1] == "none": print(MAGENTA + "Starting with personality %s"%client_personality[1] + RESET)
 	else: print(MAGENTA + "Starting with no personality" + RESET)
 	td(target=commandprocess).start()

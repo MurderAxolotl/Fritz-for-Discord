@@ -12,20 +12,17 @@ from resources.responses import *
 from resources.colour import *
 from resources.user_messages import *
 
-from _oldCode import midjourney
-from _oldCode import stablediffusion
-
 import scripts.api.qrTools            as qrTools
 import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
-import scripts.api.gpt                as gpt
 import scripts.api.pronouns           as pronouns
 import scripts.api.spotify            as spotify
-import scripts.api.characterAI        as cai
 import scripts.api.discord            as discord_fancy
-import scripts.api.dalle              as dalle
 import scripts.errors.commandCheck    as commandCheck
 import scripts.tools.advanced_logging as logging
+
+# Remove this import if you intend on running your own instance #
+import scripts.api.cardsAgainstHumanity as cah
 
 from scripts.tools.utility import *
 
@@ -34,10 +31,11 @@ loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
 ### COMMAND GROUPS ###
-fritz = bot.create_group("f",          "Fritz's generic commands",       contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
-inDev = bot.create_group("f_unstable", "Unstable and under development", contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
-qr    = bot.create_group("qr",         "Tools relating to QR codes",     contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
-zdev  = bot.create_group("f_dev",      "Developer-only utilities",       contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
+fritz = bot.create_group("f",          "Fritz's generic commands",           contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
+inDev = bot.create_group("f_unstable", "Unstable and under development",     contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
+qr    = bot.create_group("qr",         "Tools relating to QR codes",         contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
+zdev  = bot.create_group("f_dev",      "Developer-only utilities",           contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
+remv  = bot.create_group("depricated", "Depricated commands, removing soon", contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
 
 ### SERVER-ONLY COMMANDS ###
 sonly = bot.create_group("fs",         "Fritz's server-only commands",   contexts=CONTEXTS_SERVER_ONLY, integration_types=INTEGRATION_TYPES_SERVER_ONLY)
@@ -63,13 +61,23 @@ async def on_ready():
 	if len(BLACKLISTED_USERS) != 0:
 		print(YELLOW + f"[Commands] INFO: {len(BLACKLISTED_USERS)} users in blacklist" + RESET)
 
-	
+### ===================================== ###
+## COMMANDS I'LL REMOVE SOON ##
+@remv.command(name='dalle', description='Generate 9 images using DALL-E 2 v3')
+async def go(ctx):      await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
+
+@remv.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
+async def cget(ctx):    await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
+
+@sonly.command(name="build_sentence", description="Use things you've said to create a new sentence")
+async def bs(ctx):      await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
+
+## Chat Completion ##
+@fritz.command(name='assistant', description='Launch Fritz\'s AI assistant', pass_context=True) # Async
+async def chatgpt(ctx): await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
 
 ### ===================================== ###
 ## API COMMANDS ##
-
-@inDev.command(name='dalle', description='Generate 9 images using Dall-E 2 v3')
-async def go(ctx, prompt:str): await dalle.generate(ctx, prompt)
 
 # Search PronounsPage for a user #
 @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
@@ -82,17 +90,6 @@ async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query
 # SEARCH SPOTIFY #
 @fritz.command(name="seasify", description='Search Spotify for a song', pass_context = True)
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
-
-## Chat Completion ##
-@fritz.command(name='assistant', description='Launch Fritz\'s AI assistant', pass_context=True) # Async
-async def chatgpt(ctx, prompt:str, legacy_mode:discord.Option(str, choices=gpt.LEGACY_MODES, description="Which model variant to use. Default GPT-4")="none"): logging.quick.log_assistant(ctx, prompt); await gpt.generateResponse(ctx, prompt, loop, legacy_mode) #type:ignore
-
-# CHARACTER AI #
-@fritz.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
-async def cget(ctx, message:str, character:discord.Option(str, choices=cai.CHARACTERS.keys(), description='Character to interact with'), reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.characterPrompt(ctx, message, character, reset) #type:ignore
-
-@fritz.command(name="six", description='Talk to Six')
-async def six(ctx, message:str, reset:discord.Option(bool, choices=[True, False],description='Set to true to erase chat history')=False): await cai.sixPrompt(ctx, message, reset) #type:ignore
 
 ### ===================================== ###
 ## QR CODES ##
@@ -109,6 +106,10 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 
 ### ===================================== ###
 ## FUN ##
+
+# CAHDS AGAINST HUMANITY #
+@fritz.command(name="cah-index", description="Build a card against humanity")
+async def cah_index(ctx, prompt_index:str, response_index:str): await cah.read_sheet(ctx, prompt_index, response_index)
 
 # CAT PICTURE #
 @fritz.command(name="givecat", description="Get a random cat photo")
@@ -141,10 +142,6 @@ async def quote(ctx): await oneOff.getRandomQuote(ctx)
 @sonly.command(name="quoteme", description="Get a random quote from yourself")
 async def qm(ctx, username:str=None): await oneOff.quoteMe(ctx, username)
 
-# BUILD SENTENCE #
-@sonly.command(name="build_sentence", description="Use things you've said to create a new sentence")
-async def bs(ctx, sample_size:discord.Option(int, "Number of your words used as a framework")=25, guild_id=-1, chan_id=-1): await oneOff.createSentenceFromMyStuff(ctx, loop, sample_size, guild_id, chan_id) #type:ignore
-
 ### ===================================== ###
 ## USER MANAGEMENT ##
 
@@ -165,12 +162,12 @@ async def changelog(ctx): await ctx.respond(file=help_messages.changelog, epheme
 
 ## Get basic info about Fritz ##
 @fritz.command(name="about", description="Get some pretty basic info about Fritz", pass_context=True)
-async def help(ctx): await ctx.respond(help_messages.about, ephemeral=True)
+async def help(ctx): await ctx.respond(help_messages.about + "\n-# Fritz is currently in debug mode. Some unstable features may be enabled", ephemeral=True)
 
 ## Get advanced info about Fritz ##
 @fritz.command(name="system", description="Advanced system info", pass_context=True)
 @isDeveloper()
-async def help(ctx): await ctx.respond(help_messages.about_system, ephemeral=True)
+async def help(ctx): await ctx.respond(help_messages.about_system + "\n-# Fritz is currently in debug mode. Some unstable features may be enabled", ephemeral=True)
 
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
 async def getInvite(ctx): 

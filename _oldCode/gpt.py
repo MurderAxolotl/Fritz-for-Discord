@@ -22,6 +22,10 @@ async def generateResponse(ctx, inPrompt, loop, legacy_mode = "none"):
 			match ctx.guild.id in AI_BLACKLIST:
 				case True: await ctx.respond("That command is disabled on this server"); return -1
 
+	await ctx.channel.send("## MACHINE LEARNING NOTICE")
+	await ctx.channel.send("This command uses machine learning, which is extremely harmful to the environment. Please take this into consideration when using this command.")
+	await ctx.channel.send("")
+
 	if   legacy_mode == "none"   : MODEL = g4f.models.gpt_4
 	elif legacy_mode == "turbo"  : MODEL = g4f.models.gpt_35_turbo
 	elif legacy_mode == "fast"   : MODEL = g4f.models.gpt_35_long
