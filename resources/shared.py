@@ -33,7 +33,6 @@ ENABLE_LOGGING    = True # True / False; whether to log messages sent to channel
 LOGGING_BLACKLIST = [] # A list of NON-QUOTED server IDs to block logging
 
 BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users"))) # A list of NON-QUOTED user IDs to ban from using the bot
-SIXUSERS = os.getenv("sixUsers")
 
 # Why aren't these constants? #
 intents = INTENTS
