@@ -4,7 +4,7 @@ import os, platform
 
 # Various messages used by fritz
 class help_messages():
-	commands = """The following commands are currently supported:
+	commands = r"""The following commands are currently supported:
   **\# API INTERACTION #**
   **assistant** *<prompt>*: talk to Fritz, ask him questions, and perform other tasks
   **pp_users** *<search term>*: search PronounsPage for a username
@@ -59,18 +59,18 @@ class help_messages():
 	with open(sys.path[0] + "/resources/docs/changelog", "r") as clfile: changelog = discord.File(sys.path[0] + "/resources/docs/changelog")
 
 
-	MACHINE_LEARNING_NOTICE = """
-### MACHINE LEARNING NOTICE
-This command used machine learning, which is extremely harmful to the environment.
+	MACHINE_LEARNING_NOTICE = r"""
+	### MACHINE LEARNING NOTICE
+	This command used machine learning, which is extremely harmful to the environment.
 
-Some eye-opening statistics:
-\- Every 100 characters generated uses ~3 bottles of water
-\- A single prompt will use approximately 1,500% more power than a single Google search	
-\- Google's Machine Learning data centres use more power than the entirety of Ireland
-\- 1 percent of all power used worldwide is used by Machine Learning data centres
+	Some eye-opening statistics:
+	* Every 100 characters generated uses ~3 bottles of water
+	* A single prompt will use approximately 1,500% more power than a single Google search	
+	* Google's Machine Learning data centres use more power than the entirety of Ireland
+	* 1 percent of all power used worldwide is used by Machine Learning data centres
 
-Due to environmental concerns, Fritz's ML commands will no longer function. They will be removed <t:1733023608:R> (approximately)
+	Due to environmental concerns, Fritz's ML commands will no longer function. They will be removed <t:1733023608:R> (approximately)
 
-Thank you for your understanding, and we apologise for the inconvenience
+	Thank you for your understanding, and we apologise for the inconvenience
 
-"""
+	"""

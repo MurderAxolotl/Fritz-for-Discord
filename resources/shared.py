@@ -3,7 +3,7 @@ from types import NoneType
 
 dotenv.load_dotenv(".env")
 
-IS_DEBUGGING = True
+IS_DEBUGGING = False
 
 INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303&permissions=535260691552&scope=bot"
 GIT_URL = "https://github.com/psychon-night/Fritz-for-Discord"
@@ -32,8 +32,6 @@ REDUCE_DISK_READS = True
 ENABLE_LOGGING    = True # True / False; whether to log messages sent to channels Fritz has read access to
 LOGGING_BLACKLIST = [] # A list of NON-QUOTED server IDs to block logging
 
-AI_BLACKLIST      = [1192958435608760321] # A list of NON-QUOTED server IDs to block logging
-LYRIC_BLACKLIST   = [1192958435608760321, 999923183840940042] # A list of NON-QUOTED server IDs to block lyrics
 BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users"))) # A list of NON-QUOTED user IDs to ban from using the bot
 SIXUSERS = os.getenv("sixUsers")
 

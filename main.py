@@ -6,17 +6,16 @@ Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """ First-run automatic directory setup """
 import scripts.hooks.firstRun
 
-import sys, os, datetime, nest_asyncio, asyncio, json
-
-from types import NoneType
+import os
+import asyncio
+import nest_asyncio
 
 from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, ENABLE_LOGGING, LOGGING_BLACKLIST, AI_BLACKLIST, PATH, IS_DEBUGGING
+from resources.shared import TOKEN, intents, PATH, IS_DEBUGGING
 
-import scripts.tools.logging as logging
 import scripts.tools.loadHandler as loadHandler
 
 from resources.responses import help_messages
@@ -43,32 +42,14 @@ async def on_command_error(ctx, error):
 		await ctx.send(str(error))
 
 @client.event
-async def on_ready(): 
-	print(MAGENTA + "[  Main  ] " + YELLOW + "Ready!" + RESET)
+async def on_ready(): print(MAGENTA + "[  Main  ] " + YELLOW + "Ready!" + RESET)
 
 @client.event
 async def on_message(message):
-	### LOG THE MESSAGE TO THE APPROPRIATE FILE, REGARDLESS OF CONTENT ###
-	if str(message.content).lower() == "all stay strong":
-		await message.channel.send("We live eternally")
-
-	now = datetime.datetime.now()
-	current_time = now.strftime("%H:%M:%S")
-	today = datetime.date.today()
-	fs = str(today) + " " + str(current_time) + " "
-
-	## Log the message to the disk ##
-	match [ENABLE_LOGGING, not isinstance(message.guild, NoneType)]:
-		case [True, True]: 
-			match message.guild.id in LOGGING_BLACKLIST:
-				case False: await logging.logMessage(message)
-
-		case [True, False]: await logging.logMessage(message)
-
+	if str(message.content).lower() == "all stay strong": await message.channel.send("We live eternally")
 
 	## If the user is banned, no code past this point should run ##
-	if message.author.id in BLACKLISTED_USERS:
-		return
+	if message.author.id in BLACKLISTED_USERS: return
 
 
 	### ============================================================= ###
@@ -99,6 +80,7 @@ try:
 	if IS_DEBUGGING: print(RED + "Overriding selected personality (debug flag set to True)" + RESET)
 	if not client_personality[1] == "none": print(MAGENTA + "Starting with personality %s"%client_personality[1] + RESET)
 	else: print(MAGENTA + "Starting with no personality" + RESET)
+	
 	td(target=commandprocess).start()
 	client.run(TOKEN)
 

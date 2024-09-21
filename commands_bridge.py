@@ -19,7 +19,6 @@ import scripts.api.pronouns           as pronouns
 import scripts.api.spotify            as spotify
 import scripts.api.discord            as discord_fancy
 import scripts.errors.commandCheck    as commandCheck
-import scripts.tools.advanced_logging as logging
 
 # Remove this import if you intend on running your own instance #
 import scripts.api.cardsAgainstHumanity as cah
@@ -108,6 +107,7 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 ## FUN ##
 
 # CAHDS AGAINST HUMANITY #
+# Remove this if you want to run your own instance
 @fritz.command(name="cah-index", description="Build a card against humanity")
 async def cah_index(ctx, prompt_index:str, response_index:str): await cah.read_sheet(ctx, prompt_index, response_index)
 

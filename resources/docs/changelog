@@ -197,4 +197,13 @@
 	- Implemented log2f
 	- New Six command
 		- Added for a friend
-	- 
+
+### 1.20
+	- Removed CharacterAI command
+	- Removed Assistant command
+	- Removed DallE command
+	- Removed build_sentence command
+	- Removed Hey Fritz
+	- Removed logging -- move to Gabriel, please
+	- Removed Six command
+		- Sorry to said friend
