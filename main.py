@@ -14,7 +14,7 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, PATH, IS_DEBUGGING
+from resources.shared import TOKEN, intents, PATH, IS_DEBUGGING, version
 
 import scripts.tools.loadHandler as loadHandler
 
@@ -77,6 +77,8 @@ if not os.path.exists(PATH + "/cache/gabrielPrompt"):
 	os.system(f"touch {PATH}/cache/gabrielPrompt")
 
 try:
+	print(MAGENTA + f"Fritz {version}" + RESET)
+
 	if IS_DEBUGGING: print(RED + "Fritz is in debug mode" + RESET)
 	
 	td(target=commandprocess).start()
