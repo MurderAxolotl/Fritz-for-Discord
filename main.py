@@ -77,9 +77,7 @@ if not os.path.exists(PATH + "/cache/gabrielPrompt"):
 	os.system(f"touch {PATH}/cache/gabrielPrompt")
 
 try:
-	if IS_DEBUGGING: print(RED + "Overriding selected personality (debug flag set to True)" + RESET)
-	if not client_personality[1] == "none": print(MAGENTA + "Starting with personality %s"%client_personality[1] + RESET)
-	else: print(MAGENTA + "Starting with no personality" + RESET)
+	if IS_DEBUGGING: print(RED + "Fritz is in debug mode" + RESET)
 	
 	td(target=commandprocess).start()
 	client.run(TOKEN)

@@ -6,11 +6,9 @@ import os, platform
 class help_messages():
 	commands = r"""The following commands are currently supported:
   **\# API INTERACTION #**
-  **assistant** *<prompt>*: talk to Fritz, ask him questions, and perform other tasks
   **pp_users** *<search term>*: search PronounsPage for a username
   **pp_terms** *<search term>*: search PronounsPage for terminology
   **seasify** 	*<query>* *[count]*: Search Spotify for *query* and return *count* results. Count must be between 1 and 25
-  **cai** *<message>* *<character>*: Send *message* to the *character* and get their response. This FULLY supports chat history!
   
   **\# FUN #**
   **givecat**: get a random cat image (from the internet)
@@ -36,6 +34,7 @@ class help_messages():
 
   *Options surrounded by <angle brackets> are required*
   *Options surrounded by [square brackets] are optional*
+  -# This list is not up-to-date
   """
 
 
