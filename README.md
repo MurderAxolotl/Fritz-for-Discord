@@ -4,6 +4,8 @@
 
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com) 
 
+![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-linux.svg)
+
 A Discord bot intended for fun and utility\
 Built on Python 3.11.6, unfortunately tested on 3.12
 
