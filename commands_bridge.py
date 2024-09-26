@@ -76,6 +76,17 @@ async def bs(ctx):      await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE)
 async def chatgpt(ctx): await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
 
 ### ===================================== ###
+## RIGHT-CLICK COMMANDS ##
+@bot.message_command(name="Add to Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+async def quotebookContext(ctx, message:discord.Message):
+	authorName = str(message.author).split("#")[0]
+	author     = message.author.id
+	text       = message.content
+	avat       = message.author.avatar.url
+
+	await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
+
+### ===================================== ###
 ## API COMMANDS ##
 
 # Search PronounsPage for a user #
@@ -104,7 +115,7 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 	await qrTools.createQR(ctx, qr_data, style_mode)
 
 ### ===================================== ###
-## FUN ##
+
 
 # CAHDS AGAINST HUMANITY #
 # Remove this if you want to run your own instance

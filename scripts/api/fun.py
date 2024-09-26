@@ -3,18 +3,33 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
-import requests, asyncio, json, sys, random, discord
+import urllib.parse
+import requests, asyncio, json, sys, random, discord, urllib
 
 from concurrent.futures import ThreadPoolExecutor
 from types import NoneType
 
 from resources.colour import *
+from resources.shared import QUOTE_WEBHOOK
 
 from PIL import Image
 import base64, base64, os
 from io import BytesIO
 
 loop = asyncio.get_event_loop()
+
+async def quotebookMessage(ctx, message:str, author_id:str, author_name:str, aurl:str):
+	await ctx.defer()
+
+	form = {
+		"content": f"<@{author_id}>: {message}",
+		"username": f"{author_name}",
+		"avatar_url": f"{aurl}"
+	}
+
+	print(requests.post(QUOTE_WEBHOOK, json = form).text)
+
+	await ctx.respond("Quotebooked")
 
 async def getRandomJoke(ctx):
 	await ctx.defer()

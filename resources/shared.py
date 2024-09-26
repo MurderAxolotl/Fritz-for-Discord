@@ -16,6 +16,7 @@ CT_NAMES      = json.loads(os.getenv("ct_name_map"))
 TEST_NAMES    = json.loads(os.getenv("test_name_map"))
 
 # Globals #
+QUOTE_WEBHOOK = os.getenv("quote_webhook")
 REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"]
 INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True)
 

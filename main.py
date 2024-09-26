@@ -57,7 +57,7 @@ async def on_message(message):
 	match [str(message.content).lower() == "hey fritz, panic 0x30", str(message.author.id) in registeredDevelopers]:
 		case [True, True]:
 			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
-			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin())
+			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin()) # I need to fix this
 
 
 	## Hey Fritz invocation ##
