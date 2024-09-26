@@ -31,9 +31,4 @@ def downloadUpdate():
 
 	print(SPECIALDRIVE + "Finished" + RESET)
 
-
-wgetReady = input(BLUE + "Is wget installed? [Y/N] > ").lower()
-
-if wgetReady == "n": print(YELLOW + "Run 'sudo apt install wget' and try again" + RESET)
-elif wgetReady == "y": downloadUpdate()
-else: print(RED + "Invalid option" + RESET)
+downloadUpdate()
