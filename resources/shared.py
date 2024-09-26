@@ -37,7 +37,7 @@ BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users"))) # A list of
 
 # Why aren't these constants? #
 intents = INTENTS
-version = "1.20-desktop"
+version = "1.20.1-desktop"
 
 # Mappings because I can't be bothered to fix stuff #
 registeredDevelopers = REGISTERED_DEVELOPERS
