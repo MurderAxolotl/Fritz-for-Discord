@@ -29,7 +29,7 @@ async def quotebookMessage(ctx, message:str, author_id:str, author_name:str, aur
 
 	print(requests.post(QUOTE_WEBHOOK, json = form).text)
 
-	await ctx.respond("Quotebooked")
+	await ctx.respond("Quotebooked", ephemeral=True)
 
 async def getRandomJoke(ctx):
 	await ctx.defer()
