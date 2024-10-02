@@ -14,7 +14,7 @@ from threading import Thread as td
 from discord.ext import commands
 
 from resources.colour import *
-from resources.shared import TOKEN, intents, PATH, IS_DEBUGGING, version
+from resources.shared import TOKEN, intents, PATH, IS_DEBUGGING, IS_ANDROID, version
 
 import scripts.tools.loadHandler as loadHandler
 
@@ -60,10 +60,6 @@ async def on_message(message):
 			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin()) # I need to fix this
 
 
-	## Hey Fritz invocation ##
-	if "hey fritz," in str(message.content).lower(): await message.channel.send(help_messages.MACHINE_LEARNING_NOTICE)
-
-
 ### --- Initialise the bot --- ###
 
 loadHandler.prepBot()
@@ -79,7 +75,8 @@ if not os.path.exists(PATH + "/cache/gabrielPrompt"):
 try:
 	print(MAGENTA + f"Fritz {version}" + RESET)
 
-	if IS_DEBUGGING: print(RED + "Fritz is in debug mode" + RESET)
+	if IS_DEBUGGING: print(RED + loadString("/debug/startup_flare") + RESET)
+	if IS_ANDROID: print(RED + loadString("/android/startup_flare") + RESET)
 	
 	td(target=commandprocess).start()
 	client.run(TOKEN)

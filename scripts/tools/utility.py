@@ -8,9 +8,10 @@ import discord, datetime, sys
 from discord.ext import commands
 from resources.colour import *
 
+from resources.shared import PATH
+
 from resources.shared import BLACKLISTED_USERS, registeredDevelopers
 
-from discord.ext.bridge import BridgeContext
 from discord.ext import commands
 from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup
@@ -76,3 +77,28 @@ async def getPageTitle(URL):
 async def depricatedCommand(ctx):
 	""" Sends a depricated command warning """
 	await ctx.channel.send("NOTE: This command is depricated and will be removed in an upcoming release")
+
+# This should not be async. I don't want it to be async. I don't care if it causes blockages.
+def loadString(stringFile:str) -> str:
+	""" Loads a string from the disk and returns it
+	
+	Strings are stored in /resources/strings """
+
+	BASE = PATH + "/resources/strings"
+
+	try:
+		file = open(f"{BASE}/{stringFile}.tout", "r")
+
+		contents = file.read()
+		file.close()
+
+		return contents
+	
+	except FileNotFoundError:
+		print(RED + f"ERR: FILE {MAGENTA}{stringFile}{RED} NOT FOUND. RETURNING AN EMPTY STRING TO AVOID CRASH." + RESET)
+		return ""
+	
+	except Exception as err:
+		print(RED + f"ERR: FAILED TO READ {MAGENTA}{stringFile}{RED}: {str(err)}" + RESET)
+
+		return ""

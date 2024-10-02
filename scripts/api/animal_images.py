@@ -16,13 +16,36 @@ async def giveCat(ctx):
 
 	await ctx.respond(json.loads(response.text)[0]["url"])
 
-async def giveTrashPanda(ctx):
+async def giveTrashPanda(ctx, getVideo):
 	await ctx.defer()
 
-	# response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://some-random-api.com/animal/raccoon"))
-	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://serpapi.com/search.json?q=raccoon&engine=google_images&ijn=0"))
+	if getVideo: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/v1/video?json=true"))
+	else:        response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/v1/raccoon?json=true"))
 
-	await ctx.respond(json.loads(response.text)["image"])
+	responseJSON = json.loads(response.text)
+	
+	success = responseJSON["success"]
+
+	if success == True:
+		await ctx.respond(responseJSON["data"]["url"])
+
+	else:
+		await ctx.respond("API said no :(")
+
+async def giveRaccFacc(ctx):
+	await ctx.defer()
+
+	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/v1/fact"))
+
+	responseJSON = json.loads(response.text)
+	
+	success = responseJSON["success"]
+
+	if success == True:
+		await ctx.respond(responseJSON["data"]["fact"])
+
+	else:
+		await ctx.respond("API said no :(")
 
 async def giveLynx(ctx):
 	await ctx.defer()

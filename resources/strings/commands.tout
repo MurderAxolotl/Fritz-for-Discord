@@ -1,0 +1,31 @@
+SUPPORTED COMMANDS:
+
+**\# API Interaction #**
+- **pp_users** *<search term>*   : Search PronounsPage for a username
+- **pp_terms** *<search term>*   : Search PronounsPage for terminology
+- **seasify** *<query>* *[count]*: Search Spotify for <query> returning [count]# of results. Count defaults to 10 and must be between 1 and 25
+
+**\# Fun #**
+- **givecat**: Get a random cat picture
+- **givefox**: Get a random fox picture
+- **givelynx**: Get a random lynx picture
+- ~~**joke**~~: Get a random joke from the internet
+- **quote**: Get a random quote from the internet
+- **quoteme** *[username]*: Get a random quote from yourself. Specify *[username]* to get a quote from someone else
+
+**\# QR Tools #**
+- **scan_qr** *<image>*: Scan the attached image and return any readable data
+- **create_qr** *<content>* *[style]*: Create a QR code. [style] controls appearance and Error Correction levels. Default *stylized*
+
+**\# Bot Utilities #**
+- **ping**: Test the bot's latency
+
+**\# Information #**
+- **system**: Get detailed information about the environment Fritz is running in
+- **changelog**: Get an up-to-date (...maybe) list of changes to Fritz since inception
+- **help**: Get this message
+- **invite**: Get Fritz's invite URL, for adding to a server
+
+<options> are REQUIRED arguments
+[options] are OPTIONAL arguments
+~~commands~~ are broken

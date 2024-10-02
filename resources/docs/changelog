@@ -207,3 +207,32 @@
 	- Removed logging -- move to Gabriel, please
 	- Removed Six command
 		- Sorry to said friend
+
+### 1.20.1
+	- Android support
+	- New `cah-index` command: Build a Card Against Humanity!
+		- Does this violate copyright law?
+
+### 1.21.0
+	- Switched to new versioning scheme: always x.xx.x now (e.g. 1.21.0)
+	- Merged Android and Desktop versions into a single cohesive version
+	- Moved away from fstrings
+		- Responses have been moved into `.tout` files in `/resources/strings`
+			- These are text files, you should be able to open them fairly easily. Mostly using this file format to avoid conflicts on my local system
+		- Significantly improved code clarity
+	- Clarified some confusing wording
+	- Added options to prevent system info leaks (I accidentally doxxed myself)
+	- New "Add to Quotebook" command, mostly for my online Discord group's amusement
+		- Still working on that STUPID ephemeral bug
+	- Fully removed deprecated commands: `cai`, `dalle`, `build_sentence`, and `assistant`
+	- Fully removed Hey Fritz responses
+	- IT'S SPOOKY MONTH BITCHESSSSSSSS
+		- Fritz's personality now defaults to SpookySeason
+	- Updated fupdate.py to work on both Android and Desktop, auto-detecting the platform (hopefully)
+	- I FIXED THE TRASH PANDA COMMAND HAHAHAHHAHAHAHAHAHAHAHAAHHAHAHAHAHAHAHAHAHAHAHA
+	- Added a `raccfacc` command, to get raccoon facts. Raccoons are cool CAN YOU TELL I LIKE RACCOONS LIKE OMG THEY'RE ONE OF MY FAVOURITE ANIMALS
+		THEY'RE SO CUTE
+		I WANT A PET RACCOON
+		IDC IF THEY'RE A RABIES VECTOR
+		THEY'RE SO CUTE
+		HAVE YOU HEARD A RACCOON PURR BEFORE?? CUTEST SHIT EVER

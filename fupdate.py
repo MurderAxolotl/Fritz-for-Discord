@@ -1,10 +1,11 @@
-""" Tool to update the current version of Fritz. Desktop version. """
+""" Tool to update the current version of Fritz. """
 
 import os
 from resources.colour import *
-from resources.shared import PATH
+from resources.shared import PATH, IS_ANDROID
 
-BASE_URL = "https://raw.githubusercontent.com/psychon-night/Fritz-for-Discord/refs/heads/main/"
+if not IS_ANDROID: BASE_URL = "https://raw.githubusercontent.com/psychon-night/Fritz-for-Discord/refs/heads/main/"
+else:              BASE_URL = "https://raw.githubusercontent.com/psychon-night/Fritz-for-Discord/refs/heads/android/"
 
 def downloadUpdate():
 	""" Downloads and installs core updates """

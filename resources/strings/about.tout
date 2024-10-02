@@ -1,0 +1,7 @@
+Fritz {fritzVersion}
+Edition: **{prodEdition}**
+
+### Backend
+System: **{backend}**
+Python Version: {pyVer}
+CWD: **{cwd}**

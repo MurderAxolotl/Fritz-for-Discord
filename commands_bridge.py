@@ -61,21 +61,6 @@ async def on_ready():
 		print(YELLOW + f"[Commands] INFO: {len(BLACKLISTED_USERS)} users in blacklist" + RESET)
 
 ### ===================================== ###
-## COMMANDS I'LL REMOVE SOON ##
-@remv.command(name='dalle', description='Generate 9 images using DALL-E 2 v3')
-async def go(ctx):      await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
-
-@remv.command(name="cai", description='Give Fritz an identity crisis', pass_context = True)
-async def cget(ctx):    await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
-
-@sonly.command(name="build_sentence", description="Use things you've said to create a new sentence")
-async def bs(ctx):      await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
-
-## Chat Completion ##
-@fritz.command(name='assistant', description='Launch Fritz\'s AI assistant', pass_context=True) # Async
-async def chatgpt(ctx): await ctx.respond(help_messages.MACHINE_LEARNING_NOTICE) #type:ignore
-
-### ===================================== ###
 ## RIGHT-CLICK COMMANDS ##
 @bot.message_command(name="Add to Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 async def quotebookContext(ctx, message:discord.Message):
@@ -135,8 +120,11 @@ async def givelynx(ctx): await animals.giveLynx(ctx)
 async def givefox(ctx): await animals.giveFox(ctx)
 
 # RACOON PICTURE #
-# @fritz.command(name="trashpanda", description="Get a random trash panda photo")
-# async def trashpanda(ctx): await animals.giveTrashPanda(ctx)
+@fritz.command(name="giveracc", description="Get a random raccoon photo (or video)")
+async def trashpanda(ctx, video:bool=False): await animals.giveTrashPanda(ctx, video)
+
+@fritz.command(name="raccfacc", description="Get a random raccoon fact")
+async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
 
 # GET A JOKE #
 @fritz.command(name="joke", description="Grab a random joke from the :sparkles: internet :sparkles:", pass_context = True)
@@ -166,46 +154,44 @@ async def ping(ctx):
 ### ===================================== ###
 ## INFORMATION COMMANDS ##
 @fritz.command(name="help", description="Stop and RTFM", pass_context=True)
-async def help(ctx): await ctx.respond(help_messages.commands, ephemeral=True)
+async def help(ctx): 
+	await ctx.respond(loadString("/commands"), ephemeral=True)
 
 @fritz.command(name="changelog", description="See recent and past changes to Fritz", pass_context=True)
 async def changelog(ctx): await ctx.respond(file=help_messages.changelog, ephemeral=True)
 
 ## Get basic info about Fritz ##
-@fritz.command(name="about", description="Get some pretty basic info about Fritz", pass_context=True)
-async def help(ctx): await ctx.respond(help_messages.about + "\n-# Fritz is currently in debug mode. Some unstable features may be enabled", ephemeral=True)
-
-## Get advanced info about Fritz ##
 @fritz.command(name="system", description="Advanced system info", pass_context=True)
-@isDeveloper()
-async def help(ctx): await ctx.respond(help_messages.about_system + "\n-# Fritz is currently in debug mode. Some unstable features may be enabled", ephemeral=True)
+async def help(ctx):
+	if DISALLOW_SYSINF_LEAKS and not (str(ctx.author.id) in REGISTERED_DEVELOPERS): await ctx.respond("You are not allowed to run this command"); return
+	
+	response = help_messages.about_system # Base text
+
+	if not DISALLOW_PLATFORM_LEAKS:
+		if IS_ANDROID  : response = response + "\n-" + loadString("/android/command_flare")
+		if IS_DEBUGGING: response = response + "\n-" + loadString("/debug/command_flare")
+	
+	await ctx.respond(response, ephemeral=True)
 
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
 async def getInvite(ctx): 
-	await ctx.respond(INVITE_URL, ephemeral=True)
+	await ctx.respond("NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, ephemeral=True)
 
 @fritz.command(name='github_url', description='Get Fritz\'s Github URL')
 async def getGit(ctx): await ctx.respond(GIT_URL)
 
 ### ===================================== ###
 ## DEVELOPER ONLY ## 
-	
-@fritz.command(name='initiate_dm', description="Initiates a DM with the current user")
-async def do(ctx): 
-	await ctx.author.send("Hey! I'm Fritz, your friendly assistant! How can I help you?")
-	await ctx.author.send("Remember: you can ask me anything. Just say: `Hey Fritz, it's nice to meet you!`")
-	await ctx.author.send("You can also use the *assistant* slash command")
-
-	await ctx.respond("DM created", ephemeral=True)
-
-@zdev.command(name='shutdown', description='fritz.dev.shutdown', pass_context=True)
+@zdev.command(name='shutdown', description='DEV: Shuts down Fritz, if possible. Does not work on Android', pass_context=True)
 @isDeveloper()
 async def initiateShutdown(ctx):
 	await ctx.respond(":saluting_face:")
+
 	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon %s/fritzSystemIcon.jpeg -e"%PATH)
 	os.system("pkill %s -f"%PATH)
+# lmao can you tell this code is from the first version of Fritz?
 
-@zdev.command(name='download_messages', description='fritz.dev.download_messages')
+@zdev.command(name='download_messages', description='Prints the last 50 messages in a channel. Use `id` to set the channel')
 @isDeveloper()
 async def downloadMessages(ctx, id):
 	await ctx.defer()
@@ -221,7 +207,7 @@ async def downloadMessages(ctx, id):
 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
 		index += 1
 
-	await ctx.respond("Dumped to console")
+	await ctx.respond("Dumped to console", ephemeral="True")
 
 ### ===================================== ###
 

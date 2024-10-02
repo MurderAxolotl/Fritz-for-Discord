@@ -10,17 +10,17 @@ class activities():
 		assets={'large_image':'foxfox', 'large_text':'gay'}, 
 		application_id=1070042394009014303
 	)
-	
-	christmas = discord.Activity(name = "Yiffmas", 
-		state = "Merry Yiffmas!", 
-		type=discord.ActivityType.competing, 
+
+	spookyMonth = discord.Activity(name = "Goulish Screams", 
+		state = "IT'S SPOOKY MONTH >:3", 
+		type=discord.ActivityType.listening, 
 		assets={'large_image':'foxfox', 'large_text':'gay'}, 
 		application_id=1070042394009014303
 	)
 	
-	frc = discord.Activity(name = "FRC", 
-		state = "GOOD LUCK <3", 
-		type=discord.ActivityType.watching, 
+	christmas = discord.Activity(name = "Yiffmas", 
+		state = "Merry Yiffmas!", 
+		type=discord.ActivityType.competing, 
 		assets={'large_image':'foxfox', 'large_text':'gay'}, 
 		application_id=1070042394009014303
 	)
@@ -60,19 +60,18 @@ class activities():
 class Holiday:
 	halloween = [
 		discord.Client(activity=activities.halloween, intents=intents, log_level=None, log_handler=None), 
-		"SPOOKY SEASON"
+		"Spooky Day"
+	]
+
+	spooky = [
+		discord.Client(activity=activities.spookyMonth, intents=intents, log_level=None, log_handler=None), 
+		"Spooky Season"
 	]
 
 
 	christmas = [
 		discord.Client(activity=activities.christmas, intents=intents, log_level=None, log_handler=None), 
 		"Christmas"
-	]
-
-class Events:
-	frc = [
-		discord.Client(activity=activities.frc, intents=intents, log_level=None, log_handler=None), 
-		"FRC Motivation"
 	]
 
 
