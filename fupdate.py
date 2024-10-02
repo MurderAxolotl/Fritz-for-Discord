@@ -4,8 +4,7 @@ import os
 from resources.colour import *
 from resources.shared import PATH, IS_ANDROID
 
-if not IS_ANDROID: BASE_URL = "https://raw.githubusercontent.com/psychon-night/Fritz-for-Discord/refs/heads/main/"
-else:              BASE_URL = "https://raw.githubusercontent.com/psychon-night/Fritz-for-Discord/refs/heads/android/"
+BASE_URL = "https://raw.githubusercontent.com/psychon-night/Fritz-for-Discord/refs/heads/main/"
 
 def downloadUpdate():
 	""" Downloads and installs core updates """
