@@ -20,7 +20,7 @@ code in Copilot.
 
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com) 
 
-![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-linux.svg)
+![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-linux.svg) ![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-android.svg)
 
 A Discord bot intended for fun and utility\
 Built on Python 3.11.6, unfortunately tested on 3.12
@@ -29,9 +29,10 @@ Built on Python 3.11.6, unfortunately tested on 3.12
 - Some commands do not respect the ENABLE_LOGGING setting
 - Versions of Python other than 3.11.6 are **untested**
 - Intended for use on **Linux**. Windows and MacOS are **untested**
+	- Android (through Termux) is supported
 
 ### Requirements
-- Linux (only **Ubuntu** and **Debian** have been tested)
+- Linux (only **Ubuntu**, **Debian**, and **Android** have been tested)
 - Python 3.10 or newer
 - Approximately 1 GB disk space
 	- 300-500 MB for source code
@@ -51,6 +52,8 @@ Built on Python 3.11.6, unfortunately tested on 3.12
 
 Complete pip install string: `pip install py-cord pyzbar nest_asyncio asyncio pillow bs4`
 
+**NOTE**: On some systems, it may be neccesary to replace `pip` with `python -m pip` or `python3 -m pip`
+
 Obviously, if your system has a package manager like `yay`, use that instead
 
 ### Setup
@@ -63,8 +66,11 @@ Obviously, if your system has a package manager like `yay`, use that instead
 
 ### Configure
 - In `resources/shared.py`, set `INVITE_URL` to your bot's URL, `GIT_URL` to your GitHub URL, and `REGISTERED_DEVELOPERS` to your UUID
-- In `resources/shared.py`, set `AI_BLACKLIST` and `LYRIC_BLACKLIST`
-- In `resources/shared.py`, set `ENABLE_LOGGING`, `LOGGING_BLACKLIST`, and `BLACKLISTED_USERS`
+- In `resources/shared.py`, set your configuration. Be sure to set these:
+	- `DISALLOW_PLATFORM LEAKS`
+	- `DISALLOW_SYSINF_LEAKS`
+	- `ENABLE_LOGGING`
+	- `LOGGING_BLACKLIST`
 
 ### Portable Modules
 
@@ -75,3 +81,7 @@ These are .py files you can use in your own projects. Please give credit!
 ### Command Documentation
 
 To get a list of all commands, use Fritz's `help` slash command
+
+### What about localisation?
+
+I mean, feel free. There isn't native localisation support (nor do I intend on adding it).
