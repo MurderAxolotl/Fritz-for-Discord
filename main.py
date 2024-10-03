@@ -24,7 +24,7 @@ from scripts.tools.utility import *
 
 import resources.client_personalities as personalities
 
-if not IS_DEBUGGING: client_personality = personalities.Default.none 	
+if not IS_DEBUGGING: client_personality = personalities.Holiday.spooky
 else:                client_personality = personalities.Default.debug
 
 client = client_personality[0]

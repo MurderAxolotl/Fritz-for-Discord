@@ -22,7 +22,7 @@ async def quotebookMessage(ctx, message:str, author_id:str, author_name:str, aur
 	await ctx.defer()
 
 	form = {
-		"content": f"<@{author_id}>: {message}",
+		"content": f"{message}",
 		"username": f"{author_name}",
 		"avatar_url": f"{aurl}"
 	}
