@@ -21,11 +21,19 @@ loop = asyncio.get_event_loop()
 async def quotebookMessage(ctx, message:str, author_id:str, author_name:str, aurl:str):
 	await ctx.defer()
 
-	form = {
-		"content": f"{message}",
-		"username": f"{author_name}",
-		"avatar_url": f"{aurl}"
-	}
+	try:
+		form = {
+			"content": f"{message}",
+			"username": f"{author_name}",
+			"avatar_url": f"{aurl}"
+		}
+	except:
+		# I tried quotebooking a very close friend of mine. Doing so crashed my phone. Turns out, it's because they don't have a gosh-darned profile picture
+		
+		form = {
+			"content": f"{message}",
+			"username": f"{author_name}"
+		}
 
 	print(requests.post(QUOTE_WEBHOOK, json = form).text)
 

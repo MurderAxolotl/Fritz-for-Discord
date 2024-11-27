@@ -14,8 +14,6 @@ Any use of this project's code by GitHub Copilot, past or present, is done
 without our permission.  We do not consent to GitHub's use of this project's
 code in Copilot.
 
-![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/static/img/GiveUpGitHub.png)
-
 [![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
 
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com) 
@@ -81,7 +79,3 @@ These are .py files you can use in your own projects. Please give credit!
 ### Command Documentation
 
 To get a list of all commands, use Fritz's `help` slash command
-
-### What about localisation?
-
-I mean, feel free. There isn't native localisation support (nor do I intend on adding it).

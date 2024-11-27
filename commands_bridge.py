@@ -18,6 +18,7 @@ import scripts.api.animal_images      as animals
 import scripts.api.pronouns           as pronouns
 import scripts.api.spotify            as spotify
 import scripts.api.discord            as discord_fancy
+import scripts.api.lumos_status       as lumos_status
 import scripts.errors.commandCheck    as commandCheck
 
 # Remove this import if you intend on running your own instance #
@@ -85,6 +86,10 @@ async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query
 # SEARCH SPOTIFY #
 @fritz.command(name="seasify", description='Search Spotify for a song', pass_context = True)
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
+
+# CHECK IF THE CONFIGURED MINECRAFT SERVER IS ONLINE #
+@fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
+async def mcstatus(ctx): await lumos_status.getServerStatus(ctx)
 
 ### ===================================== ###
 ## QR CODES ##
@@ -187,8 +192,7 @@ async def getGit(ctx): await ctx.respond(GIT_URL)
 async def initiateShutdown(ctx):
 	await ctx.respond(":saluting_face:")
 
-	os.system("notify-send -u critical -t 2000 'Fritz' 'A shutdown has been initiated' --icon %s/fritzSystemIcon.jpeg -e"%PATH)
-	os.system("pkill %s -f"%PATH)
+	os.system("sudo systemctl stop fritz")
 # lmao can you tell this code is from the first version of Fritz?
 
 @zdev.command(name='download_messages', description='Prints the last 50 messages in a channel. Use `id` to set the channel')
