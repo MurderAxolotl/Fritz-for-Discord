@@ -1,6 +1,12 @@
-import discord, json
+import discord
+import json
+import sqlite3
+
+from sqlite3 import Error as sqlite_error
 
 import scripts.api.discord as pretty_discord
+
+from resources.sqlite_queries import starboard_queries as queries
 
 from resources.shared import *
 
@@ -8,6 +14,16 @@ with open(PATH + "/config/starboard.json", "r") as scf:
 	starboard_config = json.loads(scf.read())
 
 starboard_servers = str(starboard_config.keys()).split("(")[1].split(")")[0]
+
+def connect_db():
+	return sqlite3.connect(PATH + "/cache/starboard_cache.db")
+
+def exec_db(connection:sqlite3.Connection, query:str):
+	connection.cursor().execute(query)
+	connection.commit()
+
+def read_db(connection:sqlite3.Connection, query:str):
+	return connection.cursor().execute(query).fetchone()
 
 async def reload(ctx):
 	""" Reloads the configuration from disk """
@@ -50,12 +66,23 @@ async def forwardToStarboard(ctx:discord.RawReactionActionEvent, bot:discord.Bot
 	SHOULD_PING = bool(starboard_config[str(ctx.guild_id)]["mention"])
 
 	if str(SERVER_ID) in starboard_config: # This server has a starboard configured
+		with connect_db() as db:
+			inStarboard = read_db(db, queries.search_cache.format(message_id=str(ctx.message_id)))[0]
+		
+		if str(inStarboard) == "1":
+			return # Already in starboard, don't do anything`
+
 		if SHOULD_PING: await FORWARD_CHANNEL.send(f"Original post by <@{MESSAGE.author.id}>")
 		else: await FORWARD_CHANNEL.send(f"Original post by {AUTHOR}")
 
 		await MESSAGE.forward(FORWARD_CHANNEL)
 
+		with connect_db() as db:
+			exec_db(db, queries.write_cache.format(message_id=str(MESSAGE_ID)))
 
+# Make sure the table exists in the database
+with connect_db() as db:
+	exec_db(db,  queries.create_starboard_cache_table)
 
 ########
 """

@@ -28,7 +28,7 @@ Built on Python 3.11.6, unfortunately tested on 3.12
 	- Please note: I added this long before Fritz was this fragmented. Mostly unimportant now
 - It's recommended to use Python 3.12.3 if possible
 - Intended for use on **Linux**
-	- Android (through Termux) is supported
+	- Android (through Termux) is supported (on versions before 1.24)
 
 ### Requirements
 - Linux (only **Ubuntu**, **Debian**, **Arch**, **Mint**, and **Android** have been tested)
@@ -51,10 +51,10 @@ Built on Python 3.11.6, unfortunately tested on 3.12
 - Asyncio (`pip install asyncio`)
 - Pillow (`pip install pillow`)
 - BS4 (`pip install bs4`)
-
-Complete pip install string: `pip install py-cord pyzbar nest_asyncio asyncio pillow bs4`
+- Python3 systemd  (`sudo apt install python3-systemd`)
 
 **NOTE**: On some systems, it may be neccesary to replace `pip` with `python -m pip` or `python3 -m pip`
+**NOTE**: If you're not using a venv for Fritz, you'll need to add ` --break-system-packages` to the end of each pip command (`pip install py-cord --break-system-packages`, for example)
 
 Obviously, if your system has a package manager like `yay`, use that instead
 
@@ -78,7 +78,7 @@ Obviously, if your system has a package manager like `yay`, use that instead
 
 These are .py files you can use in your own projects. Please give credit!
 
-`scripts/api/discord.py`: an up-to-date and easy to use API wrapper for extremely common use-cases. Designed to fill the gaps of PyCord; it is NOT a replacement for PyCord
+`scripts/api/discord.py`: an up-to-date and easy to use API wrapper for common use-cases. Designed to fill the gaps of PyCord; it is NOT a replacement for PyCord
 
 ### Command Documentation
 

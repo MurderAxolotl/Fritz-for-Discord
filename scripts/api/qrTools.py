@@ -3,21 +3,24 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
-import requests, json, sys, discord, os
+import json
+import sys
+import discord
+import os
 import asyncio
+import requests
 from urllib import parse
 
 from io import BytesIO
 
 from PIL import Image
 from pyzbar.pyzbar import decode
-
-
 from concurrent.futures import ThreadPoolExecutor
 
 loop = asyncio.get_event_loop()
 url = "https://api.qrcode-monkey.com//qr/custom"
 
+# lmao apparently I just didn't give a shit if this API key got leaked?
 headers = {
 	"content-type": "application/json",
 	"X-RapidAPI-Key": "cb543111a2mshb402f0d41b25d48p11cd7bjsn555d65f484a1",

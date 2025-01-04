@@ -56,6 +56,15 @@ def isDeveloper():
 	
 	return commands.check(predicate)
 
+def isTheo():
+	async def predicate(ctx):
+		if not str(ctx.author.id) == "1063584978081951814": raise commands.NotOwner
+		
+		return True
+		
+	
+	return commands.check(predicate)
+
 ## Misc utilities ## 
 
 async def downloadYoutubeVideo(video_url, id):

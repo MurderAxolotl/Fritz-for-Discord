@@ -19,7 +19,8 @@ async def searchSpotify(ctx, query, count):
 
 	ssearch_params = {'q': "'" + query + "'", 'type': 'track', 'limit': '%s'%count, 'offset': '0'}
 
-	data = {'grant_type': 'client_credentials','client_id': '709308bdbeb94c68bfd4cb456a47fa15', 'client_secret': '2c8081761467492c8fc602c504268909'}
+	# WHOOPS, THAT WAS A VERY BAD MISTAKE :|
+	data = {'grant_type': 'client_credentials','client_id': SPOTIFY_ID, 'client_secret': SPOTIFY_SECRET}
 
 	auth_token = json.loads(requests.post('https://accounts.spotify.com/api/token', data=data).text)["access_token"]
 

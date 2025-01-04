@@ -24,6 +24,7 @@ SUPPORTED COMMANDS:
 
 **\# Information #**
 - **system**: Get detailed information about the environment Fritz is running in
+- **about**: Get basic information about Fritz
 - **changelog**: Get an up-to-date (...maybe) list of changes to Fritz since inception
 - **help**: Get this message
 - **invite**: Get Fritz's invite URL, for adding to a server
@@ -32,4 +33,4 @@ SUPPORTED COMMANDS:
 [options] are OPTIONAL arguments
 ~~commands~~ are broken
 
--# `v1.21.1 (10/3/24)`
+-# `v1.23.3 (Jan 1/25)`

@@ -248,3 +248,17 @@
 	- Added the `reactions` intent
 	- Fixed up the termination code
 		- Should get along better with systemd now
+
+### 1.24
+	- Fixed a slew of issues from 1.23.0
+	- Removed a leaked API key (it's been rotated, don't bother)
+	- Cleaned up imports for a few modules
+	- Added very basic systemd logging
+		- BREAKING: Android support
+		- BREAKING: Non-systemd OS support
+	- Cleaned up a few response strings
+	- Updated commands list
+	- Added `about` command
+	- Moved user-editable values to the top of `shared.py`
+	- Removed `main.py` and moved `commands_brige.py` to `main.py`
+	- Starboards now use an SQLite DB to keep track of what messages have been starboarded
