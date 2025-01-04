@@ -25,17 +25,21 @@ Built on Python 3.11.6, unfortunately tested on 3.12
 
 ### WARNINGS
 - Some commands do not respect the ENABLE_LOGGING setting
-- Versions of Python other than 3.11.6 are **untested**
-- Intended for use on **Linux**. Windows and MacOS are **untested**
+	- Please note: I added this long before Fritz was this fragmented. Mostly unimportant now
+- It's recommended to use Python 3.12.3 if possible
+- Intended for use on **Linux**
 	- Android (through Termux) is supported
 
 ### Requirements
-- Linux (only **Ubuntu**, **Debian**, and **Android** have been tested)
+- Linux (only **Ubuntu**, **Debian**, **Arch**, **Mint**, and **Android** have been tested)
 - Python 3.10 or newer
 - Approximately 1 GB disk space
 	- 300-500 MB for source code
 	- 500 MB for dependencies
 	- Extra space for cache and logs
+- Currently uses an unmerged version of PyCord for Starboard features
+	- pip install git+https://github.com/NeloBlivion/pycord.git@forwarding
+		- Thank you NeloBlivion for this awesome feature <3
 
 ### Dependencies
 - Python 3.10 or newer (`sudo apt install python3.11-full python3.11-dev`)
@@ -56,7 +60,7 @@ Obviously, if your system has a package manager like `yay`, use that instead
 
 ### Setup
 1. Download and extract source code
-2. Create your Venv or Anaconda environment
+2. Create your Venv or Anaconda environment (optional, recommended. Do I do this? HAH! NOPE!)
 3. Install [dependencies](#dependencies)
 4. Create a folder named `cache`
 5. At the root of the project, create a file named `.env`

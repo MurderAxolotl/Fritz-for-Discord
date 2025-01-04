@@ -236,3 +236,15 @@
 		IDC IF THEY'RE A RABIES VECTOR
 		THEY'RE SO CUTE
 		HAVE YOU HEARD A RACCOON PURR BEFORE?? CUTEST SHIT EVER
+
+### 1.22.0
+	- Uhh I don't know what I actually changed :|
+	- Probably not important, I hope
+
+### 1.23.0 
+	- Removed `cah-index` command and related code. Mostly
+	- Added `starboard` command
+	- New `get_message` function in `/scripts/api/discord`
+	- Added the `reactions` intent
+	- Fixed up the termination code
+		- Should get along better with systemd now

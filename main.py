@@ -5,6 +5,7 @@ Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 
 """ First-run automatic directory setup """
 import scripts.hooks.firstRun
+import scripts.hooks.createConfigs
 
 import os
 import asyncio
@@ -33,6 +34,7 @@ bot = commands.Bot(intents=intents)
 loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
+# Listen for commands, send an error if they don't have the right permissions
 @bot.event
 async def on_command_error(ctx, error):
 	if isinstance(error, commands.errors.CheckFailure):
@@ -56,8 +58,10 @@ async def on_message(message):
 	## Panic exit ##
 	match [str(message.content).lower() == "hey fritz, panic 0x30", str(message.author.id) in registeredDevelopers]:
 		case [True, True]:
-			os.system("notify-send -u critical -t 2000 'Fritz' 'Panic code 0x30' --icon /home/%s/Pictures/fritzSystemIcon.jpeg -e"%os.getlogin())
-			os.system("pkill /home/%s/Documents/Fritz/ -f"%os.getlogin()) # I need to fix this
+			# And now it's linux only. Suck it, Windows users >:3
+			# Actually I'm reasonably confident that Fritz hasn't worked on Windows for almost
+			# nine months now, but whatever
+			os.system("sudo systemctl stop fritz")
 
 
 ### --- Initialise the bot --- ###

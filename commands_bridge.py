@@ -19,10 +19,8 @@ import scripts.api.pronouns           as pronouns
 import scripts.api.spotify            as spotify
 import scripts.api.discord            as discord_fancy
 import scripts.api.lumos_status       as lumos_status
+import scripts.api.starboard          as starboard
 import scripts.errors.commandCheck    as commandCheck
-
-# Remove this import if you intend on running your own instance #
-import scripts.api.cardsAgainstHumanity as cah
 
 from scripts.tools.utility import *
 
@@ -50,6 +48,10 @@ async def global_isbanned_check(ctx):
 
 ### ===================================== ###
 ### EVENTS ###
+# Listen for reactions. Used for starboard features
+@bot.event
+async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent): await starboard.reactionAdded(reactionContext, bot)
+
 @bot.event	
 async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException): await commandCheck.on_command_error(ctx, error)
 				
@@ -105,12 +107,6 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 	await qrTools.createQR(ctx, qr_data, style_mode)
 
 ### ===================================== ###
-
-
-# CAHDS AGAINST HUMANITY #
-# Remove this if you want to run your own instance
-@fritz.command(name="cah-index", description="Build a card against humanity")
-async def cah_index(ctx, prompt_index:str, response_index:str): await cah.read_sheet(ctx, prompt_index, response_index)
 
 # CAT PICTURE #
 @fritz.command(name="givecat", description="Get a random cat photo")

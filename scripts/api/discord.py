@@ -70,6 +70,21 @@ async def query_messages(ID):
 	except Exception as err:
 		print(str(err)); return 404
 	
+async def get_message(CHANNEL_ID, MESSAGE_ID):
+	""" Use the Discord API to get the specified message """
+
+	ENDPOINT = url + "/channels/%s/messages/%s"%(CHANNEL_ID, MESSAGE_ID)
+
+	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
+	except Exception as err: 
+		print(RED + str(err) + RESET)
+
+		return -1
+	
+	try: return json.loads(response.text)
+	except Exception as err:
+		print(str(err)); return 404
+
 async def trigger_typing(channel):
 	""" Trigger typing in `channel` \n\n Returns `0` on success \n\n Returns `-1` or `404` on error"""
 

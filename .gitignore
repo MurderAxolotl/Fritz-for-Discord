@@ -8,6 +8,7 @@ __pycache__/
 
 private
 cache
+config
 bin
 include
 logs
@@ -15,6 +16,9 @@ pyvenv.cfg
 .env
 .gitattributes
 credentials.json
+
+# Deprecated things I no longer wish to ship
+cardsAgainstHumanity.py
 
 # Distribution / packaging
 .Python

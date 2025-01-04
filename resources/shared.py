@@ -25,7 +25,7 @@ except: MINECRAFT_SERVER_PORT = ""
 # Globals #
 QUOTE_WEBHOOK = os.getenv("quote_webhook")
 REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"]
-INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True)
+INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True, reactions=True)
 
 CONTEXTS = {discord.InteractionContextType.bot_dm, discord.InteractionContextType.guild, discord.InteractionContextType.private_channel}
 INTEGRATION_TYPES={discord.IntegrationType.guild_install, discord.IntegrationType.user_install}
@@ -38,14 +38,12 @@ PATH = os.getenv("systemPath")
 # Configuration Parameters
 DISALLOW_PLATFORM_LEAKS = False # True / False; set to "True" to disable warnings about what platform Fritz is on. This only hides content Discord-side -- terminal flares will still be shown. THIS DOES NOT DISABLE THE /system OR /info COMMANDS
 DISALLOW_SYSINF_LEAKS = True # Prevents users not in REGISTERED_DEVELOPERS from using /system and /info commands
-ENABLE_LOGGING    = True # True / False; whether to log messages sent to channels Fritz has read access to
-LOGGING_BLACKLIST = [] # A list of NON-QUOTED server IDs to block logging
 
 BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users"))) # A list of NON-QUOTED user IDs to ban from using the bot
 
 # Why aren't these constants? #
 intents = INTENTS
-version = f"1.22.0-{PLATFORM_IDENTIFIER}"
+version = f"1.23.0-{PLATFORM_IDENTIFIER}"
 
 # Mappings because I can't be bothered to fix stuff #
 registeredDevelopers = REGISTERED_DEVELOPERS

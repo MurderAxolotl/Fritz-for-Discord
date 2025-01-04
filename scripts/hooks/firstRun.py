@@ -11,3 +11,4 @@ if not os.path.isdir(PATH + "/logs/guilds"): os.mkdir(PATH + "/logs/guilds"); pr
 if not os.path.isdir(PATH + "/logs/users"): os.mkdir(PATH + "/logs/users"); print(SEAFOAM + "FIRSTRUN: Created /logs/users" + RESET)
 if not os.path.isdir(PATH + "/cache"): os.mkdir(PATH + "/cache"); print(SEAFOAM + "FIRSTRUN: Created /cache" + RESET)
 if not os.path.isdir(PATH + "/cache/qr"): os.mkdir(PATH + "/cache/qr"); print(SEAFOAM + "FIRSTRUN: Created /cache/qr" + RESET)
+if not os.path.isdir(PATH + "/config"): os.mkdir(PATH + "/config"); print(SEAFOAM + "FIRSTRUN: Created /config" + RESET)
