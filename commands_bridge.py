@@ -152,6 +152,12 @@ async def qm(ctx, username:str=None): await oneOff.quoteMe(ctx, username)
 async def ping(ctx):
 	latency = round(bot.latency * 1000); await ctx.respond('Current latency: ' + str(latency) + "ms")
 
+@fritz.command(name='reload_starboard_config', description='Reloads the starboard config')
+async def reload_starboard_config(ctx):
+	await ctx.defer()
+	await starboard.reload()
+	await ctx.respond("Reloaded from disk")
+
 ### ===================================== ###
 ## INFORMATION COMMANDS ##
 @fritz.command(name="help", description="Stop and RTFM", pass_context=True)

@@ -5,14 +5,23 @@ import scripts.api.discord as pretty_discord
 from resources.shared import *
 
 with open(PATH + "/config/starboard.json", "r") as scf:
-	STARBOARD_CONFIG = json.loads(scf.read())
+	starboard_config = json.loads(scf.read())
 
-STARBOARD_SERVERS = str(STARBOARD_CONFIG.keys()).split("(")[1].split(")")[0]
+starboard_servers = str(starboard_config.keys()).split("(")[1].split(")")[0]
+
+async def reload(ctx):
+	""" Reloads the configuration from disk """
+	global starboard_config, starboard_servers
+
+	with open(PATH + "/config/starboard.json", "r") as scf:
+		starboard_config = json.loads(scf.read())
+
+	starboard_servers = str(starboard_config.keys()).split("(")[1].split(")")[0]
 
 async def reactionAdded(ctx:discord.RawReactionActionEvent, bot:discord.Bot):
 	reactionEmoji = ctx.emoji.name
 	ctx.guild_id
-	targetReactionEmoji = STARBOARD_CONFIG[str(ctx.guild_id)]["starboard_emoji"]
+	targetReactionEmoji = starboard_config[str(ctx.guild_id)]["starboard_emoji"]
 
 	if reactionEmoji == targetReactionEmoji:
 		messageObject = await pretty_discord.get_message(ctx.channel_id, ctx.message_id)
@@ -20,8 +29,8 @@ async def reactionAdded(ctx:discord.RawReactionActionEvent, bot:discord.Bot):
 
 		for reaction_emoji in reactions:
 			if targetReactionEmoji in str(reaction_emoji): # Why parse the json properly if it's not something I care about?
-				if reaction_emoji["count"] == int(STARBOARD_CONFIG[str(ctx.guild_id)]["count"]):
-					await forwardToStarboard(ctx, bot, int(STARBOARD_CONFIG[str(ctx.guild_id)]["forward_id"]))
+				if reaction_emoji["count"] == int(starboard_config[str(ctx.guild_id)]["count"]):
+					await forwardToStarboard(ctx, bot, int(starboard_config[str(ctx.guild_id)]["forward_id"]))
 
 async def forwardToStarboard(ctx:discord.RawReactionActionEvent, bot:discord.Bot, forwardChannelID:int):
 	SERVER_ID  = ctx.guild_id
@@ -38,12 +47,12 @@ async def forwardToStarboard(ctx:discord.RawReactionActionEvent, bot:discord.Bot
 
 	FORWARD_CHANNEL = SERVER.get_channel(forwardChannelID)
 
-	SHOULD_PING = bool(STARBOARD_CONFIG[str(ctx.guild_id)]["mention"])
+	SHOULD_PING = bool(starboard_config[str(ctx.guild_id)]["mention"])
 
-	if str(SERVER_ID) in STARBOARD_SERVERS: # This server has a starboard configured
+	if str(SERVER_ID) in starboard_config: # This server has a starboard configured
 		if SHOULD_PING: await FORWARD_CHANNEL.send(f"Original post by <@{MESSAGE.author.id}>")
 		else: await FORWARD_CHANNEL.send(f"Original post by {AUTHOR}")
-		
+
 		await MESSAGE.forward(FORWARD_CHANNEL)
 
 
