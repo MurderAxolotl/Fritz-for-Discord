@@ -5,8 +5,9 @@ labels: 'bug,broken command'
 body:
   - type: input
     id: command_name
-    label: Broken command
-    description: "The command that isn't working, E.G. /help"
+    attributes:
+      label: Broken command
+      description: "The command that isn't working, E.G. /help"
   - type: textarea
     id: bugrep
     attributes:
