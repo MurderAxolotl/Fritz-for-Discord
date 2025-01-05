@@ -1,0 +1,24 @@
+name: 'Broken Command'
+description: 'Use when you get the "Failed to execute command, check log for more details" error'
+labels: 'bug,broken command'
+
+body:
+  - type: input
+    id: command_name
+    label: Broken command
+    description: "The command that isn't working, E.G. /help"
+  - type: textarea
+    id: bugrep
+    attributes:
+      label: Detailed Explanation
+      description: "How did you trigger this error? If applicable, copy/paste the command parameters you used"
+      render: bash
+    validations:
+      required: true
+  - type: checkboxes
+    id: read
+    attributes:
+      label: "Confirm you have..."
+      options:
+        - label: Checked for existing issues
+        - label: Have not created a duplicate issue
