@@ -25,12 +25,23 @@ else: IS_DEBUGGING = False # If you want to enable debug mode, change this line
 # CONFIGURATION OPTIONS #
 #########################
 
+# True / False; setting to false will limit the
+# mcstatus command to the servers listed in 
+# ALLOWED_MCSTATUS_SERVERS constant
+# The mcstatus command can leak your IP!
+LIMIT_MCSTATUS_COMMAND = True
+
+# List of server IDs to allow the mcstatus
+# command in
+ALLOWED_MCSTATUS_SERVERS = ["1205374778861420554"]
+
 # True / False; set to "True" to disable warnings about what platform Fritz is on. 
 # This only hides content Discord-side -- terminal flares will still be shown. 
 # THIS DOES NOT DISABLE THE /system OR /info COMMANDS
 DISALLOW_PLATFORM_LEAKS = False
 
-# Prevents users not in REGISTERED_DEVELOPERS from using /system and /info commands
+# Prevents users not in REGISTERED_DEVELOPERS 
+# from using /system and /info commands
 DISALLOW_SYSINF_LEAKS = True
 
 # A list of unquoted user IDs to ban from the bot
@@ -100,5 +111,5 @@ class journal:
 
 # Why aren't these constants? #
 intents = INTENTS
-version = f"1.24-{PLATFORM_IDENTIFIER}"
+version = f"1.24.1-{PLATFORM_IDENTIFIER}"
 registeredDevelopers = REGISTERED_DEVELOPERS

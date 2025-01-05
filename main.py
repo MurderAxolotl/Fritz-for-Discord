@@ -112,7 +112,7 @@ async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
 # CHECK IF THE CONFIGURED MINECRAFT SERVER IS ONLINE #
-@fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
+@sonly.command(name="mcstatus", description="Check if the Minecraft server is online")
 async def mcstatus(ctx): await lumos_status.getServerStatus(ctx)
 
 ### ===================================== ###
@@ -149,13 +149,13 @@ async def trashpanda(ctx, video:bool=False): await animals.giveTrashPanda(ctx, v
 @fritz.command(name="raccfacc", description="Get a random raccoon fact")
 async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
 
-# GET A JOKE #
-@fritz.command(name="joke", description="Grab a random joke from the :sparkles: internet :sparkles:", pass_context = True)
-async def joke(ctx): await oneOff.getRandomJoke(ctx)
+# # GET A JOKE #
+# @fritz.command(name="joke", description="Grab a random joke from the :sparkles: internet :sparkles:", pass_context = True)
+# async def joke(ctx): await oneOff.getRandomJoke(ctx)
 
-# GET A QUOTE #
-@fritz.command(name="quote", description="Grab a random quote from the :sparkles: internet :sparkles:")
-async def quote(ctx): await oneOff.getRandomQuote(ctx)
+# # GET A QUOTE #
+# @fritz.command(name="quote", description="Grab a random quote from the :sparkles: internet :sparkles:")
+# async def quote(ctx): await oneOff.getRandomQuote(ctx)
 
 ### ===================================== ###
 ## SERVER-ONLY COMMANDS ##
@@ -170,15 +170,14 @@ async def qm(ctx, username:str=None): await oneOff.quoteMe(ctx, username)
 
 ### ===================================== ###
 ## BOT UTILITIES ##
+@fritz.command(name='bug', description='Report a bug')
+async def bugreport(ctx):
+	await ctx.respond(loadString("/bug_report").format(GITHUB_BASE=GIT_URL), ephemeral=True)
+
+
 @fritz.command(name='ping', description='Get Fritz\'s current ping')
 async def ping(ctx):
 	latency = round(bot.latency * 1000); await ctx.respond('Current latency: ' + str(latency) + "ms")
-
-@fritz.command(name='reload_starboard_config', description='Reloads the starboard config')
-async def reload_starboard_config(ctx):
-	await ctx.defer()
-	await starboard.reload()
-	await ctx.respond("Reloaded from disk")
 
 ### ===================================== ###
 ## INFORMATION COMMANDS ##
@@ -197,8 +196,8 @@ async def help(ctx):
 	response = help_messages.about_system # Base text
 
 	if not DISALLOW_PLATFORM_LEAKS:
-		if IS_ANDROID  : response = response + "\n-" + loadString("/android/command_flare")
-		if IS_DEBUGGING: response = response + "\n-" + loadString("/debug/command_flare")
+		if IS_ANDROID  : response = response + "\n" + loadString("/android/command_flare")
+		if IS_DEBUGGING: response = response + "\n" + loadString("/debug/command_flare")
 	
 	await ctx.respond(response, ephemeral=True)
 
@@ -245,17 +244,19 @@ async def downloadMessages(ctx, id):
 ### ===================================== ###
 
 try:
-	print(MAGENTA + f"Fritz {version}" + RESET)
+	match [IS_DEBUGGING, IS_ANDROID]:
+		case [False, False]: print(MAGENTA + f"Fritz {version}" + RESET)
+		case [True, False] : print(MAGENTA + f"Fritz {version}" + RED + " (debug mode)" + RESET)
+		case [False, True] : print(MAGENTA + f"Fritz {version}" + RED + " (experimental)" + RESET)
+		case [True, True]  : print(MAGENTA + f"Fritz {version}" + RED + " (debug, experimental)" + RESET)
 
-	if IS_DEBUGGING: print(RED + loadString("/debug/startup_flare") + RESET)
-	if IS_ANDROID: print(RED + loadString("/android/startup_flare") + RESET)
+	print("")
 
 	bot.run(TOKEN)
 
 except Exception as err:
-	print(MAGENTA + "[Commands] " + RED + "Failed to start slash command features")
+	print(MAGENTA + "FATAL: " + RED + "Failed to start slash command features")
 	print("   -> " + str(err) + RESET)
-	print(YELLOW + "Slash commands are unavailable" + RESET)
 
 	journal.log_fatal(f"Failed to start commands process: " + str(err))
 	journal.log_fatal("This process is critical. Fritz cannot run without it")

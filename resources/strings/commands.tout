@@ -11,8 +11,6 @@ SUPPORTED COMMANDS:
 - **givelynx**: Get a random lynx picture
 - **giveracc** *[get_video]*: Get a random raccoon picture or video. Set *[get_video]* to true to get a video
 - **raccfacc**: Get a random raccoon fact
-- ~~**joke**~~: Get a random joke from the internet
-- **quote**: Get a random quote from the internet
 - **quoteme** *[username]*: Get a random quote from yourself. Specify *[username]* to get a quote from someone else
 
 **\# QR Tools #**

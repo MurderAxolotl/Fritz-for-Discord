@@ -5,7 +5,7 @@
 import os, sys, requests, json
 from datetime import datetime
 
-from resources.shared import MINECRAFT_SERVER_PORT
+from resources.shared import MINECRAFT_SERVER_PORT, LIMIT_MCSTATUS_COMMAND, ALLOWED_MCSTATUS_SERVERS
 
 ENDPOINT = "https://api.mcsrvstat.us/3"
 
@@ -17,6 +17,18 @@ def unixToISO(unix_timestamp:int):
 
 async def getServerStatus(ctx):
 	await ctx.defer()
+
+	# Check if the command can even run here
+	if LIMIT_MCSTATUS_COMMAND:
+		try: SERVER_ID = str(ctx.guild.id)
+		except:
+			# Not in a server, not allowed
+			await ctx.respond("This command cannot be used here")
+			return
+		
+		if not SERVER_ID in ALLOWED_MCSTATUS_SERVERS:
+			await ctx.respond("This command cannot be used in this server")
+			return
 
 	# Blocking call, too lazy to make it async
 	apiResponse = requests.get(f"{ENDPOINT}/{IP}")

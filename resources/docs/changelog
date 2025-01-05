@@ -262,3 +262,9 @@
 	- Moved user-editable values to the top of `shared.py`
 	- Removed `main.py` and moved `commands_brige.py` to `main.py`
 	- Starboards now use an SQLite DB to keep track of what messages have been starboarded
+
+### 1.24.1
+	- Added an option to limit the `mcstatus` command to certain servers
+	- Removed `joke` and `quote` commands
+	- Cleaned up startup messages
+	- Added `bug` command, to report bugs (obviously)

@@ -1,0 +1,12 @@
+First, thank you for doing your part and reporting a bug!
+Second, I want to clarify what you should **not** report as a bug:
+
+- **Commands being removed**: This is most likely not a bug. I add and remove commands frequently
+- **Outdated command list**: This is not a bug, this is a documentation issue. I'll fix it eventually
+- **User commands not working in other servers**: Servers can choose to disable user apps. I cannot do anything about this
+- **Fritz being offline**: This is a serious issue. Directly contact Theo on Discord
+
+With that out of the way, let's get that bug report filled out!
+
+If you're reporting a broken command ("Failed to execute command, check log for more details"), [click here](<{GITHUB_BASE}/issues/new?assignees=&labels=bug%2Cbroken+command&projects=&template=broken_command.yml>)
+For other kinds of bugs, [click here](<{GITHUB_BASE}/issues/new>)
