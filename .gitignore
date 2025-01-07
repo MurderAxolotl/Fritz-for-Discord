@@ -16,6 +16,7 @@ pyvenv.cfg
 .env
 .gitattributes
 credentials.json
+failed.sh
 
 # Deprecated things I no longer wish to ship
 cardsAgainstHumanity.py

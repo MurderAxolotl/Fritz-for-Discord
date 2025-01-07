@@ -112,7 +112,7 @@ async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query
 async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
 # CHECK IF THE CONFIGURED MINECRAFT SERVER IS ONLINE #
-@sonly.command(name="mcstatus", description="Check if the Minecraft server is online")
+@fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
 async def mcstatus(ctx): await lumos_status.getServerStatus(ctx)
 
 ### ===================================== ###
