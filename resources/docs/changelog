@@ -271,3 +271,6 @@
 
 ### 1.24.2
 	- Removed broken `quoteme` command
+
+### 1.24.3
+	- Added on-disk logging
