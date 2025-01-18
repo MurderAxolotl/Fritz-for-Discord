@@ -160,10 +160,6 @@ async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
 ### ===================================== ###
 ## SERVER-ONLY COMMANDS ##
 
-# QUOTE URSELF #
-@sonly.command(name="quoteme", description="Get a random quote from yourself")
-async def qm(ctx, username:str=None): await oneOff.quoteMe(ctx, username)
-
 ### ===================================== ###
 ## USER MANAGEMENT ##
 

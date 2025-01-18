@@ -268,3 +268,6 @@
 	- Removed `joke` and `quote` commands
 	- Cleaned up startup messages
 	- Added `bug` command, to report bugs (obviously)
+
+### 1.24.2
+	- Removed broken `quoteme` command
