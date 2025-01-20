@@ -70,8 +70,6 @@ else:                                             IS_ANDROID = False
 # Secrets #
 APPLICATIONID = os.getenv("applicationID")
 TOKEN         = os.getenv("discordToken")
-CT_NAMES      = json.loads(os.getenv("ct_name_map"))
-TEST_NAMES    = json.loads(os.getenv("test_name_map"))
 PLATFORM_IDENTIFIER = "desktop" if not IS_ANDROID else "android"
 
 SPOTIFY_ID = os.getenv("spotifyID")
@@ -82,6 +80,7 @@ except: MINECRAFT_SERVER_PORT = ""
 
 # Globals #
 QUOTE_WEBHOOK = os.getenv("quote_webhook")
+QUOTE_ID = os.getenv("quotebook_id")
 REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"] # Okay, well, you can probably safely edit this
 INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True, reactions=True)
 
@@ -96,7 +95,8 @@ PATH = os.getenv("systemPath")
 LOG_SEVERITY = ["EMERGENCY", "ALERT", "CRITICAL", "ERROR", "WARNING", "NOTICE", "INFO"]
 
 class journal:
-	""" Interface with systemd logs """
+	""" Interface with systemd logs\n
+	Severity: `0=emergency, alert=1, 2=critical, 3=error, 4=warning, 5=notice, 6=info` """
 	def logDisk(message:str, severity:int=6):
 		LOG_LOC = PATH + "/logs/journal"
 		
@@ -112,8 +112,7 @@ class journal:
 			with open(LOG_LOC, "x") as log_file: log_file.write(template.format(date=today, time=current_time, sev=LOG_SEVERITY[severity], entry=message))
 
 	def log(message:str, severity:int=6):
-		""" 
-		Write a log message\n
+		""" Write a log message\n
 		Severity: `0=emergency, alert=1, 2=critical, 3=error, 4=warning, 5=notice, 6=info`
 		"""
 
@@ -136,5 +135,4 @@ class journal:
 
 # Why aren't these constants? #
 intents = INTENTS
-version = f"1.24.2-{PLATFORM_IDENTIFIER}"
-registeredDevelopers = REGISTERED_DEVELOPERS
+version = f"1.25.0-{PLATFORM_IDENTIFIER}"

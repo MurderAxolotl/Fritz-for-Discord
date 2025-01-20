@@ -274,3 +274,9 @@
 
 ### 1.24.3
 	- Added on-disk logging
+
+### 1.25.0
+	- Added a new quotebook option (forward instead of copy-write)
+	- Fixed double-sent error messages
+	- Fixed `createConfigs`
+	- Significantly improved error handling

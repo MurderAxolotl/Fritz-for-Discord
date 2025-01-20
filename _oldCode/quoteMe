@@ -1,0 +1,37 @@
+async def quoteMe(ctx, uname):
+	with ctx.typing():
+
+		if isinstance(ctx.guild, NoneType): await ctx.respond("Must be in a guild"); return
+
+		allc = []
+
+		for file in os.listdir(sys.path[0] + f"/logs/guilds/{str(ctx.guild.id)}"):
+			allc.append(file)
+
+		channel = allc[random.randint(0,len(allc)-1)]
+		
+		guildDir = sys.path[0] + f"/logs/guilds/{str(ctx.guild.id)}"
+		# selectedLog = open(guildDir + f"/{channel}", "r")
+		selectedLog = open(guildDir + f"/{ctx.channel.id}.log", "r")
+
+		userMessages = []
+		me = True
+
+		if uname == None: 
+			uname = str(ctx.author).split("#")[0]
+		else: me = False
+
+		for message in selectedLog.readlines():
+			if uname in message: 
+				userMessages.append(message)
+
+		if len(userMessages) == 0: 
+			await ctx.respond("Couldn't get any quotes. Try again, maybe?")
+			return
+
+		msg = userMessages[random.randint(0,len(userMessages)-1)]
+		msg = msg.split(maxsplit=2)
+		oncesaid = str(msg[2]).split(":", maxsplit=1)[1]
+
+		if me: await ctx.respond(f"*You once said...* {oncesaid}")
+		else: await ctx.respond(f"*{uname} once said...* {oncesaid}")

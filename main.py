@@ -35,11 +35,10 @@ loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
 ### COMMAND GROUPS ###
-fritz = bot.create_group("f",          "Fritz's generic commands",           contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
-inDev = bot.create_group("f_unstable", "Unstable and under development",     contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
-qr    = bot.create_group("qr",         "Tools relating to QR codes",         contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
-zdev  = bot.create_group("f_dev",      "Developer-only utilities",           contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
-remv  = bot.create_group("depricated", "Depricated commands, removing soon", contexts=CONTEXTS,             integration_types=INTEGRATION_TYPES)
+fritz = bot.create_group("f",          "Fritz's generic commands",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
+inDev = bot.create_group("f_unstable", "Unstable and under development",     contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
+qr    = bot.create_group("qr",         "Tools relating to QR codes",         contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
+zdev  = bot.create_group("f_dev",      "Developer-only utilities",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
 
 ### SERVER-ONLY COMMANDS ###
 sonly = bot.create_group("fs",         "Fritz's server-only commands",   contexts=CONTEXTS_SERVER_ONLY, integration_types=INTEGRATION_TYPES_SERVER_ONLY)
@@ -62,15 +61,6 @@ async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent): a
 async def on_message(message):
 	if str(message.content).lower() == "all stay strong": await message.channel.send("We live eternally")
 
-# Listen for insufficient permission events
-@bot.event
-async def on_command_error(ctx, error):
-	if isinstance(error, commands.errors.CheckFailure):
-		await ctx.send('You don\'t have the required role')
-
-	else:
-		await ctx.send(str(error))
-
 #  Listen for command errors
 @bot.event	
 async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException): await commandCheck.on_command_error(ctx, error)
@@ -85,8 +75,8 @@ async def on_ready():
 		print(YELLOW + f"{len(BLACKLISTED_USERS)} users in blacklist" + RESET)
 
 ### ===================================== ###
-## RIGHT-CLICK COMMANDS ##
-@bot.message_command(name="Add to Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+### RIGHT-CLICK COMMANDS ###
+@bot.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 @isTheo()
 async def quotebookContext(ctx, message:discord.Message):
 	authorName = str(message.author).split("#")[0]
@@ -96,8 +86,13 @@ async def quotebookContext(ctx, message:discord.Message):
 
 	await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
 
+@bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+@isTheo()
+async def forwardToQuotebook(ctx, message:discord.Message):
+	await oneOff.forwardToQuotebook(ctx, message, bot)
+
 ### ===================================== ###
-## API COMMANDS ##
+### API COMMANDS ###
 
 # Search PronounsPage for a user #
 @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
@@ -116,7 +111,7 @@ async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx
 async def mcstatus(ctx): await lumos_status.getServerStatus(ctx)
 
 ### ===================================== ###
-## QR CODES ##
+### QR CODES ###
 
 # SCAN A QR CODE #
 @qr.command(name="scan", description="Scan a QR code", pass_context=True)
@@ -129,6 +124,7 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 	await qrTools.createQR(ctx, qr_data, style_mode)
 
 ### ===================================== ###
+### ANIMAL CONTENT ###
 
 # CAT PICTURE #
 @fritz.command(name="givecat", description="Get a random cat photo")
@@ -146,42 +142,33 @@ async def givefox(ctx): await animals.giveFox(ctx)
 @fritz.command(name="giveracc", description="Get a random raccoon photo (or video)")
 async def trashpanda(ctx, video:bool=False): await animals.giveTrashPanda(ctx, video)
 
+# RACOON FACTS #
 @fritz.command(name="raccfacc", description="Get a random raccoon fact")
 async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
 
-# # GET A JOKE #
-# @fritz.command(name="joke", description="Grab a random joke from the :sparkles: internet :sparkles:", pass_context = True)
-# async def joke(ctx): await oneOff.getRandomJoke(ctx)
-
-# # GET A QUOTE #
-# @fritz.command(name="quote", description="Grab a random quote from the :sparkles: internet :sparkles:")
-# async def quote(ctx): await oneOff.getRandomQuote(ctx)
+### ===================================== ###
+### SERVER-ONLY COMMANDS ###
 
 ### ===================================== ###
-## SERVER-ONLY COMMANDS ##
+### USER MANAGEMENT ###
 
 ### ===================================== ###
-## USER MANAGEMENT ##
-
-
-### ===================================== ###
-## BOT UTILITIES ##
+### BOT UTILITIES ###
 @fritz.command(name='bug', description='Report a bug')
 async def bugreport(ctx):
 	await ctx.respond(loadString("/bug_report").format(GITHUB_BASE=GIT_URL), ephemeral=True)
-
 
 @fritz.command(name='ping', description='Get Fritz\'s current ping')
 async def ping(ctx):
 	latency = round(bot.latency * 1000); await ctx.respond('Current latency: ' + str(latency) + "ms")
 
 ### ===================================== ###
-## INFORMATION COMMANDS ##
+### INFORMATION COMMANDS ###
 @fritz.command(name="help", description="Stop and RTFM", pass_context=True)
 async def help(ctx): 
 	await ctx.respond(loadString("/commands"), ephemeral=True)
 
-@fritz.command(name="changelog", description="See recent and past changes to Fritz", pass_context=True)
+@fritz.command(name="changelog", description="See past changes to Fritz", pass_context=True)
 async def changelog(ctx): await ctx.respond(file=help_messages.changelog, ephemeral=True)
 
 ## Get info about Fritz ##
@@ -201,23 +188,21 @@ async def help(ctx):
 async def help(ctx):
 	await ctx.respond(help_messages.about_fritz)
 
-
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
 async def getInvite(ctx): 
 	await ctx.respond("NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, ephemeral=True)
 
-@fritz.command(name='github_url', description='Get Fritz\'s Github URL')
+@fritz.command(name='github_url', description='Get Fritz\'s Git URL')
 async def getGit(ctx): await ctx.respond(GIT_URL)
 
 ### ===================================== ###
-## DEVELOPER ONLY ## 
+### DEVELOPER ONLY ### 
 @zdev.command(name='shutdown', description='DEV: Shuts down Fritz, if possible. Does not work on Android', pass_context=True)
 @isDeveloper()
 async def initiateShutdown(ctx):
 	await ctx.respond(":saluting_face:")
 
 	os.system("sudo systemctl stop fritz")
-# lmao can you tell this code is from the first version of Fritz?
 
 @zdev.command(name='download_messages', description='Prints the last 50 messages in a channel. Use `id` to set the channel')
 @isDeveloper()
@@ -251,11 +236,7 @@ try:
 	bot.run(TOKEN)
 
 except Exception as err:
-	print(MAGENTA + "FATAL: " + RED + "Failed to start slash command features")
+	print(MAGENTA + "FATAL: " + RED + "Failed to start Fritz")
 	print("   -> " + str(err) + RESET)
 
-	journal.log_fatal(f"Failed to start commands process: " + str(err))
-	journal.log_fatal("This process is critical. Fritz cannot run without it")
-
-	# Prevent any further damage, shut down immediately
-	os.system("sudo systemctl stop fritz")
+	journal.log_fatal(f"Failed to start: " + str(err))
