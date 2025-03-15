@@ -34,7 +34,7 @@ LIMIT_MCSTATUS_COMMAND = True
 
 # List of server IDs to allow the mcstatus
 # command in
-ALLOWED_MCSTATUS_SERVERS = ["1205374778861420554"]
+ALLOWED_MCSTATUS_SERVERS = []
 
 # True / False; set to "True" to disable warnings about what platform Fritz is on. 
 # This only hides content Discord-side -- terminal flares will still be shown. 
