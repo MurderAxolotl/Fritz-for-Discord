@@ -146,6 +146,14 @@ async def trashpanda(ctx, video:bool=False): await animals.giveTrashPanda(ctx, v
 @fritz.command(name="raccfacc", description="Get a random raccoon fact")
 async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
 
+# WAH IMAGE #
+@fritz.command(name="givewah", description="Get a random red panda photo")
+async def wahimage(ctx): await animals.giveWah(ctx)
+
+# WAH FACT #
+@fritz.command(name="wahfact", description="Get a random red panda fact")
+async def wahfact(ctx): await animals.giveWahFact(ctx)
+
 ### ===================================== ###
 ### SERVER-ONLY COMMANDS ###
 

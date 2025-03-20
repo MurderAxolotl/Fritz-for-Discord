@@ -9,6 +9,8 @@ import asyncio, json, requests
 
 loop = asyncio.get_event_loop()
 
+ANIMAL_IMAGE_FAILED_RESPONSE = "Failed to get an image"
+
 async def giveCat(ctx):
 	await ctx.defer()
 
@@ -30,7 +32,7 @@ async def giveTrashPanda(ctx, getVideo):
 		await ctx.respond(responseJSON["data"]["url"])
 
 	else:
-		await ctx.respond("API said no :(")
+		await ctx.respond(ANIMAL_IMAGE_FAILED_RESPONSE)
 
 async def giveRaccFacc(ctx):
 	await ctx.defer()
@@ -45,7 +47,7 @@ async def giveRaccFacc(ctx):
 		await ctx.respond(responseJSON["data"]["fact"])
 
 	else:
-		await ctx.respond("API said no :(")
+		await ctx.respond(ANIMAL_IMAGE_FAILED_RESPONSE)
 
 async def giveLynx(ctx):
 	await ctx.defer()
@@ -59,3 +61,17 @@ async def giveFox(ctx):
 	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://some-random-api.com/animal/fox"))
 
 	await ctx.respond(json.loads(response.text)["image"])
+
+async def giveWah(ctx):
+	await ctx.defer()
+
+	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://some-random-api.com/animal/red_panda"))
+
+	await ctx.respond(json.loads(response.text)["image"])
+
+async def giveWahFact(ctx):
+	await ctx.defer()
+
+	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://some-random-api.com/animal/red_panda"))
+
+	await ctx.respond(json.loads(response.text)["fact"])

@@ -17,6 +17,8 @@ pyvenv.cfg
 .gitattributes
 credentials.json
 failed.sh
+.stfolder/
+.vscode/
 
 # Deprecated things I no longer wish to ship
 cardsAgainstHumanity.py
