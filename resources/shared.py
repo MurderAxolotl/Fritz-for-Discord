@@ -34,7 +34,7 @@ LIMIT_MCSTATUS_COMMAND = True
 
 # List of server IDs to allow the mcstatus
 # command in
-ALLOWED_MCSTATUS_SERVERS = []
+ALLOWED_MCSTATUS_SERVERS = ["1264449432057806920"]
 
 # True / False; set to "True" to disable warnings about what platform Fritz is on. 
 # This only hides content Discord-side -- terminal flares will still be shown. 
@@ -75,6 +75,8 @@ PLATFORM_IDENTIFIER = "desktop" if not IS_ANDROID else "android"
 SPOTIFY_ID = os.getenv("spotifyID")
 SPOTIFY_SECRET = os.getenv("spotifySecret")
 
+try: MINECRAFT_SERVER_FIXED_ADDRESS = os.getenv("MINECRAFT_ADDRESS")
+except: MINECRAFT_SERVER_FIXED_ADDRESS = ""
 try: MINECRAFT_SERVER_PORT = os.getenv("MINECRAFT_PORT")
 except: MINECRAFT_SERVER_PORT = ""
 

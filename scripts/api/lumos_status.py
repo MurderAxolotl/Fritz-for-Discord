@@ -5,11 +5,12 @@
 import os, sys, requests, json
 from datetime import datetime
 
-from resources.shared import MINECRAFT_SERVER_PORT, LIMIT_MCSTATUS_COMMAND, ALLOWED_MCSTATUS_SERVERS
+from resources.shared import MINECRAFT_SERVER_PORT, LIMIT_MCSTATUS_COMMAND, ALLOWED_MCSTATUS_SERVERS, MINECRAFT_SERVER_FIXED_ADDRESS
 
 ENDPOINT = "https://api.mcsrvstat.us/3"
 
-LIVE_IP = requests.get('https://api.ipify.org').content.decode('utf8')
+# LIVE_IP = requests.get('https://api.ipify.org').content.decode('utf8')
+LIVE_IP = MINECRAFT_SERVER_FIXED_ADDRESS
 IP = f"{LIVE_IP}:{MINECRAFT_SERVER_PORT}"
 
 def unixToISO(unix_timestamp:int):
