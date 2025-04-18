@@ -17,10 +17,13 @@ pyvenv.cfg
 .gitattributes
 credentials.json
 failed.sh
+<<<<<<< HEAD
 .stfolder/
 .vscode/
 gitkey
 gitkey.pub
+=======
+>>>>>>> parent of 95ef87f (New wah commands)
 
 # Deprecated things I no longer wish to ship
 cardsAgainstHumanity.py
