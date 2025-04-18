@@ -19,6 +19,8 @@ credentials.json
 failed.sh
 .stfolder/
 .vscode/
+gitkey
+gitkey.pub
 
 # Deprecated things I no longer wish to ship
 cardsAgainstHumanity.py

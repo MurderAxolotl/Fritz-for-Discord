@@ -137,4 +137,4 @@ class journal:
 
 # Why aren't these constants? #
 intents = INTENTS
-version = f"1.25.0-{PLATFORM_IDENTIFIER}"
+version = f"1.25.1-{PLATFORM_IDENTIFIER}"
