@@ -61,7 +61,7 @@ async def getServerStatus(ctx, sendPlayerList=False):
 
 			for playerInstance in responseJSON["players"]["list"]:
 				if detectedPlayers == "": detectedPlayers = playerInstance["name"]
-				else: detectedPlayers = ", " + playerInstance["name"]
+				else: detectedPlayers = detectedPlayers + ", " + playerInstance["name"]
 
 		await ctx.respond(f"Server is online!\nIP: `{IP}`\nPlayers: {PLAYER_TEXT}\n{detectedPlayers}\n\n{CACHE_TEXT}")
 
