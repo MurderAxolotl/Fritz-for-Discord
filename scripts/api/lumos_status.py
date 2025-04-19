@@ -16,7 +16,7 @@ IP = f"{LIVE_IP}:{MINECRAFT_SERVER_PORT}"
 def unixToISO(unix_timestamp:int):
 	return datetime.utcfromtimestamp(unix_timestamp).strftime('%Y-%m-%d %H:%M:%S') #type:ignore Does it look like I give a shit if this is depricated?
 
-async def getServerStatus(ctx):
+async def getServerStatus(ctx, sendPlayerList=False):
 	await ctx.defer()
 
 	# Check if the command can even run here
@@ -55,6 +55,14 @@ async def getServerStatus(ctx):
 
 	if ONLINE:
 		await ctx.respond(f"Server is online!\nIP: `{IP}`\nPlayers: {PLAYER_TEXT}\n\n{CACHE_TEXT}")
+
+		if sendPlayerList:
+			# Build the string list of players
+			detectedPlayers = ""
+
+			for playerInstance in responseJSON["players"]["list"]:
+				if detectedPlayers == "": detectedPlayers = playerInstance["name"]
+				else: detectedPlayers = ", " + playerInstance["name"]
 
 	else:
 		await ctx.respond(f"Server is offline!\nIP: `{IP}`\n{CACHE_TEXT}")
