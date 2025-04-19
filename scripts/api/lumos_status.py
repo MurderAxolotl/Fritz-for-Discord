@@ -17,7 +17,7 @@ def unixToISO(unix_timestamp:int):
 	return datetime.utcfromtimestamp(unix_timestamp).strftime('%Y-%m-%d %H:%M:%S') #type:ignore Does it look like I give a shit if this is depricated?
 
 async def getServerStatus(ctx, sendPlayerList=False):
-	await ctx.defer()
+	await ctx.defer(ephemeral=True)
 
 	# Check if the command can even run here
 	if LIMIT_MCSTATUS_COMMAND:
