@@ -62,8 +62,12 @@ async def getServerStatus(ctx, sendPlayerList=False):
 			for playerInstance in responseJSON["players"]["list"]:
 				if detectedPlayers == "": detectedPlayers = playerInstance["name"]
 				else: detectedPlayers = detectedPlayers + ", " + playerInstance["name"]
+				
+			if detectedPlayers != "": detectedPlayers = "\n" + detectedPlayers
 
-		await ctx.respond(f"Server is online!\nIP: `{IP}`\nPlayers: {PLAYER_TEXT}\n{detectedPlayers}\n\n{CACHE_TEXT}", ephemeral=True)
+		else: detectedPlayers = ""
+
+		await ctx.respond(f"Server is online!\nIP: `{IP}`\nPlayers: {PLAYER_TEXT}{detectedPlayers}\n\n{CACHE_TEXT}", ephemeral=True)
 
 	else:
 		await ctx.respond(f"Server is offline!\nIP: `{IP}`\n{CACHE_TEXT}", ephemeral=True)
