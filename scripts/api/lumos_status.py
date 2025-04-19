@@ -54,7 +54,6 @@ async def getServerStatus(ctx, sendPlayerList=False):
 	PLAYER_TEXT = f"{PLAYERS_ONLINE} online / {PLAYERS_MAX} max"
 
 	if ONLINE:
-		await ctx.respond(f"Server is online!\nIP: `{IP}`\nPlayers: {PLAYER_TEXT}\n\n{CACHE_TEXT}")
 
 		if sendPlayerList:
 			# Build the string list of players
@@ -63,6 +62,8 @@ async def getServerStatus(ctx, sendPlayerList=False):
 			for playerInstance in responseJSON["players"]["list"]:
 				if detectedPlayers == "": detectedPlayers = playerInstance["name"]
 				else: detectedPlayers = ", " + playerInstance["name"]
+
+		await ctx.respond(f"Server is online!\nIP: `{IP}`\nPlayers: {PLAYER_TEXT}\n{detectedPlayers}\n\n{CACHE_TEXT}")
 
 	else:
 		await ctx.respond(f"Server is offline!\nIP: `{IP}`\n{CACHE_TEXT}")
