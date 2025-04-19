@@ -108,7 +108,7 @@ async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx
 
 # CHECK IF THE CONFIGURED MINECRAFT SERVER IS ONLINE #
 @fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
-async def mcstatus(ctx, sendPlayerList:bool=False): await lumos_status.getServerStatus(ctx, sendPlayerList)
+async def mcstatus(ctx, sendplayerlist:bool=False): await lumos_status.getServerStatus(ctx, sendplayerlist)
 
 ### ===================================== ###
 ### QR CODES ###
