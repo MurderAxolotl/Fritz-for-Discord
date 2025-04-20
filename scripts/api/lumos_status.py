@@ -59,14 +59,16 @@ async def getServerStatus(ctx, sendPlayerList=False):
 			# Build the string list of players
 			detectedPlayers = ""
 
-			if str(round(int(PLAYERS_ONLINE))) != 0:
-				for playerInstance in responseJSON["players"]["list"]:
-					if detectedPlayers == "": detectedPlayers = playerInstance["name"]
-					else: detectedPlayers = detectedPlayers + ", " + playerInstance["name"]
+			try:
+				if str(round(int(PLAYERS_ONLINE))) != 0:
+					for playerInstance in responseJSON["players"]["list"]:
+						if detectedPlayers == "": detectedPlayers = playerInstance["name"]
+						else: detectedPlayers = detectedPlayers + ", " + playerInstance["name"]
+						
+					if detectedPlayers != "": detectedPlayers = "\n" + detectedPlayers
 					
-				if detectedPlayers != "": detectedPlayers = "\n" + detectedPlayers
-				
-			else: detectedPlayers = ""
+				else: detectedPlayers = ""
+			except: detectedPlayers = ""
 
 		else: detectedPlayers = ""
 
