@@ -94,17 +94,20 @@ async def forwardToQuotebook(ctx, message:discord.Message):
 ### ===================================== ###
 ### API COMMANDS ###
 
-# Search PronounsPage for a user #
-@fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
-async def pronounspage(ctx, query:str): await pronouns.pp_searchUser(ctx, query)
+# PP commands have nearly zero usage, depricated
+# # Search PronounsPage for a user #
+# @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
+# async def pronounspage(ctx, query:str): await pronouns.pp_searchUser(ctx, query)
 
-# Search PronounsPage for a term #
-@fritz.command(name="pp_terms", description='Search PronounsPage for a tern', pass_context=True)
-async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query)
+# # Search PronounsPage for a term #
+# @fritz.command(name="pp_terms", description='Search PronounsPage for a tern', pass_context=True)
+# async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query)
 
 # SEARCH SPOTIFY #
-@fritz.command(name="seasify", description='Search Spotify for a song', pass_context = True)
-async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
+# Command is broken and depricated, as I no longer use Spotify
+# If anyone actually uses this and misses the functionality, open a pull request fixing the command
+# @fritz.command(name="seasify", description='Search Spotify for a song', pass_context = True)
+# async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
 # CHECK IF THE CONFIGURED MINECRAFT SERVER IS ONLINE #
 @fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
@@ -126,6 +129,7 @@ async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.de
 ### ===================================== ###
 ### ANIMAL CONTENT ###
 
+# PICTURES #
 # CAT PICTURE #
 @fritz.command(name="givecat", description="Get a random cat photo")
 async def givecat(ctx): await animals.giveCat(ctx)
@@ -142,13 +146,14 @@ async def givefox(ctx): await animals.giveFox(ctx)
 @fritz.command(name="giveracc", description="Get a random raccoon photo (or video)")
 async def trashpanda(ctx, video:bool=False): await animals.giveTrashPanda(ctx, video)
 
-# RACOON FACTS #
-@fritz.command(name="raccfacc", description="Get a random raccoon fact")
-async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
-
 # WAH IMAGE #
 @fritz.command(name="givewah", description="Get a random red panda photo")
 async def wahimage(ctx): await animals.giveWah(ctx)
+
+# FACTS #
+# RACOON FACTS #
+@fritz.command(name="raccfacc", description="Get a random raccoon fact")
+async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
 
 # WAH FACT #
 @fritz.command(name="wahfact", description="Get a random red panda fact")
@@ -215,7 +220,7 @@ async def initiateShutdown(ctx):
 @zdev.command(name='download_messages', description='Prints the last 50 messages in a channel. Use `id` to set the channel')
 @isDeveloper()
 async def downloadMessages(ctx, id):
-	await ctx.defer()
+	await ctx.defer(ephemeral="True")
 
 	messageList = await discord_fancy.query_messages(id)
 
@@ -228,7 +233,7 @@ async def downloadMessages(ctx, id):
 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
 		index += 1
 
-	await ctx.respond("Dumped to console", ephemeral="True")
+	await ctx.respond("Dumped to console")
 
 ### ===================================== ###
 
