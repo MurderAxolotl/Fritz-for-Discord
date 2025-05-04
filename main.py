@@ -77,9 +77,8 @@ async def on_ready():
 ### ===================================== ###
 ### RIGHT-CLICK COMMANDS ###
 @bot.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-@isTheo()
 async def quotebookContext(ctx, message:discord.Message):
-	authorName = str(message.author).split("#")[0]
+	authorName = message.author.display_name
 	author     = message.author.id
 	text       = message.content
 	avat       = message.author.avatar.url
@@ -87,7 +86,6 @@ async def quotebookContext(ctx, message:discord.Message):
 	await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
 
 @bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-@isTheo()
 async def forwardToQuotebook(ctx, message:discord.Message):
 	await oneOff.forwardToQuotebook(ctx, message, bot)
 
