@@ -7,6 +7,8 @@ import os
 import asyncio
 import requests
 import discord
+import random
+import string
 
 from discord.ext import commands 
 from resources.colour import *
@@ -55,6 +57,9 @@ def isTheo():
 		
 	
 	return commands.check(predicate)
+
+def scramble(N=32):
+	return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(N))
 
 ## Misc utilities ## 
 # This should not be async. I don't want it to be async. I don't care if it causes blockages.
