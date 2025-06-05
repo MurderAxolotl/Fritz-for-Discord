@@ -3,7 +3,7 @@
 import os
 
 from resources.shared import PATH
-from resources.colour import *
+from resources.colour import SEAFOAM, RESET
 
 if not os.path.isdir(PATH + "/logs"): os.mkdir(PATH + "/logs"); print(SEAFOAM + "FIRSTRUN: Created /logs" + RESET)
 if not os.path.isdir(PATH + "/logs/system"): os.mkdir(PATH + "/logs/system"); print(SEAFOAM + "FIRSTRUN: Created /logs/system" + RESET)

@@ -10,10 +10,12 @@ import discord
 import random
 import string
 
-from discord.ext import commands 
+import scripts.tools.journal as journal
+
+from discord.ext import commands
 from resources.colour import *
 
-from resources.shared import PATH, REGISTERED_DEVELOPERS, journal
+from resources.shared import PATH, REGISTERED_DEVELOPERS
 
 from discord.ext import commands
 
@@ -37,35 +39,35 @@ def swiperNoSwiping():
 	async def predicate(ctx):
 		if not await ctx.bot.is_owner(ctx.author): raise swiperNoSwipingError("Swiper no Swiping")
 		return True
-	
+
 	return commands.check(predicate)
 
 def isDeveloper():
 	async def predicate(ctx):
 		if not str(ctx.author.id) in REGISTERED_DEVELOPERS: raise commands.NotOwner
-		
+
 		return True
-		
-	
+
+
 	return commands.check(predicate)
 
 def isTheo():
 	async def predicate(ctx):
 		if not str(ctx.author.id) == "1063584978081951814": raise commands.NotOwner
-		
+
 		return True
-		
-	
+
+
 	return commands.check(predicate)
 
 def scramble(N=32):
 	return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(N))
 
-## Misc utilities ## 
+## Misc utilities ##
 # This should not be async. I don't want it to be async. I don't care if it causes blockages.
 def loadString(stringFile:str) -> str:
 	""" Loads a string from the disk and returns it
-	
+
 	Strings are stored in /resources/strings """
 
 	BASE = PATH + "/resources/strings"
@@ -77,12 +79,12 @@ def loadString(stringFile:str) -> str:
 		file.close()
 
 		return contents
-	
+
 	except FileNotFoundError:
 		journal.log(RED + f"ERR: FILE {MAGENTA}{stringFile}{RED} NOT FOUND. RETURNING AN EMPTY STRING TO AVOID CRASH." + RESET, 3)
-		
+
 		return ""
-	
+
 	except Exception as err:
 		journal.log(RED + f"ERR: FAILED TO READ {MAGENTA}{stringFile}{RED}: {str(err)}" + RESET, 3)
 

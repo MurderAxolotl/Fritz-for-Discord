@@ -2,7 +2,9 @@
 # ASSUMES THERE'S A MINECRAFT SERVER RUNNING UNDER THE SAME PUBLIC IP ADDRESS #
 ###############################################################################
 
-import os, sys, requests, json
+import requests
+import json
+
 from datetime import datetime
 
 from resources.shared import MINECRAFT_SERVER_PORT, LIMIT_MCSTATUS_COMMAND, ALLOWED_MCSTATUS_SERVERS, MINECRAFT_SERVER_FIXED_ADDRESS
@@ -26,8 +28,8 @@ async def getServerStatus(ctx, sendPlayerList=False):
 			# Not in a server, not allowed
 			await ctx.respond("This command cannot be used here")
 			return
-		
-		if not SERVER_ID in ALLOWED_MCSTATUS_SERVERS:
+
+		if SERVER_ID not in ALLOWED_MCSTATUS_SERVERS:
 			await ctx.respond("This command cannot be used in this server")
 			return
 
@@ -41,7 +43,7 @@ async def getServerStatus(ctx, sendPlayerList=False):
 	CACHE_EXPIRE = responseJSON["debug"]["cacheexpire"]
 	CACHE_EXPIRE_ISO = unixToISO(CACHE_EXPIRE)
 
-	if ONLINE: 
+	if ONLINE:
 		PLAYERS_ONLINE = responseJSON["players"]["online"]
 		PLAYERS_MAX = responseJSON["players"]["max"]
 
@@ -63,12 +65,14 @@ async def getServerStatus(ctx, sendPlayerList=False):
 				for playerInstance in responseJSON["players"]["list"]:
 					if detectedPlayers == "": detectedPlayers = playerInstance["name"]
 					else: detectedPlayers = detectedPlayers + ", " + playerInstance["name"]
-						
-				if detectedPlayers != "": detectedPlayers = "\n" + detectedPlayers
-					
-			except: detectedPlayers = ""
 
-		else: detectedPlayers = ""
+				if detectedPlayers != "": detectedPlayers = "\n" + detectedPlayers
+
+			except:
+				detectedPlayers = ""
+
+		else:
+			detectedPlayers = ""
 
 		await ctx.respond(f"Server is online!\nIP: `{IP}`\nPlayers: {PLAYER_TEXT}{detectedPlayers}\n\n{CACHE_TEXT}", ephemeral=True)
 

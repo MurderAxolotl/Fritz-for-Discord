@@ -1,6 +1,4 @@
 import os
-import random
-import dotenv
 
 
 class pronouns_page_api():

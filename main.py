@@ -3,30 +3,31 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
-""" First-run automatic directory setup """
 import scripts.hooks.firstRun
-import scripts.hooks.createConfigs
+import scripts.hooks.createConfigs # NOQA
 
 import asyncio
 import nest_asyncio
+import discord
 
-from resources.curl_requests import *
-from resources.shared import *
-from resources.responses import *
-from resources.colour import *
-from resources.user_messages import *
+from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
+from resources.shared import BLACKLISTED_USERS, DISALLOW_SYSINF_LEAKS, DISALLOW_PLATFORM_LEAKS, GIT_URL, IS_ANDROID
+from resources.shared import IS_DEBUGGING, version, TOKEN, REGISTERED_DEVELOPERS, INVITE_URL
+from resources.responses import help_messages
+
+from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
 
 import scripts.api.qrTools            as qrTools
 import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
-import scripts.api.pronouns           as pronouns
-import scripts.api.spotify            as spotify
 import scripts.api.discord            as discord_fancy
 import scripts.api.lumos_status       as lumos_status
 import scripts.api.starboard          as starboard
 import scripts.errors.commandCheck    as commandCheck
 
-from scripts.tools.utility import *
+import scripts.tools.journal          as journal
+
+from scripts.tools.utility import isDeveloper, bannedUser, loadString
 
 bot = discord.Bot()
 loop = asyncio.get_event_loop()
@@ -46,8 +47,9 @@ sonly = bot.create_group("fs",         "Fritz's server-only commands",   context
 ### GLOBAL CHECKS ###
 @bot.check
 async def global_isbanned_check(ctx):
-	if ctx.author.id in BLACKLISTED_USERS: raise bannedUser("You are banned from using Fritz")
-	
+	if ctx.author.id in BLACKLISTED_USERS:
+		raise bannedUser("You are banned from using Fritz")
+
 	return True
 
 ### ===================================== ###
@@ -59,15 +61,16 @@ async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent): a
 # Listen for "All stay strong"
 @bot.event
 async def on_message(message):
-	if str(message.content).lower() == "all stay strong": await message.channel.send("We live eternally")
+	if str(message.content).lower() == "all stay strong":
+		await message.channel.send("We live eternally")
 
 #  Listen for command errors
-@bot.event	
+@bot.event
 async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException): await commandCheck.on_command_error(ctx, error)
 
 # Wait for the bot to be ready
 @bot.event
-async def on_ready(): 
+async def on_ready():
 	print(MAGENTA + "Connected to Discord!" + RESET)
 	journal.log("Fritz is connected to Discord")
 
@@ -81,31 +84,29 @@ async def quotebookContext(ctx, message:discord.Message):
 	authorName = message.author.display_name
 	author     = message.author.id
 	text       = message.content
-	avat       = message.author.avatar.url
+	avat       = message.author.display_avatar.url
 
 	await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
+
+@bot.message_command(name="Quotebook (Mutts)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+async def quotebookContextMutts(ctx, message:discord.Message):
+	authorName = message.author.display_name
+	author     = message.author.id
+	text       = message.content
+	avat       = message.author.display_avatar.url
+
+	await oneOff.quotebookMessage(ctx, text, author, authorName, avat, True)
 
 @bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 async def forwardToQuotebook(ctx, message:discord.Message):
 	await oneOff.forwardToQuotebook(ctx, message, bot)
 
+@bot.message_command(name="Snepify", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+async def snepify(ctx, message:discord.Message):
+	await animals.add_file_to_snep_folder(ctx, message)
+
 ### ===================================== ###
 ### API COMMANDS ###
-
-# PP commands have nearly zero usage, depricated
-# # Search PronounsPage for a user #
-# @fritz.command(name="pp_users", description='Search PronounsPage for a user', pass_context=True)
-# async def pronounspage(ctx, query:str): await pronouns.pp_searchUser(ctx, query)
-
-# # Search PronounsPage for a term #
-# @fritz.command(name="pp_terms", description='Search PronounsPage for a tern', pass_context=True)
-# async def pronounspage(ctx, query:str): await pronouns.pp_searchTerms(ctx, query)
-
-# SEARCH SPOTIFY #
-# Command is broken and depricated, as I no longer use Spotify
-# If anyone actually uses this and misses the functionality, open a pull request fixing the command
-# @fritz.command(name="seasify", description='Search Spotify for a song', pass_context = True)
-# async def seasify(ctx, query:str, count:int=10): await spotify.searchSpotify(ctx, query, count)
 
 # CHECK IF THE CONFIGURED MINECRAFT SERVER IS ONLINE #
 @fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
@@ -180,7 +181,7 @@ async def ping(ctx):
 ### ===================================== ###
 ### INFORMATION COMMANDS ###
 @fritz.command(name="help", description="Stop and RTFM", pass_context=True)
-async def help(ctx): 
+async def help(ctx):
 	await ctx.respond(loadString("/commands"), ephemeral=True)
 
 @fritz.command(name="changelog", description="See past changes to Fritz", pass_context=True)
@@ -190,13 +191,13 @@ async def changelog(ctx): await ctx.respond(file=help_messages.changelog, epheme
 @fritz.command(name="system", description="Advanced system info", pass_context=True)
 async def help(ctx):
 	if DISALLOW_SYSINF_LEAKS and not (str(ctx.author.id) in REGISTERED_DEVELOPERS): await ctx.respond("You are not allowed to run this command"); return
-	
+
 	response = help_messages.about_system # Base text
 
 	if not DISALLOW_PLATFORM_LEAKS:
 		if IS_ANDROID  : response = response + "\n" + loadString("/android/command_flare")
 		if IS_DEBUGGING: response = response + "\n" + loadString("/debug/command_flare")
-	
+
 	await ctx.respond(response, ephemeral=True)
 
 @fritz.command(name="about", description="Learn more about Fritz")
@@ -204,14 +205,14 @@ async def help(ctx):
 	await ctx.respond(help_messages.about_fritz)
 
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
-async def getInvite(ctx): 
+async def getInvite(ctx):
 	await ctx.respond("NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, ephemeral=True)
 
 @fritz.command(name='github_url', description='Get Fritz\'s Git URL')
 async def getGit(ctx): await ctx.respond(GIT_URL)
 
 ### ===================================== ###
-### DEVELOPER ONLY ### 
+### DEVELOPER ONLY ###
 @zdev.command(name='shutdown', description='DEV: Shuts down Fritz, if possible. Does not work on Android', pass_context=True)
 @isDeveloper()
 async def initiateShutdown(ctx):
@@ -254,4 +255,4 @@ except Exception as err:
 	print(MAGENTA + "FATAL: " + RED + "Failed to start Fritz")
 	print("   -> " + str(err) + RESET)
 
-	journal.log_fatal(f"Failed to start: " + str(err))
+	journal.log_fatal("Failed to start: " + str(err))

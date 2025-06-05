@@ -1,11 +1,13 @@
-""" Ensures configs actually exist on the system """
-""" Must be run after firstRun, otherwise this will fail"""
+""" Ensures configs actually exist on the system
+Import AFTER first-run, or this will fail
+"""
 
 import os
 
-from resources.shared import journal
+import scripts.tools.journal as journal
+
 from resources.shared import PATH
-from resources.colour import *
+from resources.colour import RED, RESET
 
 CONFIG_DIR = PATH + "/config"
 
@@ -16,7 +18,7 @@ def createBlankConfig(path):
 	with open(CONFIG_DIR + path, "x") as blankConfig:
 		blankConfig.write(r"{}")
 
-if not os.path.isdir(CONFIG_DIR): 
+if not os.path.isdir(CONFIG_DIR):
 	print(RED + "[ConfigCreator] WARN: config dir does not exist! Creating it now" + RESET)
 	journal.log("ConfigCreator: config dir does not exist! Creating it now", 4)
 
