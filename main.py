@@ -208,7 +208,7 @@ async def help(ctx):
 async def getInvite(ctx):
 	await ctx.respond("NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, ephemeral=True)
 
-@fritz.command(name='github_url', description='Get Fritz\'s Git URL')
+@fritz.command(name='git_url', description='Get Fritz\'s Git URL')
 async def getGit(ctx): await ctx.respond(GIT_URL)
 
 ### ===================================== ###

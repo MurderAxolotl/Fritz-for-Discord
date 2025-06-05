@@ -2,9 +2,9 @@ First, thank you for doing your part and reporting a bug!
 Second, I want to clarify what you should **not** report as a bug:
 
 - **Commands being removed**: This is most likely not a bug. I add and remove commands frequently
-- **Outdated command list**: This is not a bug, this is a documentation issue. I'll fix it eventually
+- **Outdated command list**: This is not a bug, this is a documentation issue. I'll fix it eventually (or, yk... you could open an issue...)
 - **User commands not working in other servers**: Servers can choose to disable user apps. I cannot do anything about this
-- **Fritz being offline**: This is a serious issue. Directly contact Theo on Discord
+- **Fritz being offline**: The person hosting Fritz needs to fix this. Try to contact them! If the official instance of Fritz is down, please contact me directly on Discord (if you know who I am, anyways. The rest of you are SOL)
 
 With that out of the way, let's get that bug report filled out!
 

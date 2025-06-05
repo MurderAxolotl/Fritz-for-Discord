@@ -79,9 +79,6 @@ APPLICATIONID = os.getenv("applicationID", "")
 TOKEN         = os.getenv("discordToken", "")
 PLATFORM_IDENTIFIER = "desktop" if not IS_ANDROID else "android"
 
-SPOTIFY_ID = os.getenv("spotifyID", "")
-SPOTIFY_SECRET = os.getenv("spotifySecret", "")
-
 try:
 	MINECRAFT_SERVER_FIXED_ADDRESS = os.getenv("MINECRAFT_ADDRESS", "")
 except:
@@ -110,4 +107,4 @@ PATH = os.getenv("systemPath", sys.path[0])
 
 # Why aren't these constants? #
 intents = INTENTS
-version = f"1.26.0-{PLATFORM_IDENTIFIER}"
+version = f"1.26.1-{PLATFORM_IDENTIFIER}"

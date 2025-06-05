@@ -33,7 +33,7 @@
 	- Disabled broken ChatGPT impmentation
 	- Pomelo support
 
-## 1.3 
+## 1.3
 	- Management commands
 
 ## 1.5
@@ -241,7 +241,7 @@
 	- Uhh I don't know what I actually changed :|
 	- Probably not important, I hope
 
-### 1.23.0 
+### 1.23.0
 	- Removed `cah-index` command and related code. Mostly
 	- Added `starboard` command
 	- New `get_message` function in `/scripts/api/discord`
@@ -280,3 +280,19 @@
 	- Fixed double-sent error messages
 	- Fixed `createConfigs`
 	- Significantly improved error handling
+
+### 1.25.3
+	- Theo... come on, you versioned this wrong...
+	- Added `givesnep` command
+	- Bugfixes
+
+### 1.26.0
+	- Added a way for DEVELOPERS to add uploaded images to the snep folder
+	- Cleaned up a lot of code, moved some stuff to _oldCode
+	- Removed PronounsPage commands
+	- Removed `seasify` command
+
+### 1.26.1
+	- Updated the help message for the first time in a year...
+	- Updated the environment variable template
+	- Removed references to Spotify authentication left in `resources/shared.py`

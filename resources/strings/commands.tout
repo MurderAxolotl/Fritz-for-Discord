@@ -1,23 +1,24 @@
 SUPPORTED COMMANDS:
 
 **\# API Interaction #**
-- **pp_users** *<search term>*   : Search PronounsPage for a username
-- **pp_terms** *<search term>*   : Search PronounsPage for terminology
-- **seasify** *<query>* *[count]*: Search Spotify for <query> returning [count]# of results. Count defaults to 10 and must be between 1 and 25
+- **mcstatus**: Get status information about a Minecraft server
 
 **\# Fun #**
 - **givecat**: Get a random cat picture
 - **givefox**: Get a random fox picture
 - **givelynx**: Get a random lynx picture
 - **giveracc** *[get_video]*: Get a random raccoon picture or video. Set *[get_video]* to true to get a video
+- **givewah**: Get a random red panda picture
+- **givesnep**: Get a random snep photo (see implementation notes)
 - **raccfacc**: Get a random raccoon fact
-- **quoteme** *[username]*: Get a random quote from yourself. Specify *[username]* to get a quote from someone else
+- **wahfact**: Get a random red panda fact
 
 **\# QR Tools #**
 - **scan_qr** *<image>*: Scan the attached image and return any readable data
 - **create_qr** *<content>* *[style]*: Create a QR code. [style] controls appearance and Error Correction levels. Default *stylized*
 
 **\# Bot Utilities #**
+- **bug**: Get bug-filing information
 - **ping**: Test the bot's latency
 
 **\# Information #**
@@ -26,6 +27,7 @@ SUPPORTED COMMANDS:
 - **changelog**: Get an up-to-date (...maybe) list of changes to Fritz since inception
 - **help**: Get this message
 - **invite**: Get Fritz's invite URL, for adding to a server
+- **git_url**: Get Fritz's git URL
 
 <options> are REQUIRED arguments
 [options] are OPTIONAL arguments
