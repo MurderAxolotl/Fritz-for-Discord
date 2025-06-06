@@ -17,6 +17,7 @@ from resources.responses import help_messages
 
 from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
 
+import scripts.api.ptk_reactions      as ptk_reactions
 import scripts.api.qrTools            as qrTools
 import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
@@ -124,6 +125,32 @@ async def scanQR(ctx, qr_code_image: discord.Attachment):
 @qr.command(name="create", description="Make a QR code", pass_context=True)
 async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): #type:ignore
 	await qrTools.createQR(ctx, qr_data, style_mode)
+
+### ===================================== ###
+### BECOME FURRIFIED (yeah i'm a furry if you didn't realize that) ###
+@fritz.command(name="artemis_reaction", description="The funny bird man")
+async def artemisReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ARTEMIS)): #type:ignore
+	await ptk_reactions.reaction_image(ctx, "artemis", sprite)
+
+@fritz.command(name="rofi_reaction", description="The depressed dog")
+async def rofiReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ROFI)): #type:ignore
+	await ptk_reactions.reaction_image(ctx, "rofi", sprite)
+
+@fritz.command(name="theo_reaction", description="Father figure we all need")
+async def theoReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.THEO)): #type:ignore
+	await ptk_reactions.reaction_image(ctx, "theo", sprite)
+
+@fritz.command(name="hunter_reaction", description="Daddy? Sorry. Daddy? Sorry. Daddy? Sorry-")
+async def hunterReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.HUNTER)): #type:ignore
+	await ptk_reactions.reaction_image(ctx, "hunter", sprite)
+
+@fritz.command(name="friend_reaction", description="Why so angy tho")
+async def friendReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.FRIEND)): #type:ignore
+	await ptk_reactions.reaction_image(ctx, "friend", sprite)
+
+@fritz.command(name="ollie_reaction", description="AUTISTIC")
+async def ollieReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.OLLIE)): #type:ignore
+	await ptk_reactions.reaction_image(ctx, "ollie", sprite)
 
 ### ===================================== ###
 ### ANIMAL CONTENT ###

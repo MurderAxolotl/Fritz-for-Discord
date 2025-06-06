@@ -65,6 +65,9 @@ GIT_URL = "https://github.com/psychon-night/Fritz-for-Discord"
 # IT'S IMPOSSIBLE TO DEBUG YOU DIPSHIT
 SNEP_FOLDER = os.getenv("snepPath", "")
 
+# The path to PtK's extracted AND FORMATTED resources
+PTK_FOLDER = os.getenv("ptkPath", "")
+
 ###################################
 # DON'T EDIT ANYTHING BELOW HERE! #
 ###################################
