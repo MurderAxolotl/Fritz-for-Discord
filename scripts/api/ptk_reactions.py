@@ -21,12 +21,12 @@ if (PTK_FOLDER != "") and (PTK_FOLDER is not None):
 			inventory.append(file)
 
 		match directory:
-			case "artemis": ARTEMIS:list[str] = inventory #noqa
-			case "rofi"   : ROFI:list[str]    = inventory #noqa
-			case "theo"   : THEO:list[str]    = inventory #noqa
-			case "hunter" : HUNTER:list[str]  = inventory #noqa
-			case "friend" : FRIEND:list[str]  = inventory #noqa
-			case "ollie"  : OLLIE:list[str]   = inventory #noqa
+			case "artemis": ARTEMIS = inventory #noqa
+			case "rofi"   : ROFI    = inventory #noqa
+			case "theo"   : THEO    = inventory #noqa
+			case "hunter" : HUNTER  = inventory #noqa
+			case "friend" : FRIEND  = inventory #noqa
+			case "ollie"  : OLLIE   = inventory #noqa
 			case _        :
 				print(f"{RED}[PTK_REACTIONS] Unrecognized character: {directory}{RESET}")
 				journal.log(f"[PTK_REACTIONS] Unrecognized character: {directory}")
