@@ -26,3 +26,4 @@ if not os.path.isdir(CONFIG_DIR):
 
 # Actually start creating the configs. They will be blank by default and must be filled by the user
 verify("/starboard.json")
+verify("/quotebook.json")

@@ -81,7 +81,7 @@ async def on_ready():
 ### ===================================== ###
 ### RIGHT-CLICK COMMANDS ###
 @bot.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-async def quotebookContext(ctx, message:discord.Message):
+async def quotebookContext(ctx:discord.ApplicationCommand, message:discord.Message):
 	authorName = message.author.display_name
 	author     = message.author.id
 	text       = message.content

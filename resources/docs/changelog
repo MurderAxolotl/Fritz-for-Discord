@@ -296,3 +296,7 @@
 	- Updated the help message for the first time in a year...
 	- Updated the environment variable template
 	- Removed references to Spotify authentication left in `resources/shared.py`
+
+### 1.26.2
+	- Fixed the "where the fuck are the quotes going" issue
+		- There's a 50% chance this breaks if you don't fill out some server info lmfao
