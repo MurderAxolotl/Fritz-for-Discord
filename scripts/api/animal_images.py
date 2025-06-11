@@ -148,11 +148,16 @@ async def add_file_to_snep_folder(ctx: discord.ApplicationContext, message:disco
 		response = requests.get(file.url)
 
 		try:
-			# open(f"{SNEP_FOLDER}/{file.filename}", "x").close()
-			with open(f"{SNEP_FOLDER}/{file.filename}", "wb") as file:
-				file.write(response.content)
+			# Check if the file already exists. Fail if it does
+			if file.filename in os.listdir(f"{SNEP_FOLDER}"):
+				failed += 1
+				failedBecauseExists = True
 
-			successful += 1
+			else:
+				with open(f"{SNEP_FOLDER}/{file.filename}", "wb") as file:
+					file.write(response.content)
+
+				successful += 1
 
 		except FileExistsError:
 			failedBecauseExists = True

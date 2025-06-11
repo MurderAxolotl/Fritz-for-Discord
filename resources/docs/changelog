@@ -303,3 +303,6 @@
 
 ### 1.26.3
 	- Made the snep folder command slightly more informative
+
+### 1.26.4
+	- Added a proper check in the snep command before downloading. No more overwrites ehe

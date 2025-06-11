@@ -110,4 +110,4 @@ PATH = os.getenv("systemPath", sys.path[0])
 
 # Why aren't these constants? #
 intents = INTENTS
-version = f"1.26.3-{PLATFORM_IDENTIFIER}"
+version = f"1.26.4-{PLATFORM_IDENTIFIER}"
