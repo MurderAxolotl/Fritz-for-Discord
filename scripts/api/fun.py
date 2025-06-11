@@ -70,10 +70,16 @@ async def forwardToQuotebook(ctx, message:discord.Message, bot:discord.Bot):
 	except:  #noqa
 		server = None
 
-	if server != 1362596757862875317: FORWARD_CHANNEL = await bot.fetch_channel(int(QUOTE_ID))
-	else: FORWARD_CHANNEL = await bot.fetch_channel(int(QUOTE_ID_FM))
+	if server == 1362596757862875317:
+		FORWARD_CHANNEL = await bot.fetch_channel(int(QUOTE_ID_FM))
+
+	elif server in guild_list:
+		FORWARD_CHANNEL = await bot.fetch_channel(int(QUOTEBOOK_CONFIG[str(server)]["chan_id"]))
+
+	else:
+		FORWARD_CHANNEL = await bot.fetch_channel(int(QUOTE_ID))
 
 	await FORWARD_CHANNEL.send(f"{AUTHOR}")
 	await message.forward(FORWARD_CHANNEL)
 
-	await ctx.respond("Added to quotebook")
+	await ctx.respond("Forwarded to quotebook")

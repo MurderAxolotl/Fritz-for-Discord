@@ -18,7 +18,14 @@ if (PTK_FOLDER != "") and (PTK_FOLDER is not None):
 		inventory = []
 
 		for file in os.listdir(f"{PTK_FOLDER}/{directory}"):
-			inventory.append(file)
+			if len(inventory) != 25:
+				inventory.append(file)
+
+			else:
+				print(RED + f"PtK folder for {directory} exceeds 25 images! Capping!" + RESET)
+				journal.log(f"PtK folder for {directory} exceeds 25 images! Capping!")
+
+				pass
 
 		match directory:
 			case "artemis": ARTEMIS = inventory #noqa

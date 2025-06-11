@@ -126,6 +126,9 @@ async def giveSnep(ctx, dirInfo:bool=False, excludeVideos:bool=False):
 async def add_file_to_snep_folder(ctx: discord.ApplicationContext, message:discord.Message|None=None):
 	await ctx.defer()
 
+	successful = 0
+	failed     = 0
+
 	adder_id = ctx.user.id #pyright:ignore
 	attachments:list[discord.Attachment] = message.attachments #pyright:ignore
 
@@ -149,9 +152,12 @@ async def add_file_to_snep_folder(ctx: discord.ApplicationContext, message:disco
 			with open(f"{SNEP_FOLDER}/{file.filename}", "wb") as file:
 				file.write(response.content)
 
+			successful += 1
+
 		except FileExistsError:
 			failedBecauseExists = True
+			failed += 1
 
-	feedback = "File(s) added to folder" if not failedBecauseExists else "One or more files already existed in the folder"
+	feedback = f"{successful} file(s) added to folder" if not failedBecauseExists else f"{successful} file(s) added to folder, {failed} file(s) already in folder"
 
 	await ctx.respond(feedback)
