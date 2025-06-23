@@ -59,12 +59,6 @@ INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303
 # I only ask that you provide attribution to me :3
 GIT_URL = "https://github.com/psychon-night/Fritz-for-Discord"
 
-# The path to your snow leopard folder, if you have one
-# Set to None to disable the snep command
-# edit from the future: FOR FUCK'S SAKE, STOP HARD-CODING PATHS.
-# IT'S IMPOSSIBLE TO DEBUG YOU DIPSHIT
-SNEP_FOLDER = os.getenv("snepPath", "")
-
 # The path to PtK's extracted AND FORMATTED resources
 PTK_FOLDER = os.getenv("ptkPath", "")
 
@@ -110,4 +104,4 @@ PATH = os.getenv("systemPath", sys.path[0])
 
 # Why aren't these constants? #
 intents = INTENTS
-version = f"1.26.4-{PLATFORM_IDENTIFIER}"
+version = f"1.26.5-{PLATFORM_IDENTIFIER}"

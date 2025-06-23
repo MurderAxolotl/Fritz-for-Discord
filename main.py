@@ -103,10 +103,6 @@ async def quotebookContext(ctx:discord.ApplicationCommand, message:discord.Messa
 async def forwardToQuotebook(ctx, message:discord.Message):
 	await oneOff.forwardToQuotebook(ctx, message, bot)
 
-@bot.message_command(name="Snepify", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-async def snepify(ctx, message:discord.Message):
-	await animals.add_file_to_snep_folder(ctx, message)
-
 ### ===================================== ###
 ### API COMMANDS ###
 
@@ -176,10 +172,6 @@ async def trashpanda(ctx, video:bool=False): await animals.giveTrashPanda(ctx, v
 # WAH IMAGE #
 @fritz.command(name="givewah", description="Get a random red panda photo")
 async def wahimage(ctx): await animals.giveWah(ctx)
-
-# SNEP IMAGE #
-@fritz.command(name="givesnep", description="Get a random snep photo")
-async def snepimage(ctx): await animals.giveSnep(ctx)
 
 # FACTS #
 # RACOON FACTS #

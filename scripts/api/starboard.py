@@ -9,6 +9,7 @@ import scripts.api.discord as pretty_discord
 from resources.sqlite_queries import starboard_queries as queries
 
 from resources.shared import *
+from scripts.tools.journal import log
 
 with open(PATH + "/config/starboard.json", "r") as scf:
 	starboard_config = json.loads(scf.read())
@@ -36,7 +37,17 @@ async def reload(ctx):
 
 async def reactionAdded(ctx:discord.RawReactionActionEvent, bot:discord.Bot):
 	reactionEmoji = ctx.emoji.name
-	ctx.guild_id
+	if ctx.guild_id not in starboard_config:
+		log(f"Couldn't find starboard information for guild {ctx.guild_id}")
+
+		try:
+			fullGuild = await bot.fetch_guild(ctx.guild_id)
+			log(f"Name: {fullGuild.name}, ID: {fullGuild.id}, Owner: {fullGuild.owner_id}")
+
+		except:
+			NotImplemented #noqa #pyright:ignore
+
+		return
 	targetReactionEmoji = starboard_config[str(ctx.guild_id)]["starboard_emoji"]
 
 	if reactionEmoji == targetReactionEmoji:
@@ -68,7 +79,7 @@ async def forwardToStarboard(ctx:discord.RawReactionActionEvent, bot:discord.Bot
 	if str(SERVER_ID) in starboard_config: # This server has a starboard configured
 		with connect_db() as db:
 			inStarboard = read_db(db, queries.search_cache.format(message_id=str(ctx.message_id)))[0]
-		
+
 		if str(inStarboard) == "1":
 			return # Already in starboard, don't do anything`
 

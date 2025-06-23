@@ -283,11 +283,9 @@
 
 ### 1.25.3
 	- Theo... come on, you versioned this wrong...
-	- Added `givesnep` command
 	- Bugfixes
 
 ### 1.26.0
-	- Added a way for DEVELOPERS to add uploaded images to the snep folder
 	- Cleaned up a lot of code, moved some stuff to _oldCode
 	- Removed PronounsPage commands
 	- Removed `seasify` command
@@ -302,7 +300,7 @@
 		- There's a 50% chance this breaks if you don't fill out some server info lmfao
 
 ### 1.26.3
-	- Made the snep folder command slightly more informative
-
 ### 1.26.4
-	- Added a proper check in the snep command before downloading. No more overwrites ehe
+
+### 1.26.5
+	- Small stability patches
