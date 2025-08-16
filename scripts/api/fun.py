@@ -10,7 +10,7 @@ import json
 
 import scripts.tools.journal as journal
 
-from resources.shared import QUOTE_WEBHOOK, QUOTE_ID, QUOTE_WEBHOOK_FM, QUOTE_ID_FM, PATH
+from resources.shared import QUOTE_WEBHOOK, QUOTE_ID, PATH
 
 loop = asyncio.get_event_loop()
 
@@ -46,10 +46,7 @@ async def quotebookMessage(ctx, message:str, author_id:int, author_name:str, aur
 			"username": f"{author_name}"
 		}
 
-	if server == 1362596757862875317 or force_to_mutts:
-		request = requests.post(QUOTE_WEBHOOK_FM, json = form)
-
-	elif str(server) in guild_list:
+	if str(server) in guild_list:
 		dynamic_webhook = QUOTEBOOK_CONFIG[str(server)]["channel"]
 
 		request = requests.post(dynamic_webhook, json = form)
@@ -70,10 +67,7 @@ async def forwardToQuotebook(ctx, message:discord.Message, bot:discord.Bot):
 	except:  #noqa
 		server = None
 
-	if server == 1362596757862875317:
-		FORWARD_CHANNEL = await bot.fetch_channel(int(QUOTE_ID_FM))
-
-	elif server in guild_list:
+	if server in guild_list:
 		FORWARD_CHANNEL = await bot.fetch_channel(int(QUOTEBOOK_CONFIG[str(server)]["chan_id"]))
 
 	else:

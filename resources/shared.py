@@ -88,9 +88,7 @@ except:
 
 # Globals #
 QUOTE_WEBHOOK = os.getenv("quote_webhook", "")
-QUOTE_WEBHOOK_FM = os.getenv("quote_webhook_fm", "")
 QUOTE_ID = os.getenv("quotebook_id", "")
-QUOTE_ID_FM = os.getenv("quotebook_id_fm", "")
 REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"] # Okay, well, you can probably safely edit this
 INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True, reactions=True)
 

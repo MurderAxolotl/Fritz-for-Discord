@@ -6,6 +6,7 @@ Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 import scripts.hooks.firstRun
 import scripts.hooks.createConfigs # NOQA
 
+import os
 import asyncio
 import nest_asyncio
 import discord
@@ -88,16 +89,6 @@ async def quotebookContext(ctx:discord.ApplicationCommand, message:discord.Messa
 	avat       = message.author.display_avatar.url
 
 	await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
-
-# Theoretically, I don't need this anymore?
-# @bot.message_command(name="Quotebook (Mutts)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-# async def quotebookContextMutts(ctx, message:discord.Message):
-# 	authorName = message.author.display_name
-# 	author     = message.author.id
-# 	text       = message.content
-# 	avat       = message.author.display_avatar.url
-
-# 	await oneOff.quotebookMessage(ctx, text, author, authorName, avat, True)
 
 @bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 async def forwardToQuotebook(ctx, message:discord.Message):
