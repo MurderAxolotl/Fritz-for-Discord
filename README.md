@@ -18,15 +18,15 @@ code in Copilot.
 
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com)
 
-![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-linux.svg) ![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-android.svg)
+![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-linux.svg)
 
 A Discord bot intended for fun and utility\
 Built on Python 3.11.6 and 3.12.3
 
 ### WARNINGS
 - It's recommended to use Python 3.12.3 if possible
-- Intended for use on **Linux**
-	- Android (through Termux) is supported (on versions before 1.24)
+- Windows hosts are NOT supported
+- Requires systemd
 
 ### Requirements
 - Linux (only **Ubuntu**, **Debian**, **Arch**, **Mint**, and **Android** have been tested)
@@ -35,21 +35,19 @@ Built on Python 3.11.6 and 3.12.3
 	- 300-500 MB for source code
 	- 500 MB for dependencies
 	- Extra space for cache and logs
-- Currently uses an unmerged version of PyCord for Starboard features
-	- `pip install git+https://github.com/NeloBlivion/pycord.git@forwarding`
-		- Thank you NeloBlivion for this awesome feature <3
 
 ### Dependencies
 - Python 3.10 or newer (`sudo apt install python3.12-full python3.12-dev`)
-- Venv (`sudo apt install python3.11-venv`)
-- PyCord (`pip install py-cord`)
+- Venv (`sudo apt install python3.11-venv`) (optional)
+- PyCord (`pip install git+https://github.com/Pycord-Development/pycord.git`)
 - DotEnv (`sudo apt install python-dotenv`)
-- zbar (`sudo apt-get install libzbar0 && pip install pyzbar`)
 - Nest Asyncio (`pip install nest_asyncio`)
 - Asyncio (`pip install asyncio`)
-- Pillow (`pip install pillow`)
-- BS4 (`pip install bs4`)
 - Python3 systemd  (`sudo apt install python3-systemd`)
+
+For optional QR support, you also need:
+- zbar (`sudo apt-get install libzbar0 && pip install pyzbar`)
+- Pillow (`pip install pillow`)
 
 **NOTE**: On some systems, it may be neccesary to replace `pip` with `python -m pip` or `python3 -m pip`
 **NOTE**: If you're not using a venv for Fritz, you'll need to add ` --break-system-packages` to the end of each pip command (`pip install py-cord --break-system-packages`, for example)
@@ -59,10 +57,9 @@ Obviously, if your system has a package manager like `yay`, use that instead
 ### Setup
 1. Download and extract source code
 2. Create your Venv or Anaconda environment (optional, recommended. Do I do this? HAH! NOPE!)
-3. Install [dependencies](#dependencies)
-4. Create a folder named `cache`
-5. At the root of the project, create a file named `.env`
-6. Use the [.env template](https://github.com/psychon-night/Fritz-for-Discord/blob/main/.env.template) and set your env variables
+3. Install the [dependencies](#dependencies)
+4. At the root of the project, create a file named `.env`
+5. Use the [.env template](https://github.com/murderaxolotl/Fritz-for-Discord/blob/main/.env.template) and set your env variables
 
 ### Configure
 - In `resources/shared.py`, set `INVITE_URL` to your bot's URL, `GIT_URL` to your GitHub URL, and `REGISTERED_DEVELOPERS` to your UUID

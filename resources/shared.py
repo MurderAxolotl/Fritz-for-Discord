@@ -1,3 +1,11 @@
+##############################################################
+##############################################################
+#### CONFIGURATION IS NO LONGER IN THIS FILE! DO NOT EDIT ####
+####  INSTEAD, EDIT YOUR ENV FILE! CHECK THE TEMPLATE ON  ####
+####              GITHUB FOR THE NEW TEMPLATE             ####
+##############################################################
+##############################################################
+
 import discord
 import dotenv
 import os
@@ -24,33 +32,18 @@ except Exception:
 if FORCE_DEBUG: IS_DEBUGGING = True
 else: IS_DEBUGGING = False # If you want to enable debug mode, change this line
 
-#########################
-# CONFIGURATION OPTIONS #
-#########################
-
-# True / False; setting to false will limit the
-# mcstatus command to the servers listed in
-# ALLOWED_MCSTATUS_SERVERS constant
-# The mcstatus command can leak your IP!
-LIMIT_MCSTATUS_COMMAND = True
-
-# True / False; set to "True" to disable warnings about what platform Fritz is on.
-# This only hides content Discord-side -- terminal flares will still be shown.
-# THIS DOES NOT DISABLE THE /system OR /info COMMANDS
-DISALLOW_PLATFORM_LEAKS = False
-
-# Prevents users not in REGISTERED_DEVELOPERS
-# from using /system and /info commands
-DISALLOW_SYSINF_LEAKS = True
+LIMIT_MCSTATUS_COMMAND = str(os.getenv("limit_mcs_command", "False")) == "True"
+DISALLOW_PLATFORM_LEAKS = str(os.getenv("hide_platform", "False")) == "True"
+DISALLOW_SYSINF_LEAKS = str(os.getenv("block_sysinf_leaks", "False")) == "True"
 
 # The discord invite URL for your bot
-INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303&permissions=535260691552&scope=bot"
+INVITE_URL = os.getenv("invite_url", "")
 
 # The Gitlike URL for your bot
 # Please note, this does not have to be Github
 # Feel free to use something else, like Gitlab
 # I only ask that you provide attribution to me :3
-GIT_URL = "https://github.com/murderaxolotl/Fritz-for-Discord"
+GIT_URL = os.getenv("git_url", "")
 
 # The path to PtK's extracted AND FORMATTED resources
 PTK_FOLDER = os.getenv("ptkPath", "")
@@ -58,7 +51,6 @@ PTK_FOLDER = os.getenv("ptkPath", "")
 ###################################
 # DON'T EDIT ANYTHING BELOW HERE! #
 ###################################
-
 
 # Do our best to determine whether the system is Android-based or not
 if os.path.exists("/storage/emulated/0/Android"): IS_ANDROID = True
@@ -85,7 +77,7 @@ BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users", "{}")))
 # Globals #
 QUOTE_WEBHOOK = os.getenv("quote_webhook", "")
 QUOTE_ID = os.getenv("quotebook_id", "")
-REGISTERED_DEVELOPERS = ["1063584978081951814", "1067843602480377907"] # Okay, well, you can probably safely edit this
+REGISTERED_DEVELOPERS = json.loads(os.getenv("developers", "[]")) # Okay, well, you can probably safely edit this
 INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True, reactions=True)
 
 CONTEXTS = {discord.InteractionContextType.bot_dm, discord.InteractionContextType.guild, discord.InteractionContextType.private_channel}
