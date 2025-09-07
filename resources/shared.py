@@ -18,7 +18,7 @@ try:
 	else:
 		FORCE_DEBUG = False # Environment variable is set, but not 1
 
-except:
+except Exception:
 	FORCE_DEBUG = False # Environment variable is not set
 
 if FORCE_DEBUG: IS_DEBUGGING = True
@@ -34,10 +34,6 @@ else: IS_DEBUGGING = False # If you want to enable debug mode, change this line
 # The mcstatus command can leak your IP!
 LIMIT_MCSTATUS_COMMAND = True
 
-# List of server IDs to allow the mcstatus
-# command in
-ALLOWED_MCSTATUS_SERVERS = ["1264449432057806920"]
-
 # True / False; set to "True" to disable warnings about what platform Fritz is on.
 # This only hides content Discord-side -- terminal flares will still be shown.
 # THIS DOES NOT DISABLE THE /system OR /info COMMANDS
@@ -47,9 +43,6 @@ DISALLOW_PLATFORM_LEAKS = False
 # from using /system and /info commands
 DISALLOW_SYSINF_LEAKS = True
 
-# A list of unquoted user IDs to ban from the bot
-BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users", "{}")))
-
 # The discord invite URL for your bot
 INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303&permissions=535260691552&scope=bot"
 
@@ -57,7 +50,7 @@ INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1070042394009014303
 # Please note, this does not have to be Github
 # Feel free to use something else, like Gitlab
 # I only ask that you provide attribution to me :3
-GIT_URL = "https://github.com/psychon-night/Fritz-for-Discord"
+GIT_URL = "https://github.com/murderaxolotl/Fritz-for-Discord"
 
 # The path to PtK's extracted AND FORMATTED resources
 PTK_FOLDER = os.getenv("ptkPath", "")
@@ -86,6 +79,9 @@ try:
 except:
 	MINECRAFT_SERVER_PORT = ""
 
+ALLOWED_MCSTATUS_SERVERS = json.loads(os.getenv("mcs_whitelist", "[]"))
+BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users", "{}")))
+
 # Globals #
 QUOTE_WEBHOOK = os.getenv("quote_webhook", "")
 QUOTE_ID = os.getenv("quotebook_id", "")
@@ -100,6 +96,7 @@ INTEGRATION_TYPES_SERVER_ONLY = {discord.IntegrationType.guild_install}
 
 PATH = os.getenv("systemPath", sys.path[0])
 
-# Why aren't these constants? #
-intents = INTENTS
-version = f"1.26.5-{PLATFORM_IDENTIFIER}"
+# Module availability
+ENABLE_QUOTEBOOK = True if QUOTE_WEBHOOK != "" and QUOTE_ID != "" else False
+
+VERSION = f"1.27.0-{PLATFORM_IDENTIFIER}"

@@ -13,7 +13,8 @@ import discord
 
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, DISALLOW_SYSINF_LEAKS, DISALLOW_PLATFORM_LEAKS, GIT_URL, IS_ANDROID
-from resources.shared import IS_DEBUGGING, version, TOKEN, REGISTERED_DEVELOPERS, INVITE_URL
+from resources.shared import IS_DEBUGGING, VERSION, TOKEN, REGISTERED_DEVELOPERS, INVITE_URL
+from resources.shared import ENABLE_QUOTEBOOK
 from resources.responses import help_messages
 
 from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
@@ -31,6 +32,9 @@ import scripts.tools.journal          as journal
 
 from scripts.tools.utility import isDeveloper, bannedUser, loadString
 
+errors_during_startup = 0
+module_failures = []
+
 bot = discord.Bot()
 loop = asyncio.get_event_loop()
 
@@ -39,9 +43,10 @@ nest_asyncio.apply(loop)
 
 ### COMMAND GROUPS ###
 fritz = bot.create_group("f",          "Fritz's generic commands",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
-inDev = bot.create_group("f_unstable", "Unstable and under development",     contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
-qr    = bot.create_group("qr",         "Tools relating to QR codes",         contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
 zdev  = bot.create_group("f_dev",      "Developer-only utilities",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
+
+if not qrTools.NOQR:
+	qr    = bot.create_group("qr",         "Tools relating to QR codes",         contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
 
 ### SERVER-ONLY COMMANDS ###
 sonly = bot.create_group("fs",         "Fritz's server-only commands",   contexts=CONTEXTS_SERVER_ONLY, integration_types=INTEGRATION_TYPES_SERVER_ONLY)
@@ -57,8 +62,10 @@ async def global_isbanned_check(ctx):
 ### ===================================== ###
 ### EVENTS ###
 # Listen for reactions. Used for starboard features
-@bot.event
-async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent): await starboard.reactionAdded(reactionContext, bot)
+if not starboard.NOQB:
+	@bot.event
+	async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent):
+		await starboard.reactionAdded(reactionContext, bot)
 
 # Listen for "All stay strong"
 @bot.event
@@ -68,77 +75,116 @@ async def on_message(message):
 
 #  Listen for command errors
 @bot.event
-async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException): await commandCheck.on_command_error(ctx, error)
+async def on_application_command_error(ctx: discord.ApplicationContext, error: discord.DiscordException):
+	await commandCheck.on_command_error(ctx, error)
 
 # Wait for the bot to be ready
 @bot.event
 async def on_ready():
-	print(MAGENTA + "Connected to Discord!" + RESET)
+	global errors_during_startup
+
+	startup_text = MAGENTA + "Connected to Discord"
+
 	journal.log("Fritz is connected to Discord")
 
-	if len(BLACKLISTED_USERS) != 0:
-		print(YELLOW + f"{len(BLACKLISTED_USERS)} users in blacklist" + RESET)
+	if errors_during_startup != 0:
+		journal.log(f"Encountered {errors_during_startup} errors during startup", severity=5)
+
+		startup_text = startup_text + f" with {RED}{errors_during_startup} errors{RESET}"
+
+		if len(BLACKLISTED_USERS) != 0:
+			startup_text = startup_text + f"{MAGENTA}, {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users"
+
+	elif len(BLACKLISTED_USERS) != 0:
+		startup_text = startup_text + f" with {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users"
+
+	print(startup_text)
+
+	if len(module_failures) > 0:
+		for failure in module_failures:
+			journal.log_and_print(f"   => Module '{failure}' failed to import", severity=5)
 
 ### ===================================== ###
 ### RIGHT-CLICK COMMANDS ###
-@bot.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-async def quotebookContext(ctx:discord.ApplicationCommand, message:discord.Message):
-	authorName = message.author.display_name
-	author     = message.author.id
-	text       = message.content
-	avat       = message.author.display_avatar.url
+if ENABLE_QUOTEBOOK:
+	@bot.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	async def quotebookContext(ctx:discord.ApplicationCommand, message:discord.Message):
+		authorName = message.author.display_name
+		author     = message.author.id
+		text       = message.content
+		avat       = message.author.display_avatar.url
 
-	await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
+		await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
 
-@bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-async def forwardToQuotebook(ctx, message:discord.Message):
-	await oneOff.forwardToQuotebook(ctx, message, bot)
+	@bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	async def forwardToQuotebook(ctx, message:discord.Message):
+		await oneOff.forwardToQuotebook(ctx, message, bot)
 
 ### ===================================== ###
 ### API COMMANDS ###
 
 # CHECK IF THE CONFIGURED MINECRAFT SERVER IS ONLINE #
-@fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
-async def mcstatus(ctx, sendplayerlist:bool=False): await lumos_status.getServerStatus(ctx, sendplayerlist)
+if not lumos_status.NOMCS:
+	@fritz.command(name="mcstatus", description="Check if the Minecraft server is online")
+	async def mcstatus(ctx, sendplayerlist:bool=False): await lumos_status.getServerStatus(ctx, sendplayerlist)
 
 ### ===================================== ###
 ### QR CODES ###
 
 # SCAN A QR CODE #
-@qr.command(name="scan", description="Scan a QR code", pass_context=True)
-async def scanQR(ctx, qr_code_image: discord.Attachment):
-	await qrTools.read_cv(ctx, qr_code_image.url)
+if not qrTools.NOQR:
+	@qr.command(name="scan", description="Scan a QR code", pass_context=True)
+	async def scanQR(ctx, qr_code_image: discord.Attachment):
+		await qrTools.read_cv(ctx, qr_code_image.url)
 
-# CREATE A QR CODE #
-@qr.command(name="create", description="Make a QR code", pass_context=True)
-async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): #type:ignore
-	await qrTools.createQR(ctx, qr_data, style_mode)
+	# CREATE A QR CODE #
+	@qr.command(name="create", description="Make a QR code", pass_context=True)
+	async def makeQR(ctx, qr_data, style_mode:discord.Option(str, choices=qrTools.designTypes, description='QR style')="stylized (default)"): #type:ignore
+		await qrTools.createQR(ctx, qr_data, style_mode)
+
+else:
+	errors_during_startup += 1
+	module_failures.append("QR Tools")
 
 ### ===================================== ###
+### Reaction images from Promises to Keep. These are NOT shipped with Fritz ###
 ### BECOME FURRIFIED (yeah i'm a furry if you didn't realize that) ###
-@fritz.command(name="artemis_reaction", description="The funny bird man")
-async def artemisReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ARTEMIS)): #type:ignore
-	await ptk_reactions.reaction_image(ctx, "artemis", sprite)
 
-@fritz.command(name="rofi_reaction", description="The depressed dog")
-async def rofiReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ROFI)): #type:ignore
-	await ptk_reactions.reaction_image(ctx, "rofi", sprite)
+if not ptk_reactions.NOPTK:
+	try:
+		@fritz.command(name="artemis_reaction", description="The funny bird man")
+		async def artemisReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ARTEMIS)): #type:ignore
+			await ptk_reactions.reaction_image(ctx, "artemis", sprite)
 
-@fritz.command(name="theo_reaction", description="Father figure we all need")
-async def theoReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.THEO)): #type:ignore
-	await ptk_reactions.reaction_image(ctx, "theo", sprite)
+		@fritz.command(name="rofi_reaction", description="Medical professional...")
+		async def rofiReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ROFI)): #type:ignore
+			await ptk_reactions.reaction_image(ctx, "rofi", sprite)
 
-@fritz.command(name="hunter_reaction", description="Daddy? Sorry. Daddy? Sorry. Daddy? Sorry-")
-async def hunterReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.HUNTER)): #type:ignore
-	await ptk_reactions.reaction_image(ctx, "hunter", sprite)
+		@fritz.command(name="theo_reaction", description="Father figure we all need")
+		async def theoReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.THEO)): #type:ignore
+			await ptk_reactions.reaction_image(ctx, "theo", sprite)
 
-@fritz.command(name="friend_reaction", description="Why so angy tho")
-async def friendReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.FRIEND)): #type:ignore
-	await ptk_reactions.reaction_image(ctx, "friend", sprite)
+		@fritz.command(name="gremlin_reaction", description="Little shit is adorable")
+		async def gremlinReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.GREMLIN)): #type:ignore
+			await ptk_reactions.reaction_image(ctx, "gremlin", sprite)
 
-@fritz.command(name="ollie_reaction", description="AUTISTIC")
-async def ollieReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.OLLIE)): #type:ignore
-	await ptk_reactions.reaction_image(ctx, "ollie", sprite)
+		@fritz.command(name="hunter_reaction", description="Daddy? Sorry. Daddy? Sorry. Daddy? Sorry-")
+		async def hunterReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.HUNTER)): #type:ignore
+			await ptk_reactions.reaction_image(ctx, "hunter", sprite)
+
+		@fritz.command(name="friend_reaction", description="Why so angy tho")
+		async def friendReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.FRIEND)): #type:ignore
+			await ptk_reactions.reaction_image(ctx, "friend", sprite)
+
+		@fritz.command(name="ollie_reaction", description="AUTISTIC")
+		async def ollieReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.OLLIE)): #type:ignore
+			await ptk_reactions.reaction_image(ctx, "ollie", sprite)
+
+	except Exception as err:
+		journal.log("PtK reactions unavailable: " + str(err), 4)
+		errors_during_startup += 1
+
+		module_failures.append("PTK Reactions")
 
 ### ===================================== ###
 ### ANIMAL CONTENT ###
@@ -187,7 +233,8 @@ async def bugreport(ctx):
 
 @fritz.command(name='ping', description='Get Fritz\'s current ping')
 async def ping(ctx):
-	latency = round(bot.latency * 1000); await ctx.respond('Current latency: ' + str(latency) + "ms")
+	latency = round(bot.latency * 1000)
+	await ctx.respond('Current latency: ' + str(latency) + "ms")
 
 ### ===================================== ###
 ### INFORMATION COMMANDS ###
@@ -196,12 +243,15 @@ async def help(ctx):
 	await ctx.respond(loadString("/commands"), ephemeral=True)
 
 @fritz.command(name="changelog", description="See past changes to Fritz", pass_context=True)
-async def changelog(ctx): await ctx.respond(file=help_messages.changelog, ephemeral=True)
+async def changelog(ctx):
+	await ctx.respond(file=help_messages.changelog, ephemeral=True)
 
 ## Get info about Fritz ##
 @fritz.command(name="system", description="Advanced system info", pass_context=True)
-async def help(ctx):
-	if DISALLOW_SYSINF_LEAKS and not (str(ctx.author.id) in REGISTERED_DEVELOPERS): await ctx.respond("You are not allowed to run this command"); return
+async def sysinfo(ctx):
+	if DISALLOW_SYSINF_LEAKS and not (str(ctx.author.id) in REGISTERED_DEVELOPERS): #noqa
+		await ctx.respond("You are not allowed to run this command")
+		return
 
 	response = help_messages.about_system # Base text
 
@@ -212,7 +262,7 @@ async def help(ctx):
 	await ctx.respond(response, ephemeral=True)
 
 @fritz.command(name="about", description="Learn more about Fritz")
-async def help(ctx):
+async def sysabout(ctx):
 	await ctx.respond(help_messages.about_fritz)
 
 @fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
@@ -253,12 +303,15 @@ async def downloadMessages(ctx, id):
 
 try:
 	match [IS_DEBUGGING, IS_ANDROID]:
-		case [False, False]: print(MAGENTA + f"Fritz {version}" + RESET)
-		case [True, False] : print(MAGENTA + f"Fritz {version}" + RED + " (debug mode)" + RESET)
-		case [False, True] : print(MAGENTA + f"Fritz {version}" + RED + " (experimental)" + RESET)
-		case [True, True]  : print(MAGENTA + f"Fritz {version}" + RED + " (debug, experimental)" + RESET)
+		case [False, False]: print(MAGENTA + f"Fritz {VERSION}" + RESET)
+		case [True, False] : print(MAGENTA + f"Fritz {VERSION}" + RED + " (debug mode)" + RESET)
+		case [False, True] : print(MAGENTA + f"Fritz {VERSION}" + RED + " (experimental)" + RESET)
+		case [True, True]  : print(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)" + RESET)
 
 	print("")
+
+	if starboard.NOQB:
+		errors_during_startup += 1
 
 	bot.run(TOKEN)
 

@@ -9,6 +9,12 @@ from datetime import datetime
 
 from resources.shared import MINECRAFT_SERVER_PORT, LIMIT_MCSTATUS_COMMAND, ALLOWED_MCSTATUS_SERVERS, MINECRAFT_SERVER_FIXED_ADDRESS
 
+if MINECRAFT_SERVER_FIXED_ADDRESS != "" and MINECRAFT_SERVER_PORT != "":
+	NOMCS = False
+
+else:
+	NOMCS = True
+
 ENDPOINT = "https://api.mcsrvstat.us/3"
 
 # LIVE_IP = requests.get('https://api.ipify.org').content.decode('utf8')

@@ -16,16 +16,14 @@ code in Copilot.
 
 [![CodeQL](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml/badge.svg)](https://github.com/psychon-night/Fritz-for-Discord/actions/workflows/codeql.yml)
 
-[![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com) 
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg)](https://forthebadge.com)
 
 ![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-linux.svg) ![](https://raw.githubusercontent.com/psychon-night/psychon-night.github.io/refs/heads/main/shared/platform-indicators/platform-android.svg)
 
 A Discord bot intended for fun and utility\
-Built on Python 3.11.6, unfortunately tested on 3.12
+Built on Python 3.11.6 and 3.12.3
 
 ### WARNINGS
-- Some commands do not respect the ENABLE_LOGGING setting
-	- Please note: I added this long before Fritz was this fragmented. Mostly unimportant now
 - It's recommended to use Python 3.12.3 if possible
 - Intended for use on **Linux**
 	- Android (through Termux) is supported (on versions before 1.24)
@@ -38,11 +36,11 @@ Built on Python 3.11.6, unfortunately tested on 3.12
 	- 500 MB for dependencies
 	- Extra space for cache and logs
 - Currently uses an unmerged version of PyCord for Starboard features
-	- pip install git+https://github.com/NeloBlivion/pycord.git@forwarding
+	- `pip install git+https://github.com/NeloBlivion/pycord.git@forwarding`
 		- Thank you NeloBlivion for this awesome feature <3
 
 ### Dependencies
-- Python 3.10 or newer (`sudo apt install python3.11-full python3.11-dev`)
+- Python 3.10 or newer (`sudo apt install python3.12-full python3.12-dev`)
 - Venv (`sudo apt install python3.11-venv`)
 - PyCord (`pip install py-cord`)
 - DotEnv (`sudo apt install python-dotenv`)
@@ -71,7 +69,6 @@ Obviously, if your system has a package manager like `yay`, use that instead
 - In `resources/shared.py`, set your configuration. Be sure to set these:
 	- `DISALLOW_PLATFORM LEAKS`
 	- `DISALLOW_SYSINF_LEAKS`
-	- `ENABLE_LOGGING`
 	- `LOGGING_BLACKLIST`
 
 ### Portable Modules

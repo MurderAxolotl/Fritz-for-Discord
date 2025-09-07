@@ -14,6 +14,8 @@ from resources.colour import RED, RESET
 # Generate sprite lists
 
 if (PTK_FOLDER != "") and (PTK_FOLDER is not None):
+	NOPTK = False
+
 	for directory in os.listdir(PTK_FOLDER):
 		inventory = []
 
@@ -31,13 +33,15 @@ if (PTK_FOLDER != "") and (PTK_FOLDER is not None):
 			case "artemis": ARTEMIS = inventory #noqa
 			case "rofi"   : ROFI    = inventory #noqa
 			case "theo"   : THEO    = inventory #noqa
+			case "gremlin": GREMLIN = inventory #noqa
 			case "hunter" : HUNTER  = inventory #noqa
 			case "friend" : FRIEND  = inventory #noqa
 			case "ollie"  : OLLIE   = inventory #noqa
 			case _        :
-				print(f"{RED}[PTK_REACTIONS] Unrecognized character: {directory}{RESET}")
 				journal.log(f"[PTK_REACTIONS] Unrecognized character: {directory}")
 
+else:
+	NOPTK = True
 
 async def reaction_image(ctx: discord.ApplicationContext, character:str, sprite_name:str):
 	await ctx.defer()
