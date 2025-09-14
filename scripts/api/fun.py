@@ -36,14 +36,14 @@ async def quotebookMessage(ctx, message:str, author_id:int, author_name:str, aur
 	try:
 		form = {
 			"content": f"{message}",
-			"username": f"{author_name}",
+			"username": f"{author_name} (via Fritz)",
 			"avatar_url": f"{aurl}"
 		}
 
 	except: #noqa
 		form = {
 			"content": f"{message}",
-			"username": f"{author_name}"
+			"username": f"{author_name} (via Fritz)"
 		}
 
 	if str(server) in guild_list:

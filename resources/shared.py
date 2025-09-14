@@ -91,4 +91,4 @@ PATH = os.getenv("systemPath", sys.path[0])
 # Module availability
 ENABLE_QUOTEBOOK = True if QUOTE_WEBHOOK != "" and QUOTE_ID != "" else False
 
-VERSION = f"1.27.0-{PLATFORM_IDENTIFIER}"
+VERSION = f"1.27.1-{PLATFORM_IDENTIFIER}"

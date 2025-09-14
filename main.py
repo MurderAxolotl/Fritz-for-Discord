@@ -55,6 +55,7 @@ sonly = bot.create_group("fs",         "Fritz's server-only commands",   context
 @bot.check
 async def global_isbanned_check(ctx):
 	if ctx.author.id in BLACKLISTED_USERS:
+		journal.log(f"Denying use to banned user {ctx.author.id} ({ctx.author.name})")
 		raise bannedUser("You are banned from using Fritz")
 
 	return True
@@ -116,9 +117,9 @@ if ENABLE_QUOTEBOOK:
 
 		await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
 
-	@bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-	async def forwardToQuotebook(ctx, message:discord.Message):
-		await oneOff.forwardToQuotebook(ctx, message, bot)
+	# @bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	# async def forwardToQuotebook(ctx, message:discord.Message):
+	# 	await oneOff.forwardToQuotebook(ctx, message, bot)
 
 ### ===================================== ###
 ### API COMMANDS ###
@@ -156,7 +157,7 @@ if not ptk_reactions.NOPTK:
 		async def artemisReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ARTEMIS)): #type:ignore
 			await ptk_reactions.reaction_image(ctx, "artemis", sprite)
 
-		@fritz.command(name="rofi_reaction", description="Medical professional...")
+		@fritz.command(name="rofi_reaction", description="Depressed disappointment of a dog")
 		async def rofiReaction(ctx, sprite:discord.Option(str, choices=ptk_reactions.ROFI)): #type:ignore
 			await ptk_reactions.reaction_image(ctx, "rofi", sprite)
 

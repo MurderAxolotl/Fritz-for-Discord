@@ -305,7 +305,7 @@
 ### 1.26.5
 	- Small stability patches
 
-$$$ 1.26.6 / 1.27.0
+### 1.26.6 / 1.27.0
 	- PtK commands will no longer crash Fritz if PTK_FOLDER is unset
 	- MCS commands will be hidden if a Minecraft server isn't configured
 	- QRT commands will be hidden if required dependencies are missing
@@ -314,3 +314,7 @@ $$$ 1.26.6 / 1.27.0
 	- Updated .env template
 	- Logging improvements
 	- Startup improvements
+
+### 1.27.1
+	- Disabled forwarded quotebook (potentially temporary)
+	- Made quotebooked messages include `(via Fritz)` in the username
