@@ -1,0 +1,25 @@
+{rd}#############################
+## STOP: READ THIS WARNING ##
+#############################{rs}
+
+{yl}Plugins are currently ENABLED.
+Fritz will load and execute all Python files in the {pl}/plugins{yl} folder
+
+{rd}This is generally considered a bad idea, as it could allow a bad actor
+to run unauthorized code on your computer.{yl}
+
+In simpler terms: {rd}YOU COULD GET A VIRUS{yl}
+
+Additionally, this can break Fritz in unexpected ways!
+
+{rd}IF YOU DID NOT MEAN TO ENABLE THIS:{yl}
+1. Hold Ctrl and press C to stop Fritz
+2. Open the {pl}.env{yl} file in Fritz's folder
+3. Locate the line with {pl}enable_plugins = True{yl}
+4. Delete the whole line
+
+{rd}IF YOU MEANT TO ENABLE THIS:{yl}
+- You acknowledge this is risky and insecure
+- You acknowledge you are responsible for any damage
+
+{rd}This warning will not be shown again

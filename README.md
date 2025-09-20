@@ -49,7 +49,7 @@ For optional QR support, you also need:
 - zbar (`sudo apt-get install libzbar0 && pip install pyzbar`)
 - Pillow (`pip install pillow`)
 
-**NOTE**: On some systems, it may be neccesary to replace `pip` with `python -m pip` or `python3 -m pip`
+**NOTE**: On some systems, it may be neccesary to replace `pip` with `python -m pip` or `python3 -m pip`\
 **NOTE**: If you're not using a venv for Fritz, you'll need to add ` --break-system-packages` to the end of each pip command (`pip install py-cord --break-system-packages`, for example)
 
 Obviously, if your system has a package manager like `yay`, use that instead
@@ -61,18 +61,47 @@ Obviously, if your system has a package manager like `yay`, use that instead
 4. At the root of the project, create a file named `.env`
 5. Use the [.env template](https://github.com/murderaxolotl/Fritz-for-Discord/blob/main/.env.template) and set your env variables
 
+### Plugins
+
+Fritz supports plugins! These are intended to allow for the modular addition of commands and features. A few default plugins ship by default, but you're welcome to remove them!
+
+Plugins are allowed to hook a few events by including this function:
+```
+def _funchook() -> tuple[list, list, list]:
+	# Signature: [on_ready, on_message, on_error]
+	return [], [], []
+```
+
+Where each list contains functions to call.\
+Fritz will `await` on_message and on_error functions, but NOT on_ready\
+Fritz will pass the message context to on_message. Function must take one parameter:  `def my_function(context)`\
+Fritz will pass the context and error to on_error. Function must take two parameters: `def my_function(context, error)`
+
+Here's an example:
+```
+def _funchook() -> tuple[list, list, list]:
+	# Signature: [on_ready, on_message, on_error]
+	return [print_welcome_message], [scan_message_for_files, scan_message_for_swears], [send_email_to_admin]
+```
+
+Where the functions would be defined like this:
+```
+def print_welcome_message():
+	print("Hello, user!")
+
+def scan_message_for_files(context):
+	# ...do file scanning here...
+
+def send_email_to_admin(context, error):
+	# ...send a nice email here...
+```
+
 ### Configure
 - In `resources/shared.py`, set `INVITE_URL` to your bot's URL, `GIT_URL` to your GitHub URL, and `REGISTERED_DEVELOPERS` to your UUID
 - In `resources/shared.py`, set your configuration. Be sure to set these:
 	- `DISALLOW_PLATFORM LEAKS`
 	- `DISALLOW_SYSINF_LEAKS`
 	- `LOGGING_BLACKLIST`
-
-### Portable Modules
-
-These are .py files you can use in your own projects. Please give credit!
-
-`scripts/api/discord.py`: an up-to-date and easy to use API wrapper for common use-cases. Designed to fill the gaps of PyCord; it is NOT a replacement for PyCord
 
 ### Command Documentation
 

@@ -43,6 +43,16 @@ def log_and_print(message:str, print_colour:str="", severity:int=6):
 	print(print_colour + message + RESET)
 	log(message, severity)
 
+def ___lognoprefix(message:str, severity:int=6):
+	LOG_LOC = PATH + "/logs/journal"
+
+	if os.path.exists(LOG_LOC):
+		with open(LOG_LOC, "a") as log_file: log_file.write(message + "\n")
+	else:
+		with open(LOG_LOC, "x") as log_file: log_file.write(message + "\n")
+
+	systemd.send(message, SYSLOG_IDENTIFIER="fritz", LEVEL=LOG_SEVERITY[severity])
+
 def log(message:str, severity:int=6):
 	""" Write a log message\n
 	Severity: `0=emergency, 1=alert, 2=critical, 3=error, 4=warning, 5=notice, 6=info`

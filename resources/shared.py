@@ -11,6 +11,8 @@ import dotenv
 import os
 import sys
 import json
+import string
+import random
 
 dotenv.load_dotenv(".env")
 
@@ -31,6 +33,8 @@ except Exception:
 
 if FORCE_DEBUG: IS_DEBUGGING = True
 else: IS_DEBUGGING = False # If you want to enable debug mode, change this line
+
+ENABLE_IMPORTED_PLUGINS = str(os.getenv("enable_plugins", "False")) == "True"
 
 LIMIT_MCSTATUS_COMMAND = str(os.getenv("limit_mcs_command", "False")) == "True"
 DISALLOW_PLATFORM_LEAKS = str(os.getenv("hide_platform", "False")) == "True"
@@ -92,3 +96,4 @@ PATH = os.getenv("systemPath", sys.path[0])
 ENABLE_QUOTEBOOK = True if QUOTE_WEBHOOK != "" and QUOTE_ID != "" else False
 
 VERSION = f"1.27.1-{PLATFORM_IDENTIFIER}"
+BOOTID = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(32))

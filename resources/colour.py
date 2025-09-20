@@ -6,3 +6,5 @@ RED = "\u001b[1;31m"
 MAGENTA = "\u001b[1;35m"
 YELLOW = "\u001b[33;1m"
 RESET = "\u001b[0m"
+
+UP = "\u001b[1F"

@@ -1,7 +1,7 @@
-Fritz {fritzVersion}
-Edition: **{prodEdition}**
+Fritz {fritzVersion} **{prodEdition}**
 
 ### Backend
 System: **{backend}**
 Python Version: {pyVer}
 CWD: **{cwd}**
+BID: **{BOOT_ID}**

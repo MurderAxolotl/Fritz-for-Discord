@@ -318,3 +318,8 @@
 ### 1.27.1
 	- Disabled forwarded quotebook (potentially temporary)
 	- Made quotebooked messages include `(via Fritz)` in the username
+
+### 1.28.0
+	- PLUGINS!!
+	- Improved logging in some situations
+	- Mild improvements to startup text

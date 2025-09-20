@@ -3,12 +3,18 @@
 import os
 
 from resources.shared import PATH
-from resources.colour import SEAFOAM, RESET
+from resources.colour import YELLOW, MAGENTA, SEAFOAM, RESET
 
-if not os.path.isdir(PATH + "/logs"): os.mkdir(PATH + "/logs"); print(SEAFOAM + "FIRSTRUN: Created /logs" + RESET)
-if not os.path.isdir(PATH + "/logs/system"): os.mkdir(PATH + "/logs/system"); print(SEAFOAM + "FIRSTRUN: Created /logs/system" + RESET)
-if not os.path.isdir(PATH + "/logs/guilds"): os.mkdir(PATH + "/logs/guilds"); print(SEAFOAM + "FIRSTRUN: Created /logs/guilds" + RESET)
-if not os.path.isdir(PATH + "/logs/users"): os.mkdir(PATH + "/logs/users"); print(SEAFOAM + "FIRSTRUN: Created /logs/users" + RESET)
-if not os.path.isdir(PATH + "/cache"): os.mkdir(PATH + "/cache"); print(SEAFOAM + "FIRSTRUN: Created /cache" + RESET)
-if not os.path.isdir(PATH + "/cache/qr"): os.mkdir(PATH + "/cache/qr"); print(SEAFOAM + "FIRSTRUN: Created /cache/qr" + RESET)
-if not os.path.isdir(PATH + "/config"): os.mkdir(PATH + "/config"); print(SEAFOAM + "FIRSTRUN: Created /config" + RESET)
+def __createFolder(subpath:str) -> None:
+	os.mkdir(f"{PATH}{subpath}")
+
+	print(f"{SEAFOAM}Setup: {YELLOW}Created {MAGENTA}{subpath}{RESET}")
+
+if not os.path.isdir(PATH + "/logs"):        __createFolder("/logs")
+if not os.path.isdir(PATH + "/logs/system"): __createFolder("/logs/system")
+if not os.path.isdir(PATH + "/logs/guilds"): __createFolder("/logs/guilds")
+if not os.path.isdir(PATH + "/logs/users"):  __createFolder("/logs/users")
+if not os.path.isdir(PATH + "/cache"):       __createFolder("/cache")
+if not os.path.isdir(PATH + "/cache/qr"):    __createFolder("/cache/qr")
+if not os.path.isdir(PATH + "/config"):      __createFolder("/config")
+if not os.path.isdir(PATH + "/plugins"):     __createFolder("/plugins")

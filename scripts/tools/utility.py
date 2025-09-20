@@ -9,6 +9,8 @@ import requests
 import discord
 import random
 import string
+import sys
+import importlib
 
 import scripts.tools.journal as journal
 
