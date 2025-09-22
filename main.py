@@ -427,7 +427,7 @@ if ENABLE_IMPORTED_PLUGINS:
 
 						del _funchook
 
-					except:
+					except Exception:
 						pass
 
 					num_imported_plugins += 1
