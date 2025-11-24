@@ -83,11 +83,11 @@ def loadString(stringFile:str) -> str:
 		return contents
 
 	except FileNotFoundError:
-		journal.log(RED + f"ERR: FILE {MAGENTA}{stringFile}{RED} NOT FOUND. RETURNING AN EMPTY STRING TO AVOID CRASH." + RESET, 3)
+		journal.log(f"FILE {MAGENTA}{stringFile}{RED} NOT FOUND. RETURNING AN EMPTY STRING TO AVOID CRASH.", 3)
 
 		return ""
 
 	except Exception as err:
-		journal.log(RED + f"ERR: FAILED TO READ {MAGENTA}{stringFile}{RED}: {str(err)}" + RESET, 3)
+		journal.log(f"FAILED TO READ {MAGENTA}{stringFile}{RED}: {str(err)}", 3)
 
 		return ""

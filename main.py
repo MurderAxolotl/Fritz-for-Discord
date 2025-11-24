@@ -127,11 +127,11 @@ async def on_ready():
 
 	if len(module_failures) > 0:
 		for failure in module_failures:
-			journal.log_and_print(f"   => Module '{failure}' failed to import", severity=5)
+			journal.log(f"   => Module '{failure}' failed to import", severity=5)
 
 	if len(general_errors) > 0:
 		for failure in general_errors:
-			journal.log_and_print(f"   => {failure}", severity=5)
+			journal.log(f"   => {failure}", severity=5)
 
 	for func in _on_ready_hooks:
 		func()
