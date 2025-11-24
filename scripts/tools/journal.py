@@ -1,6 +1,6 @@
 import datetime
 import os
-import systemd.journal as systemd
+# import systemd.journal as systemd
 
 from resources.shared import PATH
 from resources.colour import RED, DRIVES, YELLOW, RESET
@@ -51,7 +51,9 @@ def ___lognoprefix(message:str, severity:int=6):
 	else:
 		with open(LOG_LOC, "x") as log_file: log_file.write(message + "\n")
 
-	systemd.send(message, SYSLOG_IDENTIFIER="fritz", LEVEL=LOG_SEVERITY[severity])
+	# Temporary logging stuff
+	print("fritz[" + str(severity) + "]: " + message)
+	# systemd.send(message, SYSLOG_IDENTIFIER="fritz", LEVEL=LOG_SEVERITY[severity])
 
 def log(message:str, severity:int=6):
 	""" Write a log message\n
@@ -59,7 +61,10 @@ def log(message:str, severity:int=6):
 	"""
 
 	logDisk(message, severity)
-	systemd.send(message, SYSLOG_IDENTIFIER="fritz", LEVEL=LOG_SEVERITY[severity])
+
+	# Temporary logging stuff
+	print("fritz[" + str(severity) + "]: " + message)
+	# systemd.send(message, SYSLOG_IDENTIFIER="fritz", LEVEL=LOG_SEVERITY[severity])
 
 def log_fatal(message:str):
 	""" Logs at the CRITICAL level """
@@ -74,4 +79,6 @@ def log_fatal(message:str):
 	else:
 		with open(LOG_LOC, "x") as log_file: log_file.write(template.format(date=today, time=current_time, entry=message))
 
-	systemd.send(message, SYSLOG_IDENTIFIER="fritz", LEVEL="critical")
+	# Temporary logging stuff
+	print("fritz[CRITICAL]: " + message)
+	# systemd.send(message, SYSLOG_IDENTIFIER="fritz", LEVEL="critical")
