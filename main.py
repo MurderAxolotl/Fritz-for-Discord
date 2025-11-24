@@ -118,7 +118,7 @@ async def on_ready():
 		journal.log(f"There are {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users", severity=5)
 
 	if num_imported_plugins != 0:
-		journal.log(f"Imported {SEAFOAM}{num_imported_plugins} plugins{RESET}", severity=6)
+		journal.log(f"Imported {SEAFOAM}{num_imported_plugins} plugins", severity=6)
 
 
 	for func in _on_ready_hooks:
@@ -435,10 +435,10 @@ if ENABLE_IMPORTED_PLUGINS:
 if __name__ == "__main__":
 	try:
 		match [IS_DEBUGGING, IS_ANDROID]:
-			case [False, False]: journal.log(MAGENTA + f"Fritz {VERSION}" + RESET, 6)
-			case [True, False] : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug mode)" + RESET, 6)
-			case [False, True] : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (experimental)" + RESET, 6)
-			case [True, True]  : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)" + RESET, 6)
+			case [False, False]: journal.log(MAGENTA + f"Fritz {VERSION}", 6)
+			case [True, False] : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug mode)", 6)
+			case [False, True] : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (experimental)", 6)
+			case [True, True]  : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)", 6)
 
 		print("", flush=True)
 

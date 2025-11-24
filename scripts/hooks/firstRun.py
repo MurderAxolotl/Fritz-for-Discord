@@ -10,7 +10,7 @@ import scripts.tools.journal as journal
 def __createFolder(subpath:str) -> None:
 	os.mkdir(f"{PATH}{subpath}")
 
-	journal.log(f"{SEAFOAM}Setup: {RESET}Created {MAGENTA}{subpath}", 5)
+	journal.log(f"{SEAFOAM}Setup: {{reset_colour}}Created {MAGENTA}{subpath}", 5)
 
 if not os.path.isdir(PATH + "/logs"):        __createFolder("/logs")
 if not os.path.isdir(PATH + "/logs/system"): __createFolder("/logs/system")

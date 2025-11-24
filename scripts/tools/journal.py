@@ -49,6 +49,7 @@ def log(message:str, severity:int=6, print_colour:str=""):
 		- 4: message is yellow
 		- 5: message is orange
 		- 6, 7: message is white
+	`{reset_colour}` can be used in the message to reset back to the `print_colour`.
 	"""
 
 	template = "fritz[{sev}]: {entry}"
@@ -64,7 +65,7 @@ def log(message:str, severity:int=6, print_colour:str=""):
 			case 6|7:
 				print_colour = RESET
 	
-	output_text = print_colour + template.format(sev=LOG_SEVERITY[severity], entry=message) + RESET
+	output_text = print_colour + template.format(sev=LOG_SEVERITY[severity], entry=message.format(reset_colour=print_colour)) + RESET
 
 	_log_to_stdout(output_text, severity=severity)
 	_log_to_disk(output_text)
