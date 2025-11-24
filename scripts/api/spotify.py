@@ -57,8 +57,6 @@ async def searchSpotify(ctx, query, count):
 			totalCombined = """"""
 			totalLen = 0
 	
-	# print(res)
-
 	if len(songList) > 0:
 		# await infoMessage.edit("Showing search results for %s"%query)
 		await ctx.respond(totalCombined)

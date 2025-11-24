@@ -5,10 +5,12 @@ import os
 from resources.shared import PATH
 from resources.colour import YELLOW, MAGENTA, SEAFOAM, RESET
 
+import scripts.tools.journal as journal
+
 def __createFolder(subpath:str) -> None:
 	os.mkdir(f"{PATH}{subpath}")
 
-	print(f"{SEAFOAM}Setup: {YELLOW}Created {MAGENTA}{subpath}{RESET}")
+	journal.log(f"{SEAFOAM}Setup: {RESET}Created {MAGENTA}{subpath}", 5)
 
 if not os.path.isdir(PATH + "/logs"):        __createFolder("/logs")
 if not os.path.isdir(PATH + "/logs/system"): __createFolder("/logs/system")

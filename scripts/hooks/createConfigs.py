@@ -19,7 +19,6 @@ def createBlankConfig(path):
 		blankConfig.write(r"{}")
 
 if not os.path.isdir(CONFIG_DIR):
-	print(RED + "[ConfigCreator] WARN: config dir does not exist! Creating it now" + RESET)
 	journal.log("ConfigCreator: config dir does not exist! Creating it now", 4)
 
 	os.mkdir(CONFIG_DIR)

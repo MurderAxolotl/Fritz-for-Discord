@@ -24,8 +24,7 @@ if (PTK_FOLDER != "") and (PTK_FOLDER is not None):
 				inventory.append(file)
 
 			else:
-				print(RED + f"PtK folder for {directory} exceeds 25 images! Capping!" + RESET)
-				journal.log(f"PtK folder for {directory} exceeds 25 images! Capping!")
+				journal.log(f"PtK folder for {directory} exceeds 25 images! Capping!", 4)
 
 				pass
 
@@ -38,7 +37,7 @@ if (PTK_FOLDER != "") and (PTK_FOLDER is not None):
 			case "friend" : FRIEND  = inventory #noqa
 			case "ollie"  : OLLIE   = inventory #noqa
 			case _        :
-				journal.log(f"[PTK_REACTIONS] Unrecognized character: {directory}")
+				journal.log(f"PtK Reactions: Unrecognized character: {directory}", 3)
 
 else:
 	NOPTK = True

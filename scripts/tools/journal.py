@@ -51,14 +51,14 @@ def _log_to_stdout(message:str, print_colour:str="", severity:int=6):
 
 	# Output errors to stderr
 	if severity <= 3:
-		print(output_text, file=sys.stderr)
+		print(output_text, file=sys.stderr, flush=True)
 	else:
-		print(output_text, file=sys.stdout)
+		print(output_text, file=sys.stdout, flush=True)
 
 def ___lognoprefix(message:str, severity:int=6):
 	LOG_LOC = PATH + "/logs/journal"
 	
-	print(message)
+	print(message, flush=True)
 
 	if os.path.exists(LOG_LOC):
 		with open(LOG_LOC, "a") as log_file: log_file.write(message + "\n")

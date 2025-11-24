@@ -18,6 +18,7 @@ from resources.shared import TOKEN, APPLICATIONID
 from resources.colour import *
 
 from scripts.tools.utility import loop
+import scripts.tools.journal as journal
 
 url = "https://discord.com/api/"
 
@@ -62,13 +63,15 @@ async def query_messages(ID):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 	
 async def get_message(CHANNEL_ID, MESSAGE_ID):
 	""" Use the Discord API to get the specified message """
@@ -77,13 +80,15 @@ async def get_message(CHANNEL_ID, MESSAGE_ID):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 
 async def trigger_typing(channel):
 	""" Trigger typing in `channel` \n\n Returns `0` on success \n\n Returns `-1` or `404` on error"""
@@ -92,13 +97,15 @@ async def trigger_typing(channel):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return 0
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+		
+		return 404
 	
 ### MEMBER TOOLS ###
 
@@ -110,7 +117,9 @@ async def allowInDMs(COMMAND_ID):
 		response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.patch(ENDPOINT, headers=HEADERS, json={"contexts": [0,1,2], "integration_types": [0,1]}))
 
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 
 ### GUILD TOOLS ###
 
@@ -121,13 +130,15 @@ async def get_channel(ID, key):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)[key]
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 	
 
 async def get_guild(ID, key):
@@ -137,13 +148,15 @@ async def get_guild(ID, key):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)[key]
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 	
 
 async def get_audit_log(guild):
@@ -152,13 +165,15 @@ async def get_audit_log(guild):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 
 
 async def get_guild_members(guild):
@@ -167,13 +182,15 @@ async def get_guild_members(guild):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 	
 ### GUILD BAN TOOLS ###
 
@@ -183,14 +200,18 @@ async def ban_member(guild, user):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.put(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)
 	except Exception as err:
-		if "Expecting value:" in str(err): return ""
-		print(str(err)); return 404
+		if "Expecting value:" in str(err):
+			return ""
+
+		journal.log(str(err), 3)
+
+		return 404
 
 
 async def unban_member(guild, user):
@@ -199,13 +220,15 @@ async def unban_member(guild, user):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.delete(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404
 
 
 async def get_bans(guild):
@@ -214,10 +237,12 @@ async def get_bans(guild):
 
 	try: response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get(ENDPOINT, headers=HEADERS))
 	except Exception as err: 
-		print(RED + str(err) + RESET)
+		journal.log(str(err), 3)
 
 		return -1
 	
 	try: return json.loads(response.text)
 	except Exception as err:
-		print(str(err)); return 404
+		journal.log(str(err), 3)
+
+		return 404

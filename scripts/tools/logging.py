@@ -6,6 +6,7 @@ Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 import os, sys, datetime
 
 import scripts.tools.utility as utility
+import scripts.tools.journal as journal
 from resources.colour import *
 
 async def logMessage(message):
@@ -23,7 +24,7 @@ async def logMessage(message):
 	else: 
 		try: guild_id = str(message.guild.id)
 		except: 
-			print(RED + "Guild cache needs to be refreshed. Message will not be logged" + RESET)
+			journal.log("Guild cache needs to be refreshed. Message will not be logged.", 3)
 			return -1
 		
 		channel_id = str(message.channel.id)
@@ -31,7 +32,7 @@ async def logMessage(message):
 		logPath = sys.path[0] + "/logs/guilds/%s/%s.log"%(guild_id, channel_id)
 
 		if not os.path.isdir(sys.path[0] + "/logs/guilds/%s"%(guild_id)):
-			print(YELLOW + "Creating dir %s"%sys.path[0] + "/logs/guilds/%s"%(guild_id))
+			journal.log("Creating dir %s"%sys.path[0] + "/logs/guilds/%s"%(guild_id), 5)
 			os.mkdir(sys.path[0] + "/logs/guilds/%s"%(guild_id))
 
 	fs = str(today) + " " + str(current_time) + " "
