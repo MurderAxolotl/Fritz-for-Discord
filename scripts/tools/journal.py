@@ -1,5 +1,6 @@
 import datetime
 import os
+import sys
 
 from resources.shared import PATH
 from resources.colour import RED, DRIVES, YELLOW, RESET
@@ -45,13 +46,18 @@ def _log_to_stdout(message:str, print_colour:str="", severity:int=6):
 				print_colour = DRIVES
 			case 6|7:
 				print_colour = RESET
+	
+	output_text = print_colour + template.format(sev=LOG_SEVERITY[severity], entry=message) + RESET
 
-	print(print_colour + template.format(sev=LOG_SEVERITY[severity], entry=message) + RESET)
+	# Output errors to stderr
+	if severity <= 3:
+		print(output_text, file=sys.stderr)
+	else:
+		print(output_text, file=sys.stdout)
 
 def ___lognoprefix(message:str, severity:int=6):
 	LOG_LOC = PATH + "/logs/journal"
 	
-	# Temporary logging stuff
 	print(message)
 
 	if os.path.exists(LOG_LOC):
