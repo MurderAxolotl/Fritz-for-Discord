@@ -1,0 +1,9 @@
+services:
+  fritz:
+    restart: unless-stopped
+    build: .
+    volumes:
+      - ./config:/fritz/config
+      - ./cache:/fritz/cache
+      - ./logs:/fritz/logs
+      - ./ptk:/ptk
