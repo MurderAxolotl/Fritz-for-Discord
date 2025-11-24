@@ -11,29 +11,46 @@ LOG_SEVERITY = ["EMERGENCY", "ALERT", "CRITICAL", "ERROR", "WARNING", "NOTICE", 
 Severity: `0=emergency, alert=1, 2=critical, 3=error, 4=warning, 5=notice, 6=info, 7=debug`
 """
 
-def _log_to_disk(message:str, severity:int=6):
+def _log_to_disk(message:str):
 	LOG_LOC = PATH + "/logs/journal"
 
-	template = "{date}@{time} - [{sev}] {entry}\n"
+	template = "{date}@{time} {entry}\n"
 
 	current_time = datetime.datetime.now().strftime("%H:%M:%S")
 	today = datetime.date.today()
 
 	if os.path.exists(LOG_LOC):
-		with open(LOG_LOC, "a") as log_file: log_file.write(template.format(date=today, time=current_time, sev=LOG_SEVERITY[severity], entry=message))
+		with open(LOG_LOC, "a") as log_file: log_file.write(template.format(date=today, time=current_time, entry=message))
 	else:
-		with open(LOG_LOC, "x") as log_file: log_file.write(template.format(date=today, time=current_time, sev=LOG_SEVERITY[severity], entry=message))
+		with open(LOG_LOC, "x") as log_file: log_file.write(template.format(date=today, time=current_time, entry=message))
 
-def _log_to_stdout(message:str, print_colour:str="", severity:int=6):
+def _log_to_stdout(message:str, severity:int=6):
+	# Output errors to stderr
+	if severity <= 3:
+		print(message, file=sys.stderr, flush=True)
+	else:
+		print(message, file=sys.stdout, flush=True)
+
+def ___lognoprefix(message:str, severity:int=6):
+	LOG_LOC = PATH + "/logs/journal"
+	
+	print(message, flush=True)
+
+	if os.path.exists(LOG_LOC):
+		with open(LOG_LOC, "a") as log_file: log_file.write(message + "\n")
+	else:
+		with open(LOG_LOC, "x") as log_file: log_file.write(message + "\n")
+
+def log(message:str, severity:int=6, print_colour:str=""):
 	""" Write a log message\n
-	Severity: `0=emergency, 1=alert, 2=critical, 3=error, 4=warning, 5=notice, 6=info`\n
+	Severity: `0=emergency, 1=alert, 2=critical, 3=error, 4=warning, 5=notice, 6=info, 7=debug`
 	If `print_colour` is not set:
 		- 0, 1, 2, 3: message is red
 		- 4: message is yellow
 		- 5: message is orange
 		- 6, 7: message is white
 	"""
-	
+
 	template = "fritz[{sev}]: {entry}"
 
 	if print_colour == "":
@@ -49,29 +66,8 @@ def _log_to_stdout(message:str, print_colour:str="", severity:int=6):
 	
 	output_text = print_colour + template.format(sev=LOG_SEVERITY[severity], entry=message) + RESET
 
-	# Output errors to stderr
-	if severity <= 3:
-		print(output_text, file=sys.stderr, flush=True)
-	else:
-		print(output_text, file=sys.stdout, flush=True)
-
-def ___lognoprefix(message:str, severity:int=6):
-	LOG_LOC = PATH + "/logs/journal"
-	
-	print(message, flush=True)
-
-	if os.path.exists(LOG_LOC):
-		with open(LOG_LOC, "a") as log_file: log_file.write(message + "\n")
-	else:
-		with open(LOG_LOC, "x") as log_file: log_file.write(message + "\n")
-
-def log(message:str, severity:int=6):
-	""" Write a log message\n
-	Severity: `0=emergency, 1=alert, 2=critical, 3=error, 4=warning, 5=notice, 6=info, 7=debug`
-	"""
-
-	_log_to_stdout(message, severity=severity)
-	_log_to_disk(message, severity)
+	_log_to_stdout(output_text, severity=severity)
+	_log_to_disk(output_text)
 
 def log_fatal(message:str):
 	""" Logs at the CRITICAL level """
