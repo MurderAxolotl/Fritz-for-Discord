@@ -2,10 +2,8 @@ import datetime
 import os
 import sys
 
-from resources.shared import PATH
+from resources.shared import PATH, LOG_SEVERITY, LOG_LEVEL
 from resources.colour import RED, DRIVES, YELLOW, RESET
-
-LOG_SEVERITY = ["EMERGENCY", "ALERT", "CRITICAL", "ERROR", "WARNING", "NOTICE", "INFO", "DEBUG"]
 
 """ Log to the journal file and stdout\n
 Severity: `0=emergency, alert=1, 2=critical, 3=error, 4=warning, 5=notice, 6=info, 7=debug`
@@ -51,6 +49,9 @@ def log(message:str, severity:int=6, print_colour:str=""):
 		- 6, 7: message is white
 	`{reset_colour}` can be used in the message to reset back to the `print_colour`.
 	"""
+
+	if severity > LOG_LEVEL:
+		return
 
 	template = "fritz[{sev}]: {entry}"
 

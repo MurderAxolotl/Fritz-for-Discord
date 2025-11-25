@@ -16,6 +16,8 @@ import random
 
 dotenv.load_dotenv(".env")
 
+LOG_SEVERITY = ["EMERGENCY", "ALERT", "CRITICAL", "ERROR", "WARNING", "NOTICE", "INFO", "DEBUG"]
+
 # Fritz is always in debug mode on my development system, so I have an env
 # var for it. Try to look for said environment variable
 # Don't manually edit FORCE_DEBUG, as this might result in unintended
@@ -33,6 +35,13 @@ except Exception:
 
 if FORCE_DEBUG: IS_DEBUGGING = True
 else: IS_DEBUGGING = False # If you want to enable debug mode, change this line
+
+LOG_LEVEL_STRING:str = os.getenv("log_level", "INFO")
+
+if LOG_LEVEL_STRING.isnumeric():
+	LOG_LEVEL:int = int(LOG_LEVEL_STRING)
+else:
+	LOG_LEVEL:int = LOG_SEVERITY.index(LOG_LEVEL_STRING)
 
 ENABLE_IMPORTED_PLUGINS = str(os.getenv("enable_plugins", "False")) == "True"
 
