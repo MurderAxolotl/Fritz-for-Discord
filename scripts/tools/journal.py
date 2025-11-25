@@ -39,7 +39,7 @@ def ___lognoprefix(message:str, severity:int=6):
 	else:
 		with open(LOG_LOC, "x") as log_file: log_file.write(message + "\n")
 
-def log(message:str, severity:int=6, print_colour:str=""):
+def log(message:str, severity:int=6, *, component:str="fritz", print_colour:str=""):
 	""" Write a log message\n
 	Severity: `0=emergency, 1=alert, 2=critical, 3=error, 4=warning, 5=notice, 6=info, 7=debug`
 	If `print_colour` is not set:
@@ -53,7 +53,7 @@ def log(message:str, severity:int=6, print_colour:str=""):
 	if severity > LOG_LEVEL:
 		return
 
-	template = "fritz[{sev}]: {entry}"
+	template = "{comp}[{sev}]: {entry}"
 
 	if print_colour == "":
 		match severity:
@@ -66,7 +66,7 @@ def log(message:str, severity:int=6, print_colour:str=""):
 			case 6|7:
 				print_colour = RESET
 	
-	output_text = print_colour + template.format(sev=LOG_SEVERITY[severity], entry=message.format(reset_colour=print_colour)) + RESET
+	output_text = print_colour + template.format(comp=component, sev=LOG_SEVERITY[severity], entry=message.format(reset_colour=print_colour)) + RESET
 
 	_log_to_stdout(output_text, severity=severity)
 	_log_to_disk(output_text)
