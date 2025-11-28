@@ -60,9 +60,9 @@ async def giveRaccFacc(ctx):
 
 async def giveLynx(ctx):
 	await ctx.defer()
-	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("http://lynx.somnolescent.net/api.php"))
+	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.tinyfox.dev/img.json?animal=lynx"))
 
-	await ctx.respond(response.text)
+	await ctx.respond("https://api.tinyfox.dev" + json.loads(response.text)["loc"])
 
 async def giveFox(ctx):
 	await ctx.defer()
