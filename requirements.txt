@@ -1,4 +1,6 @@
+requests
 git+https://github.com/Pycord-Development/pycord.git
 nest_asyncio
 pyzbar
 pillow
+python-dotenv
