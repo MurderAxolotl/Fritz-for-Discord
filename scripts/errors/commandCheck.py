@@ -36,19 +36,14 @@ async def on_command_error(ctx, error):
 			await ctx.respond(f"Failed to execute command. Please [report this bug](<{GIT_URL}/issues/new?assignees=&labels=bug%2Cbroken+command&projects=&template=broken_command.yml>)")
 			journal.log("Failed to execute command: " + str(error), 3)
 
-			print(RED + "[ERROR] - Failed to execute command: " + str(error) + RESET)
-
 	except Exception as err:
 		try:
-			journal.log("While handling an error, another one occured: " + str(err))
+			journal.log("While handling an error, another one occured: " + str(err), 3)
 
 		except Exception as err2:
-			print(MAGENTA + "[Commands]" + RED + " [ERROR] - Too many errors occured while attempting to handle another error" + RESET)
-			print(MAGENTA + "[Commands]" + YELLOW + " [WARN] - Assuming repeated errors were caused by Discord" + RESET)
-			print(RED + "   -> %s"%str(err) + RESET)
-			print(RED + "   -> %s"%str(err2) + RESET)
-
-			journal.log("Command caused cascading errors!", 2)
+			journal.log("Commands: Too many errors occured while attempting to handle another error. Assuming repeated errors were caused by Discord.", 2)
+			journal.log("   -> %s"%str(err), 2)
+			journal.log("   -> %s"%str(err2), 2)
 
 			return
 

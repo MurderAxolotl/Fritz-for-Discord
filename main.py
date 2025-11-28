@@ -101,37 +101,25 @@ async def on_application_command_error(ctx: discord.ApplicationContext, error: d
 async def on_ready():
 	global errors_during_startup
 
-	startup_text = MAGENTA + "Connected"
-
-	journal.log("Fritz is connected to Discord")
+	journal.log(MAGENTA + "Connected to Discord", 6)
 
 	if errors_during_startup != 0:
-		journal.log(f"Encountered {errors_during_startup} errors during startup", severity=5)
-
-		startup_text = startup_text + f" with {RED}{errors_during_startup} errors{RESET}"
-
-		if len(BLACKLISTED_USERS) != 0:
-			startup_text = startup_text + f"{MAGENTA}, {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users"
-
-	elif len(BLACKLISTED_USERS) != 0:
-		startup_text = startup_text + f" with {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users"
-
-	if num_imported_plugins != 0:
-		if errors_during_startup != 0 or len(BLACKLISTED_USERS) > 0:
-			startup_text = startup_text + f", {SEAFOAM}{num_imported_plugins} plugins{RESET}"
-
-		else:
-			startup_text = startup_text + f" with {SEAFOAM}{num_imported_plugins} plugins{RESET}"
-
-	print(startup_text)
-
+		journal.log(f"Encountered {errors_during_startup} errors during startup", severity=3)
+	
 	if len(module_failures) > 0:
 		for failure in module_failures:
-			journal.log_and_print(f"   => Module '{failure}' failed to import", severity=5)
+			journal.log(f"   => Module '{failure}' failed to import", severity=3)
 
 	if len(general_errors) > 0:
 		for failure in general_errors:
-			journal.log_and_print(f"   => {failure}", severity=5)
+			journal.log(f"   => {failure}", severity=3)
+	
+	if len(BLACKLISTED_USERS) != 0:
+		journal.log(f"There are {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users", severity=5)
+
+	if num_imported_plugins != 0:
+		journal.log(f"Imported {SEAFOAM}{num_imported_plugins} plugins", severity=6)
+
 
 	for func in _on_ready_hooks:
 		func()
@@ -213,7 +201,7 @@ if not ptk_reactions.NOPTK:
 			await ptk_reactions.reaction_image(ctx, "ollie", sprite)
 
 	except Exception as err:
-		journal.log("PtK reactions unavailable: " + str(err), 4)
+		journal.log("PtK reactions unavailable: " + str(err), 3)
 		errors_during_startup += 1
 
 		module_failures.append("PTK Reactions")
@@ -336,6 +324,7 @@ async def memdump(context, dump_module_contents:bool=False):
 			dumpfile.write(str(dir(shared)) + "\n")
 
 		print("### END MEMORY DUMP ###")
+		sys.stdout.flush()
 
 	await context.respond("Memory dumped")
 
@@ -361,6 +350,8 @@ async def downloadMessages(ctx, id):
 	for author in authorList:
 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
 		index += 1
+	
+	sys.stdout.flush()
 
 	await ctx.respond("Dumped to console")
 
@@ -391,7 +382,7 @@ def psi_register_application_command_error(function):
 if ENABLE_IMPORTED_PLUGINS:
 	if not os.path.exists(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING"):
 
-		print(RED + loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET) + RESET)
+		print(RED + loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET) + RESET, flush=True)
 
 		wait = 0
 
@@ -400,7 +391,7 @@ if ENABLE_IMPORTED_PLUGINS:
 			time.sleep(1)
 			wait += 1
 
-			print(RED + f"\u001b[1FFritz will start in {fl02} seconds   ")
+			print(RED + f"\u001b[1FFritz will start in {fl02} seconds   ", flush=True)
 
 		open(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING", "x").close()
 
@@ -444,12 +435,12 @@ if ENABLE_IMPORTED_PLUGINS:
 if __name__ == "__main__":
 	try:
 		match [IS_DEBUGGING, IS_ANDROID]:
-			case [False, False]: print(MAGENTA + f"Fritz {VERSION}" + RESET)
-			case [True, False] : print(MAGENTA + f"Fritz {VERSION}" + RED + " (debug mode)" + RESET)
-			case [False, True] : print(MAGENTA + f"Fritz {VERSION}" + RED + " (experimental)" + RESET)
-			case [True, True]  : print(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)" + RESET)
+			case [False, False]: journal.log(MAGENTA + f"Fritz {VERSION}", 6)
+			case [True, False] : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug mode)", 6)
+			case [False, True] : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (experimental)", 6)
+			case [True, True]  : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)", 6)
 
-		print("")
+		print("", flush=True)
 
 		if starboard.NOQB:
 			errors_during_startup += 1
@@ -457,7 +448,4 @@ if __name__ == "__main__":
 		bot.run(TOKEN)
 
 	except Exception as err:
-		print(MAGENTA + "FATAL: " + RED + "Failed to start Fritz")
-		print("   -> " + str(err) + RESET)
-
 		journal.log_fatal("Failed to start: " + str(err))
