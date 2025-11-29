@@ -46,7 +46,7 @@ async def giveTrashPanda(ctx, getVideo):
 async def giveRaccFacc(ctx):
 	await ctx.defer()
 
-	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/v1/fact"))
+	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/fact?json=true"))
 
 	responseJSON = json.loads(response.text)
 
