@@ -92,6 +92,6 @@ async def giveDerg(ctx):
 		'User-Agent': 'Fritz-for-Discord/1.0 (github/MurderAxolotl)'
 	}
 
-	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://e926.net/posts.json?tags=order%3Arandom+score%3A%3E%3D7+limit%3A1+dragon++-female+-overweight+-belly+-duo+-inflatable+-wide_hips+-vore+-hyper+-macro+-diaper+-humanoid+-not_furry", headers=headers))
+	response = await loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://e926.net/posts.json?tags=order%3Arandom+score%3A%3E%3D7+limit%3A1+dragon++-female+-overweight+-belly+-duo+-inflatable+-wide_hips+-vore+-hyper+-macro+-diaper+-humanoid+-not_furry+-comic", headers=headers))
 
 	await ctx.respond(json.loads(response.text)["posts"][0]["file"]["url"])
