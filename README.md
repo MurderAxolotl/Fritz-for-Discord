@@ -23,10 +23,12 @@ code in Copilot.
 A Discord bot intended for fun and utility\
 Built on Python 3.11.6 and 3.12.3
 
+## Native Installation
+
 ### WARNINGS
 - It's recommended to use Python 3.12.3 if possible
 - Windows hosts are NOT supported
-- Requires systemd
+- Also Docker's a lot easier, just use that
 
 ### Requirements
 - Linux (only **Ubuntu**, **Debian**, **Arch**, **Mint**, and **Android** have been tested)
@@ -43,7 +45,6 @@ Built on Python 3.11.6 and 3.12.3
 - DotEnv (`sudo apt install python-dotenv`)
 - Nest Asyncio (`pip install nest_asyncio`)
 - Asyncio (`pip install asyncio`)
-- Python3 systemd  (`sudo apt install python3-systemd`)
 
 For optional QR support, you also need:
 - zbar (`sudo apt-get install libzbar0 && pip install pyzbar`)
@@ -58,10 +59,16 @@ Obviously, if your system has a package manager like `yay`, use that instead
 1. Download and extract source code
 2. Create your Venv or Anaconda environment (optional, recommended. Do I do this? HAH! NOPE!)
 3. Install the [dependencies](#dependencies)
-4. At the root of the project, create a file named `.env`
-5. Use the [.env template](https://github.com/murderaxolotl/Fritz-for-Discord/blob/main/.env.template) and set your env variables
 
-### Plugins
+## Docker Installation
+
+### Setup
+1. Download and extract source code
+2. Set up the `.env` file. This will be improved in the future, but for now you have to do this before building the container and rebuild the container if you change it (and don't publish the container anywhere because the environment file is included). See [configuration](#configure).
+3. Build the container. You can do this manually if you want, but you can also just let Docker Compose handle it (`docker compose build`).
+4. Run the container. You can just do `docker compose up`, or `docker compose up -d` to run it as a daemon. Read the Docker docs for more detailed info.
+
+## Plugins
 
 Fritz supports plugins! These are intended to allow for the modular addition of commands and features. A few default plugins ship by default, but you're welcome to remove them!
 
@@ -96,13 +103,16 @@ def send_email_to_admin(context, error):
 	# ...send a nice email here...
 ```
 
-### Configure
-- In `resources/shared.py`, set `INVITE_URL` to your bot's URL, `GIT_URL` to your GitHub URL, and `REGISTERED_DEVELOPERS` to your UUID
-- In `resources/shared.py`, set your configuration. Be sure to set these:
-	- `DISALLOW_PLATFORM LEAKS`
-	- `DISALLOW_SYSINF_LEAKS`
-	- `LOGGING_BLACKLIST`
+## Configure
+1. At the root of the project, create a file named `.env`
+2. Use the [.env template](https://github.com/murderaxolotl/Fritz-for-Discord/blob/main/.env.template) and set your env variables
+3. In `.env`, set your configuration. Be sure to set these:
+	- `invite_url` to your bot's URL
+	- `git_url` to your GitHub URL
+	- `developers` to your UUID
+	- `hide_platform`
+	- `block_sysinf_leaks`
 
-### Command Documentation
+## Command Documentation
 
 To get a list of all commands, use Fritz's `help` slash command
