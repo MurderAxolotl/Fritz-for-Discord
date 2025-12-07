@@ -17,7 +17,7 @@ import scripts.tools.journal as journal
 from discord.ext import commands
 from resources.colour import *
 
-from resources.shared import PATH, REGISTERED_DEVELOPERS
+from resources.shared import RESOURCE_PATH, REGISTERED_DEVELOPERS
 
 from discord.ext import commands
 
@@ -72,7 +72,7 @@ def loadString(stringFile:str) -> str:
 
 	Strings are stored in /resources/strings """
 
-	BASE = PATH + "/resources/strings"
+	BASE = RESOURCE_PATH + "/strings"
 
 	try:
 		file = open(f"{BASE}/{stringFile}.tout", "r")
