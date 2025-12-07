@@ -16,7 +16,7 @@ import sys
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, DISALLOW_SYSINF_LEAKS, DISALLOW_PLATFORM_LEAKS, GIT_URL, IS_ANDROID
 from resources.shared import IS_DEBUGGING, VERSION, TOKEN, REGISTERED_DEVELOPERS, INVITE_URL
-from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, BOOTID
+from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, BOOTID
 from resources.responses import help_messages
 
 from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
@@ -400,18 +400,18 @@ if ENABLE_IMPORTED_PLUGINS:
 		open(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING", "x").close()
 
 	# First, make sure the plugin directory exists
-	if os.path.exists(f"{PATH}/plugins"):
-		plugins_to_import = os.listdir(f"{PATH}/plugins")
+	if os.path.exists(PLUGIN_PATH):
+		plugins_to_import = os.listdir(PLUGIN_PATH)
 
 		for module in plugins_to_import:
 			# Check to make sure the file isn't blacklisted
-			if os.path.isdir(f"{PATH}/plugins/{module}") or ".env" in module:
+			if os.path.isdir(PLUGIN_PATH + f"/{module}") or ".env" in module:
 				pass
 
 			else:
 				try:
 					# This is a huge security violation
-					exec(open(f"{PATH}/plugins/{module}").read())
+					exec(open(PLUGIN_PATH + f"/{module}").read())
 
 					try:
 						t1, t2, t3 = _funchook()
