@@ -10,14 +10,14 @@ import os
 import asyncio
 import nest_asyncio
 import discord
+from discord.ext import commands
 import time
 import sys
 
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
-from resources.shared import BLACKLISTED_USERS, DISALLOW_SYSINF_LEAKS, DISALLOW_PLATFORM_LEAKS, GIT_URL, IS_ANDROID
-from resources.shared import IS_DEBUGGING, VERSION, TOKEN, REGISTERED_DEVELOPERS, INVITE_URL
+from resources.shared import BLACKLISTED_USERS, IS_ANDROID
+from resources.shared import IS_DEBUGGING, VERSION, TOKEN
 from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, BOOTID
-from resources.responses import help_messages
 
 from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
 
@@ -34,6 +34,8 @@ import scripts.tools.journal          as journal
 
 from scripts.tools.utility import isDeveloper, bannedUser, loadString
 
+from scripts.cogs.utilities import Utilities
+
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
 
@@ -42,7 +44,7 @@ errors_during_startup = 0
 module_failures = []
 general_errors  = []
 
-bot = discord.Bot()
+bot = commands.Bot()
 loop = asyncio.get_event_loop()
 
 # Some minor fixes for asyncio
@@ -66,6 +68,10 @@ async def global_isbanned_check(ctx):
 		raise bannedUser("You are banned from using Fritz")
 
 	return True
+
+### ===================================== ###
+### COGS ###
+bot.add_cog(Utilities(bot))
 
 ### ===================================== ###
 ### EVENTS ###
@@ -248,53 +254,6 @@ async def wahfact(ctx): await animals.giveWahFact(ctx)
 
 ### ===================================== ###
 ### USER MANAGEMENT ###
-
-### ===================================== ###
-### BOT UTILITIES ###
-@fritz.command(name='bug', description='Report a bug')
-async def bugreport(ctx):
-	await ctx.respond(loadString("/bug_report").format(GITHUB_BASE=GIT_URL), ephemeral=True)
-
-@fritz.command(name='ping', description='Get Fritz\'s current ping')
-async def ping(ctx):
-	latency = round(bot.latency * 1000)
-	await ctx.respond('Current latency: ' + str(latency) + "ms")
-
-### ===================================== ###
-### INFORMATION COMMANDS ###
-@fritz.command(name="help", description="Stop and RTFM", pass_context=True)
-async def help(ctx):
-	await ctx.respond(loadString("/commands"), ephemeral=True)
-
-@fritz.command(name="changelog", description="See past changes to Fritz", pass_context=True)
-async def changelog(ctx):
-	await ctx.respond(file=help_messages.changelog, ephemeral=True)
-
-## Get info about Fritz ##
-@fritz.command(name="system", description="Advanced system info", pass_context=True)
-async def sysinfo(ctx):
-	if DISALLOW_SYSINF_LEAKS and not (str(ctx.author.id) in REGISTERED_DEVELOPERS): #noqa
-		await ctx.respond("You are not allowed to run this command")
-		return
-
-	response = help_messages.about_system # Base text
-
-	if not DISALLOW_PLATFORM_LEAKS:
-		if IS_ANDROID  : response = response + "\n" + loadString("/android/command_flare")
-		if IS_DEBUGGING: response = response + "\n" + loadString("/debug/command_flare")
-
-	await ctx.respond(response, ephemeral=True)
-
-@fritz.command(name="about", description="Learn more about Fritz")
-async def sysabout(ctx):
-	await ctx.respond(help_messages.about_fritz)
-
-@fritz.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
-async def getInvite(ctx):
-	await ctx.respond("NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, ephemeral=True)
-
-@fritz.command(name='git_url', description='Get Fritz\'s Git URL')
-async def getGit(ctx): await ctx.respond(GIT_URL)
 
 ### ===================================== ###
 ### DEVELOPER ONLY ###
