@@ -1,9 +1,7 @@
-SUPPORTED COMMANDS:
-
-**\# API Interaction #**
+### API Interaction
 - **mcstatus**: Get status information about a Minecraft server
 
-**\# Fun #**
+### Fun
 - **givecat**: Get a random cat picture
 - **givefox**: Get a random fox picture
 - **givelynx**: Get a random lynx picture
@@ -13,15 +11,15 @@ SUPPORTED COMMANDS:
 - **raccfacc**: Get a random raccoon fact
 - **wahfact**: Get a random red panda fact
 
-**\# QR Tools #**
+### QR Tools
 - **scan_qr** *<image>*: Scan the attached image and return any readable data
 - **create_qr** *<content>* *[style]*: Create a QR code. [style] controls appearance and Error Correction levels. Default *stylized*
 
-**\# Bot Utilities #**
+### Bot Utilities
 - **bug**: Get bug-filing information
 - **ping**: Test the bot's latency
 
-**\# Information #**
+### Information
 - **system**: Get detailed information about the environment Fritz is running in
 - **about**: Get basic information about Fritz
 - **changelog**: Get an up-to-date (...maybe) list of changes to Fritz since inception

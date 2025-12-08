@@ -9,26 +9,41 @@ from resources.responses import help_messages
 
 from scripts.tools.utility import loadString
 
+class AboutView(discord.ui.DesignerView):
+	def __init__(self, text="", *, title=None):
+		super().__init__(timeout=None)
+
+		container = discord.ui.Container(colour=discord.Colour.blurple())
+
+		if title != None:
+			title_text = discord.ui.TextDisplay(f"## {title}")
+			container.add_item(title_text)
+
+		body_text = discord.ui.TextDisplay(text)
+		container.add_item(body_text)
+
+		super().add_item(container)
+
 class Utilities(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 	
-	command_group = SlashCommandGroup("f_u", "Fritz's basic utility commands", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	command_group = SlashCommandGroup("f_help", "Fritz's basic help commands", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 
 	### BOT UTILITIES ###
 	@command_group.command(name='bug', description='Report a bug')
 	async def bugreport(self, ctx: discord.ApplicationContext):
-		await ctx.respond(loadString("/bug_report").format(GITHUB_BASE=GIT_URL), ephemeral=True)
+		await ctx.respond(view=AboutView(loadString("/bug_report").format(GITHUB_BASE=GIT_URL), title="Bug Report"), ephemeral=True)
 	
 	@command_group.command(name='ping', description='Get Fritz\'s current ping')
 	async def ping(self, ctx: discord.ApplicationContext):
 		latency = round(self.bot.latency * 1000)
-		await ctx.respond('Current latency: ' + str(latency) + "ms")
+		await ctx.respond(view=AboutView('Current latency: ' + str(latency) + "ms", title="Ping"))
 
 	### INFORMATION COMMANDS ###
 	@command_group.command(name="help", description="Stop and RTFM", pass_context=True)
 	async def help(self, ctx: discord.ApplicationContext):
-		await ctx.respond(loadString("/commands"), ephemeral=True)
+		await ctx.respond(view=AboutView(loadString("/commands"), title="Commands"), ephemeral=True)
 
 	@command_group.command(name="changelog", description="See past changes to Fritz", pass_context=True)
 	async def changelog(self, ctx: discord.ApplicationContext):
@@ -47,17 +62,17 @@ class Utilities(commands.Cog):
 			if IS_ANDROID  : response = response + "\n" + loadString("/android/command_flare")
 			if IS_DEBUGGING: response = response + "\n" + loadString("/debug/command_flare")
 
-		await ctx.respond(response, ephemeral=True)
+		await ctx.respond(view=AboutView(response, title="System Info"), ephemeral=True)
 
 	@command_group.command(name="about", description="Learn more about Fritz")
 	async def sysabout(self, ctx: discord.ApplicationContext):
-		await ctx.respond(help_messages.about_fritz)
+		await ctx.respond(view=AboutView(help_messages.about_fritz, title="About"))
 
 	@command_group.command(name='invite', description='Get Fritz\'s invite URL', pass_context=True)
 	async def getInvite(self, ctx: discord.ApplicationContext):
-		await ctx.respond("NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, ephemeral=True)
+		await ctx.respond(view=AboutView("-# NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, title="Invite URL"), ephemeral=True)
 
 	@command_group.command(name='git_url', description='Get Fritz\'s Git URL')
 	async def getGit(self, ctx: discord.ApplicationContext):
-		await ctx.respond(GIT_URL)
+		await ctx.respond(view=AboutView(GIT_URL, title="Git URL"))
 
