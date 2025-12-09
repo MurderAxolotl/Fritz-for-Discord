@@ -67,9 +67,9 @@ class AnimalImages(commands.Cog):
 		await ctx.defer()
 
 		if video:
-			response = await self.loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/v1/video?json=true"))
+			response = await self.loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/video?json=true"))
 		else:
-			response = await self.loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/v1/raccoon?json=true"))
+			response = await self.loop.run_in_executor(ThreadPoolExecutor(), lambda: requests.get("https://api.racc.lol/raccoon?json=true"))
 
 		responseJSON = json.loads(response.text)
 		image_url = responseJSON["data"]["url"]
