@@ -24,7 +24,6 @@ from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAG
 import scripts.api.ptk_reactions      as ptk_reactions
 import scripts.api.qrTools            as qrTools
 import scripts.api.fun                as oneOff
-import scripts.api.animal_images      as animals
 import scripts.api.discord            as discord_fancy
 import scripts.api.lumos_status       as lumos_status
 import scripts.api.starboard          as starboard
@@ -35,6 +34,7 @@ import scripts.tools.journal          as journal
 from scripts.tools.utility import isDeveloper, bannedUser, loadString
 
 from scripts.cogs.utilities import Utilities
+from scripts.cogs.animal_images import AnimalImages
 
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
@@ -72,6 +72,7 @@ async def global_isbanned_check(ctx):
 ### ===================================== ###
 ### COGS ###
 bot.add_cog(Utilities(bot))
+bot.add_cog(AnimalImages(bot))
 
 ### ===================================== ###
 ### EVENTS ###
@@ -211,43 +212,6 @@ if not ptk_reactions.NOPTK:
 		errors_during_startup += 1
 
 		module_failures.append("PTK Reactions")
-
-### ===================================== ###
-### ANIMAL CONTENT ###
-
-# PICTURES #
-# CAT PICTURE #
-@fritz.command(name="givecat", description="Get a random cat photo")
-async def givecat(ctx): await animals.giveCat(ctx)
-
-# LYNX PICTURE #
-@fritz.command(name="givelynx", description="Get a random lynx photo")
-async def givelynx(ctx): await animals.giveLynx(ctx)
-
-# FOX PICTURE #
-@fritz.command(name="givefox", description="Get a random fox photo")
-async def givefox(ctx): await animals.giveFox(ctx)
-
-# RACOON PICTURE #
-@fritz.command(name="giveracc", description="Get a random raccoon photo (or video)")
-async def trashpanda(ctx, video:bool=False): await animals.giveTrashPanda(ctx, video)
-
-# WAH IMAGE #
-@fritz.command(name="givewah", description="Get a random red panda photo")
-async def wahimage(ctx): await animals.giveWah(ctx)
-
-# DRAGON PICTURE #
-@fritz.command(name="givederg", description="Get a random dragon photo")
-async def givederg(ctx): await animals.giveDerg(ctx)
-
-# FACTS #
-# RACOON FACTS #
-@fritz.command(name="raccfacc", description="Get a random raccoon fact")
-async def raccfacc(ctx): await animals.giveRaccFacc(ctx)
-
-# WAH FACT #
-@fritz.command(name="wahfact", description="Get a random red panda fact")
-async def wahfact(ctx): await animals.giveWahFact(ctx)
 
 ### ===================================== ###
 ### SERVER-ONLY COMMANDS ###
