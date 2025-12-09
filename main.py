@@ -363,14 +363,16 @@ if ENABLE_IMPORTED_PLUGINS:
 		plugins_to_import = os.listdir(PLUGIN_PATH)
 
 		for module in plugins_to_import:
+			module_path = PLUGIN_PATH + f"/{module}/plugin.py"
+
 			# Check to make sure the file isn't blacklisted
-			if os.path.isdir(PLUGIN_PATH + f"/{module}") or ".env" in module:
+			if not os.path.exists(module_path) or ".env" in module:
 				pass
 
 			else:
 				try:
 					# This is a huge security violation
-					exec(open(PLUGIN_PATH + f"/{module}").read())
+					exec(open(module_path).read())
 
 					try:
 						t1, t2, t3 = _funchook()
