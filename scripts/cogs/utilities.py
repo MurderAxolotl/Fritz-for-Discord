@@ -38,16 +38,16 @@ class Utilities(commands.Cog):
 		await ctx.respond(view=AboutView('Current latency: ' + str(latency) + "ms", title="Ping"))
 
 	### INFORMATION COMMANDS ###
-	@commands.slash_command(name="help", description="Stop and RTFM", pass_context=True, contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	@commands.slash_command(name="help", description="Stop and RTFM", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def help(self, ctx: discord.ApplicationContext):
 		await ctx.respond(view=AboutView(loadString("/commands"), title="Commands"), ephemeral=True)
 
-	@commands.slash_command(name="changelog", description="See past changes to Fritz", pass_context=True, contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	@commands.slash_command(name="changelog", description="See past changes to Fritz", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def changelog(self, ctx: discord.ApplicationContext):
 		await ctx.respond(file=help_messages.changelog, ephemeral=True)
 
 	## Get info about Fritz ##
-	@commands.slash_command(name="system", description="Advanced system info", pass_context=True, contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	@commands.slash_command(name="system", description="Advanced system info", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def sysinfo(self, ctx: discord.ApplicationContext):
 		if DISALLOW_SYSINF_LEAKS and not (str(ctx.author.id) in REGISTERED_DEVELOPERS): #noqa
 			await ctx.respond("You are not allowed to run this command")
@@ -65,7 +65,7 @@ class Utilities(commands.Cog):
 	async def sysabout(self, ctx: discord.ApplicationContext):
 		await ctx.respond(view=AboutView(help_messages.about_fritz, title="About"))
 
-	@commands.slash_command(name='invite', description='Get Fritz\'s invite URL', pass_context=True, contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	@commands.slash_command(name='invite', description='Get Fritz\'s invite URL', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def getInvite(self, ctx: discord.ApplicationContext):
 		await ctx.respond(view=AboutView("-# NOTE: This link is to add Fritz to a SERVER. To add it to an account, you need to click \"Add App\" in Fritz's profile\n" + INVITE_URL, title="Invite URL"), ephemeral=True)
 
