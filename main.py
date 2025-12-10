@@ -364,27 +364,15 @@ if ENABLE_IMPORTED_PLUGINS:
 
 		for module in plugins_to_import:
 			module_path = PLUGIN_PATH + f"/{module}/plugin.py"
+			module_name = f"plugins.{module}.plugin"
 
 			# Check to make sure the file isn't blacklisted
-			if not os.path.exists(module_path) or ".env" in module:
+			if not os.path.exists(module_path):
 				pass
 
 			else:
 				try:
-					# This is a huge security violation
-					exec(open(module_path).read())
-
-					try:
-						t1, t2, t3 = _funchook()
-
-						for hook in t1: psi_register_on_ready(hook)
-						for hook in t2: psi_register_on_message(hook)
-						for hook in t3: psi_register_application_command_error(hook)
-
-						del _funchook
-
-					except Exception:
-						pass
+					bot.load_extension(f"plugins.{module}.plugin")
 
 					num_imported_plugins += 1
 
@@ -392,7 +380,6 @@ if ENABLE_IMPORTED_PLUGINS:
 					general_errors.append(f"Plugin '{module[:-3]}' failed to activate: " + str(err))
 
 	else:
-		journal.log("Plugin are enabled, but plugin directory is missing!", 4)
 		general_errors.append("Plugins are enabled, but plugin directory is missing!")
 
 ### ===================================== ###
