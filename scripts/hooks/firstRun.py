@@ -2,7 +2,7 @@
 
 import os
 
-from resources.shared import PATH, CACHE_PATH, PLUGIN_PATH
+from resources.shared import PATH, CACHE_PATH, PLUGIN_PATH, CONFIG_PATH
 from resources.colour import YELLOW, MAGENTA, SEAFOAM, RESET
 
 import scripts.tools.journal as journal
@@ -20,5 +20,5 @@ checkForFolder(PATH + "/logs/guilds")
 checkForFolder(PATH + "/logs/users")
 checkForFolder(CACHE_PATH)
 checkForFolder(CACHE_PATH + "/qr")
-checkForFolder(PATH + "/config")
+checkForFolder(CONFIG_PATH)
 checkForFolder(PLUGIN_PATH)

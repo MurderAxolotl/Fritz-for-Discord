@@ -100,6 +100,7 @@ CONTEXTS_SERVER_ONLY = {discord.InteractionContextType.guild}
 INTEGRATION_TYPES_SERVER_ONLY = {discord.IntegrationType.guild_install}
 
 PATH = os.getenv("systemPath", sys.path[0])
+CONFIG_PATH = os.getenv("configPath", PATH + "/config")
 RESOURCE_PATH = os.getenv("resourcePath", PATH + "/resources")
 PLUGIN_PATH = os.getenv("pluginPath", PATH + "/plugins")
 CACHE_PATH = os.getenv("cachePath", PATH + "/cache")
