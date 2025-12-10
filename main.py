@@ -35,6 +35,7 @@ import scripts.tools.journal          as journal
 from scripts.tools.utility import isDeveloper, bannedUser, loadString
 
 from scripts.cogs.utilities import Utilities
+from scripts.cogs.management import Management
 
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
@@ -72,6 +73,7 @@ async def global_isbanned_check(ctx):
 ### ===================================== ###
 ### COGS ###
 bot.add_cog(Utilities(bot))
+bot.add_cog(Management(bot))
 
 ### ===================================== ###
 ### EVENTS ###
