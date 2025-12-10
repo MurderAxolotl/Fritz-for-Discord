@@ -102,6 +102,7 @@ INTEGRATION_TYPES_SERVER_ONLY = {discord.IntegrationType.guild_install}
 PATH = os.getenv("systemPath", sys.path[0])
 RESOURCE_PATH = os.getenv("resourcePath", PATH + "/resources")
 PLUGIN_PATH = os.getenv("pluginPath", PATH + "/plugins")
+CACHE_PATH = os.getenv("cachePath", PATH + "/cache")
 
 # Module availability
 ENABLE_QUOTEBOOK = True if QUOTE_WEBHOOK != "" and QUOTE_ID != "" else False

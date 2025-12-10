@@ -17,7 +17,7 @@ import sys
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, IS_ANDROID
 from resources.shared import IS_DEBUGGING, VERSION, TOKEN
-from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, BOOTID
+from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, CACHE_PATH, BOOTID
 
 from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
 
@@ -343,7 +343,7 @@ def psi_register_application_command_error(function):
 
 ## Support for plug-in modules in plugins/
 if ENABLE_IMPORTED_PLUGINS:
-	if not os.path.exists(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING"):
+	if not os.path.exists(f"{CACHE_PATH}/HAS_SEEN_PLUGIN_WARNING"):
 
 		print(RED + loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET) + RESET, flush=True)
 
@@ -356,7 +356,7 @@ if ENABLE_IMPORTED_PLUGINS:
 
 			print(RED + f"\u001b[1FFritz will start in {fl02} seconds   ", flush=True)
 
-		open(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING", "x").close()
+		open(f"{CACHE_PATH}/HAS_SEEN_PLUGIN_WARNING", "x").close()
 
 	# First, make sure the plugin directory exists
 	if os.path.exists(PLUGIN_PATH):

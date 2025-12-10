@@ -4,7 +4,6 @@ Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
 import json
-import sys
 import discord
 import os
 import asyncio
@@ -12,6 +11,8 @@ import requests
 from urllib import parse
 
 from io import BytesIO
+
+from resources.shared import CACHE_PATH
 
 try:
 	from PIL import Image
@@ -60,9 +61,9 @@ try:
 			except:
 				try: await ctx.channel.send("QR Data: " +  str(qrs[0].data.decode()))
 				except:
-					with open(sys.path[0] + "/cache/qr_data_extracted.txt", "x") as writeFile: writeFile.write(str(qrs[0].data.decode()))
-					await ctx.channel.send(file=discord.File(sys.path[0] + "/cache/qr_data_extracted.txt"))
-					os.remove(sys.path[0] + "/cache/qr_data_extracted.txt")
+					with open(CACHE_PATH + "/qr/data_extracted.txt", "x") as writeFile: writeFile.write(str(qrs[0].data.decode()))
+					await ctx.channel.send(file=discord.File(CACHE_PATH + "/qr/data_extracted.txt"))
+					os.remove(CACHE_PATH + "/qr/data_extracted.txt")
 		else: await ctx.respond("Couldn't detect any QR codes or barcodes")
 
 	async def read(ctx, qr_image_url):

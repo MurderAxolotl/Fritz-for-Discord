@@ -5,6 +5,6 @@ services:
     volumes:
       - ./config:/fritz/config
       - ./plugins:/plugins
-      - ./cache:/fritz/cache
+      - ./cache:/cache
       - ./logs:/fritz/logs
       - ./ptk:/ptk

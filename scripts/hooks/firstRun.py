@@ -2,21 +2,23 @@
 
 import os
 
-from resources.shared import PATH
+from resources.shared import PATH, CACHE_PATH, PLUGIN_PATH
 from resources.colour import YELLOW, MAGENTA, SEAFOAM, RESET
 
 import scripts.tools.journal as journal
 
-def __createFolder(subpath:str) -> None:
-	os.mkdir(f"{PATH}{subpath}")
+def checkForFolder(path:str) -> None:
+	if not os.path.isdir(path):
+		os.mkdir(f"{path}")
 
-	journal.log(f"{SEAFOAM}Setup: {{reset_colour}}Created {MAGENTA}{subpath}", 5)
+		journal.log(f"{SEAFOAM}Setup: {{reset_colour}}Created {MAGENTA}{path}", 5)
 
-if not os.path.isdir(PATH + "/logs"):        __createFolder("/logs")
-if not os.path.isdir(PATH + "/logs/system"): __createFolder("/logs/system")
-if not os.path.isdir(PATH + "/logs/guilds"): __createFolder("/logs/guilds")
-if not os.path.isdir(PATH + "/logs/users"):  __createFolder("/logs/users")
-if not os.path.isdir(PATH + "/cache"):       __createFolder("/cache")
-if not os.path.isdir(PATH + "/cache/qr"):    __createFolder("/cache/qr")
-if not os.path.isdir(PATH + "/config"):      __createFolder("/config")
-if not os.path.isdir(PATH + "/plugins"):     __createFolder("/plugins")
+
+checkForFolder(PATH + "/logs")
+checkForFolder(PATH + "/logs/system")
+checkForFolder(PATH + "/logs/guilds")
+checkForFolder(PATH + "/logs/users")
+checkForFolder(CACHE_PATH)
+checkForFolder(CACHE_PATH + "/qr")
+checkForFolder(PATH + "/config")
+checkForFolder(PLUGIN_PATH)
