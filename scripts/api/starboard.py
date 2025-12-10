@@ -1,7 +1,11 @@
 import discord
 import json
 
-from resources.shared import CONFIG_PATH, CACHE_PATH
+from resources.shared import CONFIG_PATH
+
+from scripts.tools.utility import getCachePath
+
+CACHE_DIR = getCachePath("starboard")
 
 try:
 	import sqlite3
@@ -21,7 +25,7 @@ try:
 	starboard_servers = str(starboard_config.keys()).split("(")[1].split(")")[0]
 
 	def connect_db():
-		return sqlite3.connect(CACHE_PATH + "/starboard_cache.db")
+		return sqlite3.connect(CACHE_DIR + "/starboard_cache.db")
 
 	def exec_db(connection:sqlite3.Connection, query:str):
 		connection.cursor().execute(query)

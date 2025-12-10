@@ -17,9 +17,9 @@ import sys
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, IS_ANDROID
 from resources.shared import IS_DEBUGGING, VERSION, TOKEN
-from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, CACHE_PATH, BOOTID
+from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, BOOTID
 
-from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
+from resources.colour import RED, DRIVES, YELLOW, RESET, MAGENTA, SEAFOAM
 
 import scripts.api.ptk_reactions      as ptk_reactions
 import scripts.api.qrTools            as qrTools
@@ -32,7 +32,7 @@ import scripts.errors.commandCheck    as commandCheck
 
 import scripts.tools.journal          as journal
 
-from scripts.tools.utility import isDeveloper, bannedUser, loadString
+from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCachePath
 
 from scripts.cogs.utilities import Utilities
 
@@ -343,9 +343,9 @@ def psi_register_application_command_error(function):
 
 ## Support for plug-in modules in plugins/
 if ENABLE_IMPORTED_PLUGINS:
-	if not os.path.exists(f"{CACHE_PATH}/HAS_SEEN_PLUGIN_WARNING"):
-
-		print(RED + loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET) + RESET, flush=True)
+	PLUGIN_LOADER_CACHE_DIR = getCachePath("plugin_loader")
+	if not os.path.exists(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING"):
+		print(loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET), 4)
 
 		wait = 0
 
@@ -354,9 +354,9 @@ if ENABLE_IMPORTED_PLUGINS:
 			time.sleep(1)
 			wait += 1
 
-			print(RED + f"\u001b[1FFritz will start in {fl02} seconds   ", flush=True)
+			print(RED + f"\u001b[1FFritz will start in {fl02} seconds" + RESET, flush=True)
 
-		open(f"{CACHE_PATH}/HAS_SEEN_PLUGIN_WARNING", "x").close()
+		open(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING", "x").close()
 
 	# First, make sure the plugin directory exists
 	if os.path.exists(PLUGIN_PATH):
