@@ -5,6 +5,8 @@ import sys
 from resources.shared import PATH, LOG_SEVERITY, LOG_LEVEL
 from resources.colour import RED, DRIVES, YELLOW, RESET
 
+from scripts.tools.utility import SafeDict
+
 """ Log to the journal file and stdout\n
 Severity: `0=emergency, alert=1, 2=critical, 3=error, 4=warning, 5=notice, 6=info, 7=debug`
 """
@@ -31,7 +33,7 @@ def _log_to_stdout(message:str, severity:int=6):
 
 def ___lognoprefix(message:str, severity:int=6):
 	LOG_LOC = PATH + "/logs/journal"
-	
+
 	print(message, flush=True)
 
 	if os.path.exists(LOG_LOC):
@@ -65,8 +67,8 @@ def log(message:str, severity:int=6, *, component:str="fritz", print_colour:str=
 				print_colour = DRIVES
 			case 6|7:
 				print_colour = RESET
-	
-	output_text = print_colour + template.format(comp=component, sev=LOG_SEVERITY[severity], entry=message.format(reset_colour=print_colour)) + RESET
+
+	output_text = print_colour + template.format(comp=component, sev=LOG_SEVERITY[severity], entry=message.format_map(SafeDict(reset_colour=print_colour))) + RESET
 
 	_log_to_stdout(output_text, severity=severity)
 	_log_to_disk(output_text)

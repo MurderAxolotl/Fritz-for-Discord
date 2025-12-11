@@ -91,3 +91,11 @@ def loadString(stringFile:str) -> str:
 		journal.log(f"FAILED TO READ {MAGENTA}{stringFile}{{reset_colour}}: {str(err)}", 3)
 
 		return ""
+
+class SafeDict(dict):
+	""" Dictionary that returns {key} if a value isn't found for the given key.
+	This can be used with string.format_map to only replace template values when
+	they exist."""
+
+	def __missing__(self, key):
+		return '{' + key + '}'
