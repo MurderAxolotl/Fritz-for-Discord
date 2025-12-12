@@ -1,6 +1,12 @@
 import discord
 import json
 
+from resources.shared import CONFIG_PATH
+
+from scripts.tools.utility import getCachePath
+
+CACHE_DIR = getCachePath("starboard")
+
 try:
 	import sqlite3
 
@@ -13,13 +19,13 @@ try:
 	from resources.shared import *
 	from scripts.tools.journal import log
 
-	with open(PATH + "/config/starboard.json", "r") as scf:
+	with open(CONFIG_PATH + "/starboard.json", "r") as scf:
 		starboard_config = json.loads(scf.read())
 
 	starboard_servers = str(starboard_config.keys()).split("(")[1].split(")")[0]
 
 	def connect_db():
-		return sqlite3.connect(PATH + "/cache/starboard_cache.db")
+		return sqlite3.connect(CACHE_DIR + "/starboard_cache.db")
 
 	def exec_db(connection:sqlite3.Connection, query:str):
 		connection.cursor().execute(query)
@@ -32,7 +38,7 @@ try:
 		""" Reloads the configuration from disk """
 		global starboard_config, starboard_servers
 
-		with open(PATH + "/config/starboard.json", "r") as scf:
+		with open(CONFIG_PATH + "/starboard.json", "r") as scf:
 			starboard_config = json.loads(scf.read())
 
 		starboard_servers = str(starboard_config.keys()).split("(")[1].split(")")[0]

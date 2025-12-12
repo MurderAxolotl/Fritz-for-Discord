@@ -10,12 +10,12 @@ import json
 
 import scripts.tools.journal as journal
 
-from resources.shared import QUOTE_WEBHOOK, QUOTE_ID, PATH
+from resources.shared import QUOTE_WEBHOOK, QUOTE_ID, CONFIG_PATH
 
 loop = asyncio.get_event_loop()
 
 # Load quotebook config
-with open(f"{PATH}/config/quotebook.json", "r") as qconfig:
+with open(f"{CONFIG_PATH}/quotebook.json", "r") as qconfig:
 	QUOTEBOOK_CONFIG = json.loads(qconfig.read())
 
 guild_list = []

@@ -1,25 +1,25 @@
-{rd}#############################
-## STOP: READ THIS WARNING ##
-#############################{rs}
+{rd}#############################{rs}
+{rd}## STOP: READ THIS WARNING ##{rs}
+{rd}#############################{rs}
 
-{yl}Plugins are currently ENABLED.
-Fritz will load and execute all Python files in the {pl}/plugins{yl} folder
+{yl}Plugins are currently ENABLED.{rs}
+{yl}Fritz will load and execute all Python files in the {pl}/plugins{yl} folder{rs}
 
-{rd}This is generally considered a bad idea, as it could allow a bad actor
-to run unauthorized code on your computer.{yl}
+This is generally considered a bad idea, as it could allow a bad actor
+to run unauthorized code on your computer.
 
-In simpler terms: {rd}YOU COULD GET A VIRUS{yl}
+{yl}In simpler terms: {rd}YOU COULD GET A VIRUS{rs}
 
-Additionally, this can break Fritz in unexpected ways!
+{yl}Additionally, this can break Fritz in unexpected ways!{rs}
 
-{rd}IF YOU DID NOT MEAN TO ENABLE THIS:{yl}
-1. Hold Ctrl and press C to stop Fritz
-2. Open the {pl}.env{yl} file in Fritz's folder
-3. Locate the line with {pl}enable_plugins = True{yl}
-4. Delete the whole line
+{rd}IF YOU DID NOT MEAN TO ENABLE THIS:{rs}
+1. Hold {pl}Ctrl{rs} and press {pl}C{rs} to stop Fritz
+2. Open the {pl}.env{rs} file in Fritz's folder
+3. Locate the line with {pl}enable_plugins = True{rs}
+4. {pl}Delete the whole line{rs}
 
-{rd}IF YOU MEANT TO ENABLE THIS:{yl}
-- You acknowledge this is risky and insecure
-- You acknowledge you are responsible for any damage
+{rd}IF YOU MEANT TO ENABLE THIS:{rs}
+- {yl}You acknowledge this is {rd}risky{yl} and {rd}insecure{rs}
+- {yl}You acknowledge you are {rd}responsible for any damage{rs}
 
-{rd}This warning will not be shown again
+{rd}This warning will not be shown again{rs}
