@@ -72,6 +72,7 @@ async def global_isbanned_check(ctx):
 
 ### ===================================== ###
 ### COGS ###
+bot.add_cog(Confessions(bot))
 bot.add_cog(Utilities(bot))
 bod.add_cog(Confessions(bot))
 

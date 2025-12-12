@@ -1,3 +1,7 @@
+import discord
+from discord.ext import commands
+from resources.shared import CONTEXTS, INTEGRATION_TYPES
+
 class AboutView(discord.ui.DesignerView):
 	def __init__(self, text="", *, title=None):
 		super().__init__(timeout=None)
@@ -18,6 +22,6 @@ class Confessions(commands.Cog):
 		self.bot = bot
 	
 	### BOT UTILITIES ###
-	@commands.slash_command(name='bug', description='Report a bug', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-	async def bugreport(self, ctx: discord.ApplicationContext):
-		await ctx.respond(view=AboutView(loadString("/bug_report").format(GITHUB_BASE=GIT_URL), title="Bug Report"), ephemeral=True)
+	@commands.slash_command(name='confess', description='Report a bug', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	async def confess(self, ctx: discord.ApplicationContext):
+		await ctx.respond(view=AboutView("testing", title="Bug Report"), ephemeral=True)
