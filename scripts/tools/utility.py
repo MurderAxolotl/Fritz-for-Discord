@@ -97,3 +97,11 @@ def getCachePath(cog: str) -> str:
 	checkForFolder(path)
 
 	return path
+
+class SafeDict(dict):
+	""" Dictionary that returns {key} if a value isn't found for the given key.
+	This can be used with string.format_map to only replace template values when
+	they exist."""
+
+	def __missing__(self, key):
+		return '{' + key + '}'
