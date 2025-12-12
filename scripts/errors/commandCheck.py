@@ -32,6 +32,9 @@ async def on_command_error(ctx, error):
 		elif isinstance(error, commands.errors.MissingRequiredArgument):
 			await ctx.respond("Looks like you forgot to provide a value for {parama}. Try filling out all required fields first!".format(parama=error))
 
+		elif isinstance(error, NotImplementedError):
+			await ctx.respond("This feature is not implemented yet")
+
 		else:
 			await ctx.respond(f"Failed to execute command. Please [report this bug](<{GIT_URL}/issues/new?assignees=&labels=bug%2Cbroken+command&projects=&template=broken_command.yml>)")
 			journal.log("Failed to execute command: " + str(error), 3)
