@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - ./config:/fritz/config
-      - ./plugins:/plugins
+      - ./plugins:/plugins:ro
       - ./cache:/fritz/cache
       - ./logs:/fritz/logs
       - ./ptk:/ptk
