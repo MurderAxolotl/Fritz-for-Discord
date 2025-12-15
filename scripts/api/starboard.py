@@ -39,7 +39,7 @@ try:
 
 	async def reactionAdded(ctx:discord.RawReactionActionEvent, bot:discord.Bot):
 		reactionEmoji = ctx.emoji.name
-		if ctx.guild_id not in starboard_config:
+		if str(ctx.guild_id) not in starboard_config:
 			log(f"Couldn't find starboard information for guild {ctx.guild_id}")
 
 			try:
@@ -88,7 +88,7 @@ try:
 			if SHOULD_PING: await FORWARD_CHANNEL.send(f"Original post by <@{MESSAGE.author.id}>")
 			else: await FORWARD_CHANNEL.send(f"Original post by {AUTHOR}")
 
-			await MESSAGE.forward(FORWARD_CHANNEL)
+			await MESSAGE.forward_to(FORWARD_CHANNEL)
 
 			with connect_db() as db:
 				exec_db(db, queries.write_cache.format(message_id=str(MESSAGE_ID)))
