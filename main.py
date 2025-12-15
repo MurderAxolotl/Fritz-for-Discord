@@ -364,9 +364,12 @@ if ENABLE_IMPORTED_PLUGINS:
 	if os.path.exists(PLUGIN_PATH):
 		plugins_to_import = os.listdir(PLUGIN_PATH)
 
+		# This is kinda hacky but it does work
+		sys.path.append(PLUGIN_PATH)
+
 		for module in plugins_to_import:
 			module_path = PLUGIN_PATH + f"/{module}/plugin.py"
-			module_name = f"plugins.{module}.plugin"
+			module_name = f"{module}.plugin"
 
 			# Check to make sure the file isn't blacklisted
 			if not os.path.exists(module_path):
@@ -374,7 +377,7 @@ if ENABLE_IMPORTED_PLUGINS:
 
 			else:
 				try:
-					bot.load_extension(f"plugins.{module}.plugin")
+					bot.load_extension(module_name)
 
 					num_imported_plugins += 1
 

@@ -28,7 +28,7 @@ class Management(commands.Cog):
 	@commands.slash_command(name='loadplugin', description='Loads a plugin', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	@isDeveloper()
 	async def load_plugin(self, ctx: discord.ApplicationContext, *, plugin_name: str):
-		module_name = f"plugins.{plugin_name}.plugin"
+		module_name = f"{plugin_name}.plugin"
 		journal.log(f"User {ctx.user} attempting to load plugin {plugin_name}", 5)
 
 		self.bot.load_extension(module_name)
@@ -39,7 +39,7 @@ class Management(commands.Cog):
 	@commands.slash_command(name='unloadplugin', description='Unloads a plugin', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	@isDeveloper()
 	async def unload_plugin(self, ctx: discord.ApplicationContext, *, plugin_name: str):
-		module_name = f"plugins.{plugin_name}.plugin"
+		module_name = f"{plugin_name}.plugin"
 		journal.log(f"User {ctx.user} attempting to unload plugin {plugin_name}", 5)
 
 		self.bot.unload_extension(module_name)
@@ -50,7 +50,7 @@ class Management(commands.Cog):
 	@commands.slash_command(name='reloadplugin', description='Reloads a plugin', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	@isDeveloper()
 	async def reload_plugin(self, ctx: discord.ApplicationContext, *, plugin_name: str):
-		module_name = f"plugins.{plugin_name}.plugin"
+		module_name = f"{plugin_name}.plugin"
 		journal.log(f"User {ctx.user} attempting to reload plugin {plugin_name}", 5)
 
 		self.bot.reload_extension(module_name)
