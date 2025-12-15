@@ -10,6 +10,36 @@ from resources.sqlite_queries import starboard_queries as queries
 from resources.shared import PATH
 import scripts.tools.journal as journal
 
+class StarboardView(discord.ui.DesignerView):
+	def __init__(self, message: discord.Message):
+		super().__init__(timeout=None)
+
+		container = discord.ui.Container(colour=discord.Colour.blurple())
+		super().add_item(container)
+
+		title_text = discord.ui.TextDisplay(f"### [New starred message in #{message.channel}]({message.jump_url})")
+		container.add_item(title_text)
+
+		message_view = discord.ui.Section()
+		message_view.set_thumbnail(message.author.display_avatar.url)
+		container.add_item(message_view)
+
+		user_name = discord.ui.TextDisplay(f"### {message.author.display_name}")
+		message_view.add_item(user_name)
+
+		if message.content:
+			body_text = discord.ui.TextDisplay(message.content)
+			message_view.add_item(body_text)
+
+		if message.attachments:
+			media_gallery = discord.ui.MediaGallery()
+
+			for attachment in message.attachments:
+				media_gallery_item = discord.MediaGalleryItem(attachment.url, description=attachment.description, spoiler=attachment.is_spoiler())
+				media_gallery.items.append(media_gallery_item)
+
+			container.add_item(media_gallery)
+
 
 class Starboard(commands.Cog):
 	"""
@@ -68,7 +98,6 @@ class Starboard(commands.Cog):
 
 		guildConfig = self.config[str(ctx.guild_id)]
 		targetReactionEmoji = guildConfig["starboard_emoji"]
-		ping = bool(guildConfig["mention"])
 
 		if reactionEmoji == targetReactionEmoji:
 			messageObject = await pretty_discord.get_message(ctx.channel_id, ctx.message_id)
@@ -79,9 +108,9 @@ class Starboard(commands.Cog):
 				# Why parse the json properly if it's not something I care about?
 				if targetReactionEmoji in str(reaction_emoji):
 					if reaction_emoji["count"] == int(guildConfig["count"]):
-						await self.forwardToStarboard(ctx, int(guildConfig["forward_id"]), ping)
+						await self.forwardToStarboard(ctx, int(guildConfig["forward_id"]))
 
-	async def forwardToStarboard(self, ctx: discord.RawReactionActionEvent, forwardChannelID: int, ping: bool):
+	async def forwardToStarboard(self, ctx: discord.RawReactionActionEvent, forwardChannelID: int):
 		SERVER_ID = ctx.guild_id
 		CHANNEL_ID = ctx.channel_id
 		MESSAGE_ID = ctx.message_id
@@ -89,8 +118,6 @@ class Starboard(commands.Cog):
 		SERVER = self.bot.get_guild(SERVER_ID)
 		CHANNEL = SERVER.get_channel(CHANNEL_ID)
 		MESSAGE: discord.Message = await CHANNEL.fetch_message(MESSAGE_ID)
-
-		AUTHOR = str(MESSAGE.author).split("#")[0]
 
 		FORWARD_CHANNEL = SERVER.get_channel(forwardChannelID)
 
@@ -101,12 +128,7 @@ class Starboard(commands.Cog):
 		if str(inStarboard) == "1":
 			return  # Already in starboard, don't do anything`
 
-		if ping:
-			await FORWARD_CHANNEL.send(f"Original post by <@{MESSAGE.author.id}>")
-		else:
-			await FORWARD_CHANNEL.send(f"Original post by {AUTHOR}")
-
-		await MESSAGE.forward_to(FORWARD_CHANNEL)
+		await FORWARD_CHANNEL.send(view=StarboardView(MESSAGE))
 
 		with self.connect_db() as db:
 			self.exec_db(db, queries.write_cache.format(message_id=str(MESSAGE_ID)))

@@ -45,7 +45,7 @@ errors_during_startup = 0
 module_failures = []
 general_errors  = []
 
-bot = commands.Bot()
+bot = commands.Bot(intents=discord.Intents(messages=True, message_content=True, guilds=True, reactions=True))
 loop = asyncio.get_event_loop()
 
 # Some minor fixes for asyncio
