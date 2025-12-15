@@ -10,6 +10,7 @@ from resources.sqlite_queries import starboard_queries as queries
 from resources.shared import PATH
 import scripts.tools.journal as journal
 
+
 class StarboardView(discord.ui.DesignerView):
 	def __init__(self, message: discord.Message):
 		super().__init__(timeout=None)
@@ -85,11 +86,11 @@ class Starboard(commands.Cog):
 		reactionEmoji = ctx.emoji.name
 
 		if str(ctx.guild_id) not in self.config:
-			journal.log(f"Couldn't find starboard information for guild {ctx.guild_id}")
+			journal.log(f"Couldn't find starboard information for guild {ctx.guild_id}", 7)
 
 			try:
 				fullGuild = await self.bot.fetch_guild(ctx.guild_id)
-				journal.log(f"Name: {fullGuild.name}, ID: {fullGuild.id}, Owner: {fullGuild.owner_id}")
+				journal.log(f"Name: {fullGuild.name}, ID: {fullGuild.id}, Owner: {fullGuild.owner_id}", 7)
 
 			except:
 				NotImplemented  # noqa #pyright:ignore
@@ -111,24 +112,20 @@ class Starboard(commands.Cog):
 						await self.forwardToStarboard(ctx, int(guildConfig["forward_id"]))
 
 	async def forwardToStarboard(self, ctx: discord.RawReactionActionEvent, forwardChannelID: int):
-		SERVER_ID = ctx.guild_id
-		CHANNEL_ID = ctx.channel_id
-		MESSAGE_ID = ctx.message_id
-
-		SERVER = self.bot.get_guild(SERVER_ID)
-		CHANNEL = SERVER.get_channel(CHANNEL_ID)
-		MESSAGE: discord.Message = await CHANNEL.fetch_message(MESSAGE_ID)
-
-		FORWARD_CHANNEL = SERVER.get_channel(forwardChannelID)
-
 		# Make sure the message hasn't already been starboarded
 		with self.connect_db() as db:
-			inStarboard = self.read_db(db, queries.search_cache.format(message_id=str(ctx.message_id)))[0]
+			in_starboard = self.read_db(db, queries.search_cache.format(message_id=str(ctx.message_id)))[0]
 
-		if str(inStarboard) == "1":
-			return  # Already in starboard, don't do anything`
+		if str(in_starboard) == "1":
+			return  # Already in starboard, don't do anything
 
-		await FORWARD_CHANNEL.send(view=StarboardView(MESSAGE))
+		server = self.bot.get_guild(ctx.guild_id)
+		channel = server.get_channel(ctx.channel_id)
+		message: discord.Message = await channel.fetch_message(ctx.message_id)
+
+		forward_channel = server.get_channel(forwardChannelID)
+
+		await forward_channel.send(view=StarboardView(message))
 
 		with self.connect_db() as db:
-			self.exec_db(db, queries.write_cache.format(message_id=str(MESSAGE_ID)))
+			self.exec_db(db, queries.write_cache.format(message_id=str(ctx.message_id)))
