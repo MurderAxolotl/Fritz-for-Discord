@@ -30,7 +30,7 @@ class Management(commands.Cog):
 	async def load_plugin(self, ctx: discord.ApplicationContext, *, plugin_name: str):
 		await ctx.defer()
 
-		module_name = f"plugins.{plugin_name}.plugin"
+		module_name = f"{plugin_name}.plugin"
 		journal.log(f"User {ctx.user} attempting to load plugin {plugin_name}", 5)
 
 		self.bot.load_extension(module_name)
@@ -43,7 +43,7 @@ class Management(commands.Cog):
 	async def unload_plugin(self, ctx: discord.ApplicationContext, *, plugin_name: str):
 		await ctx.defer()
 
-		module_name = f"plugins.{plugin_name}.plugin"
+		module_name = f"{plugin_name}.plugin"
 		journal.log(f"User {ctx.user} attempting to unload plugin {plugin_name}", 5)
 
 		self.bot.unload_extension(module_name)
@@ -56,7 +56,7 @@ class Management(commands.Cog):
 	async def reload_plugin(self, ctx: discord.ApplicationContext, *, plugin_name: str):
 		await ctx.defer()
 
-		module_name = f"plugins.{plugin_name}.plugin"
+		module_name = f"{plugin_name}.plugin"
 		journal.log(f"User {ctx.user} attempting to reload plugin {plugin_name}", 5)
 
 		self.bot.reload_extension(module_name)
