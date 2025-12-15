@@ -27,7 +27,6 @@ import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
 import scripts.api.discord            as discord_fancy
 import scripts.api.lumos_status       as lumos_status
-import scripts.api.starboard          as starboard
 import scripts.errors.commandCheck    as commandCheck
 
 import scripts.tools.journal          as journal
@@ -36,6 +35,7 @@ from scripts.tools.utility import isDeveloper, bannedUser, loadString
 
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.management import Management
+from scripts.cogs.starboard import Starboard
 
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
@@ -74,18 +74,13 @@ async def global_isbanned_check(ctx):
 ### COGS ###
 bot.add_cog(Utilities(bot))
 bot.add_cog(Management(bot))
+bot.add_cog(Starboard(bot))
 
 ### ===================================== ###
 ### EVENTS ###
 _on_message_hooks = []
 _on_ready_hooks = []
 _on_application_command_error_hooks = []
-
-# Listen for reactions. Used for starboard features
-if not starboard.NOQB:
-	@bot.event
-	async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent):
-		await starboard.reactionAdded(reactionContext, bot)
 
 # Listen for "All stay strong"
 @bot.event
@@ -113,7 +108,7 @@ async def on_ready():
 
 	if errors_during_startup != 0:
 		journal.log(f"Encountered {errors_during_startup} errors during startup", severity=3)
-	
+
 	if len(module_failures) > 0:
 		for failure in module_failures:
 			journal.log(f"   => Module '{failure}' failed to import", severity=3)
@@ -121,7 +116,7 @@ async def on_ready():
 	if len(general_errors) > 0:
 		for failure in general_errors:
 			journal.log(f"   => {failure}", severity=3)
-	
+
 	if len(BLACKLISTED_USERS) != 0:
 		journal.log(f"There are {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users", severity=5)
 
@@ -315,7 +310,7 @@ async def downloadMessages(ctx, id):
 	for author in authorList:
 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
 		index += 1
-	
+
 	sys.stdout.flush()
 
 	await ctx.respond("Dumped to console")
@@ -398,9 +393,6 @@ if __name__ == "__main__":
 			case [True, True]  : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)", 6)
 
 		print("", flush=True)
-
-		if starboard.NOQB:
-			errors_during_startup += 1
 
 		bot.run(TOKEN)
 
