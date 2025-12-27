@@ -3,8 +3,8 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
-import scripts.hooks.firstRun
 import scripts.hooks.createConfigs # NOQA
+import scripts.hooks.firstRun
 
 import os
 import asyncio
@@ -19,7 +19,7 @@ from resources.shared import BLACKLISTED_USERS, IS_ANDROID
 from resources.shared import IS_DEBUGGING, VERSION, TOKEN
 from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, BOOTID
 
-from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
+from resources.colour import RED, DRIVES, YELLOW, RESET, MAGENTA, SEAFOAM
 
 import scripts.api.ptk_reactions      as ptk_reactions
 import scripts.api.qrTools            as qrTools
@@ -32,7 +32,7 @@ import scripts.errors.commandCheck    as commandCheck
 
 import scripts.tools.journal          as journal
 
-from scripts.tools.utility import isDeveloper, bannedUser, loadString
+from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCachePath
 
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.management import Management
@@ -113,7 +113,7 @@ async def on_ready():
 
 	if errors_during_startup != 0:
 		journal.log(f"Encountered {errors_during_startup} errors during startup", severity=3)
-	
+
 	if len(module_failures) > 0:
 		for failure in module_failures:
 			journal.log(f"   => Module '{failure}' failed to import", severity=3)
@@ -121,7 +121,7 @@ async def on_ready():
 	if len(general_errors) > 0:
 		for failure in general_errors:
 			journal.log(f"   => {failure}", severity=3)
-	
+
 	if len(BLACKLISTED_USERS) != 0:
 		journal.log(f"There are {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users", severity=5)
 
@@ -315,7 +315,7 @@ async def downloadMessages(ctx, id):
 	for author in authorList:
 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
 		index += 1
-	
+
 	sys.stdout.flush()
 
 	await ctx.respond("Dumped to console")
@@ -345,9 +345,9 @@ def psi_register_application_command_error(function):
 
 ## Support for plug-in modules in plugins/
 if ENABLE_IMPORTED_PLUGINS:
-	if not os.path.exists(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING"):
-
-		print(RED + loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET) + RESET, flush=True)
+	PLUGIN_LOADER_CACHE_DIR = getCachePath("plugin_loader")
+	if not os.path.exists(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING"):
+		print(loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET), 4)
 
 		wait = 0
 
@@ -356,9 +356,9 @@ if ENABLE_IMPORTED_PLUGINS:
 			time.sleep(1)
 			wait += 1
 
-			print(RED + f"\u001b[1FFritz will start in {fl02} seconds   ", flush=True)
+			print(RED + f"\u001b[1FFritz will start in {fl02} seconds" + RESET, flush=True)
 
-		open(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING", "x").close()
+		open(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING", "x").close()
 
 	# First, make sure the plugin directory exists
 	if os.path.exists(PLUGIN_PATH):

@@ -3,8 +3,8 @@ services:
     restart: unless-stopped
     build: .
     volumes:
-      - ./config:/fritz/config
+      - ./config:/config
       - ./plugins:/plugins:ro
-      - ./cache:/fritz/cache
+      - ./cache:/cache
       - ./logs:/fritz/logs
       - ./ptk:/ptk

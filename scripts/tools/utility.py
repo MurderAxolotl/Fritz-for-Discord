@@ -5,21 +5,16 @@ Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 
 import os
 import asyncio
-import requests
 import discord
 import random
 import string
-import sys
-import importlib
 
 import scripts.tools.journal as journal
 
 from discord.ext import commands
-from resources.colour import *
+from resources.colour import MAGENTA, SEAFOAM
 
-from resources.shared import RESOURCE_PATH, REGISTERED_DEVELOPERS
-
-from discord.ext import commands
+from resources.shared import RESOURCE_PATH, REGISTERED_DEVELOPERS, CACHE_PATH
 
 loop = asyncio.get_event_loop()
 
@@ -50,7 +45,6 @@ def isDeveloper():
 
 		return True
 
-
 	return commands.check(predicate)
 
 def isTheo():
@@ -58,7 +52,6 @@ def isTheo():
 		if not str(ctx.author.id) == "1063584978081951814": raise commands.NotOwner
 
 		return True
-
 
 	return commands.check(predicate)
 
@@ -91,6 +84,19 @@ def loadString(stringFile:str) -> str:
 		journal.log(f"FAILED TO READ {MAGENTA}{stringFile}{{reset_colour}}: {str(err)}", 3)
 
 		return ""
+
+def checkForFolder(path: str) -> None:
+	if not os.path.isdir(path):
+		os.makedirs(path, exist_ok=True)
+
+		journal.log(f"{SEAFOAM}Setup: {{reset_colour}}Created {MAGENTA}{path}", 5)
+
+def getCachePath(cog: str) -> str:
+	path = CACHE_PATH + "/" + cog
+
+	checkForFolder(path)
+
+	return path
 
 class SafeDict(dict):
 	""" Dictionary that returns {key} if a value isn't found for the given key.
