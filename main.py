@@ -3,8 +3,8 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
-import scripts.hooks.firstRun
 import scripts.hooks.createConfigs # NOQA
+import scripts.hooks.firstRun
 
 import os
 import asyncio
@@ -113,7 +113,7 @@ async def on_ready():
 
 	if errors_during_startup != 0:
 		journal.log(f"Encountered {errors_during_startup} errors during startup", severity=3)
-	
+
 	if len(module_failures) > 0:
 		for failure in module_failures:
 			journal.log(f"   => Module '{failure}' failed to import", severity=3)
@@ -121,7 +121,7 @@ async def on_ready():
 	if len(general_errors) > 0:
 		for failure in general_errors:
 			journal.log(f"   => {failure}", severity=3)
-	
+
 	if len(BLACKLISTED_USERS) != 0:
 		journal.log(f"There are {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users", severity=5)
 
@@ -315,7 +315,7 @@ async def downloadMessages(ctx, id):
 	for author in authorList:
 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
 		index += 1
-	
+
 	sys.stdout.flush()
 
 	await ctx.respond("Dumped to console")
