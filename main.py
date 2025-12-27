@@ -35,6 +35,7 @@ import scripts.tools.journal          as journal
 from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCachePath
 
 from scripts.cogs.utilities import Utilities
+from scripts.cogs.management import Management
 
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
@@ -72,6 +73,7 @@ async def global_isbanned_check(ctx):
 ### ===================================== ###
 ### COGS ###
 bot.add_cog(Utilities(bot))
+bot.add_cog(Management(bot))
 
 ### ===================================== ###
 ### EVENTS ###
@@ -362,27 +364,20 @@ if ENABLE_IMPORTED_PLUGINS:
 	if os.path.exists(PLUGIN_PATH):
 		plugins_to_import = os.listdir(PLUGIN_PATH)
 
+		# This is kinda hacky but it does work
+		sys.path.append(PLUGIN_PATH)
+
 		for module in plugins_to_import:
+			module_path = PLUGIN_PATH + f"/{module}/plugin.py"
+			module_name = f"{module}.plugin"
+
 			# Check to make sure the file isn't blacklisted
-			if os.path.isdir(PLUGIN_PATH + f"/{module}") or ".env" in module:
+			if not os.path.exists(module_path):
 				pass
 
 			else:
 				try:
-					# This is a huge security violation
-					exec(open(PLUGIN_PATH + f"/{module}").read())
-
-					try:
-						t1, t2, t3 = _funchook()
-
-						for hook in t1: psi_register_on_ready(hook)
-						for hook in t2: psi_register_on_message(hook)
-						for hook in t3: psi_register_application_command_error(hook)
-
-						del _funchook
-
-					except Exception:
-						pass
+					bot.load_extension(module_name)
 
 					num_imported_plugins += 1
 
@@ -390,7 +385,6 @@ if ENABLE_IMPORTED_PLUGINS:
 					general_errors.append(f"Plugin '{module[:-3]}' failed to activate: " + str(err))
 
 	else:
-		journal.log("Plugin are enabled, but plugin directory is missing!", 4)
 		general_errors.append("Plugins are enabled, but plugin directory is missing!")
 
 ### ===================================== ###

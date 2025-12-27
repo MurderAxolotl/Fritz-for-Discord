@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - ./config:/config
-      - ./plugins:/plugins
+      - ./plugins:/plugins:ro
       - ./cache:/cache
       - ./logs:/fritz/logs
       - ./ptk:/ptk
