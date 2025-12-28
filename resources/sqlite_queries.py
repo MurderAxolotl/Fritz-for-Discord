@@ -4,7 +4,7 @@ class starboard_queries:
 	create_starboard_cache_table = """
 CREATE TABLE IF NOT EXISTS starboard (
 	message_id TEXT NOT NULL,
-	starboard_message_id TEXT NOT NULL
+	starboard_message_id TEXT
 )
 """
 
