@@ -129,7 +129,7 @@ class Starboard(commands.Cog):
 
 		forward_channel = server.get_channel(forwardChannelID)
 
-		await forward_channel.send(view=StarboardView(message))
+		sent_message = await forward_channel.send(view=StarboardView(message))
 
 		with self.connect_db() as db:
-			self.exec_db(db, queries.write_cache.format(message_id=str(ctx.message_id)))
+			self.exec_db(db, queries.write_cache.format(message_id=str(ctx.message_id), starboard_message_id=str(sent_message.id)))
