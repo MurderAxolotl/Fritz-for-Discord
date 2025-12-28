@@ -27,7 +27,6 @@ import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
 import scripts.api.discord            as discord_fancy
 import scripts.api.lumos_status       as lumos_status
-import scripts.api.starboard          as starboard
 import scripts.errors.commandCheck    as commandCheck
 
 import scripts.tools.journal          as journal
@@ -36,6 +35,7 @@ from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCacheP
 
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.management import Management
+from scripts.cogs.starboard import Starboard
 
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
@@ -45,7 +45,7 @@ errors_during_startup = 0
 module_failures = []
 general_errors  = []
 
-bot = commands.Bot()
+bot = commands.Bot(intents=discord.Intents(messages=True, message_content=True, guilds=True, reactions=True))
 loop = asyncio.get_event_loop()
 
 # Some minor fixes for asyncio
@@ -74,18 +74,13 @@ async def global_isbanned_check(ctx):
 ### COGS ###
 bot.add_cog(Utilities(bot))
 bot.add_cog(Management(bot))
+bot.add_cog(Starboard(bot))
 
 ### ===================================== ###
 ### EVENTS ###
 _on_message_hooks = []
 _on_ready_hooks = []
 _on_application_command_error_hooks = []
-
-# Listen for reactions. Used for starboard features
-if not starboard.NOQB:
-	@bot.event
-	async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent):
-		await starboard.reactionAdded(reactionContext, bot)
 
 # Listen for "All stay strong"
 @bot.event
@@ -398,9 +393,6 @@ if __name__ == "__main__":
 			case [True, True]  : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)", 6)
 
 		print("", flush=True)
-
-		if starboard.NOQB:
-			errors_during_startup += 1
 
 		bot.run(TOKEN)
 
