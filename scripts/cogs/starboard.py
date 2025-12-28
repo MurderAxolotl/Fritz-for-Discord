@@ -7,8 +7,12 @@ import sqlite3
 import scripts.api.discord as pretty_discord
 
 from resources.sqlite_queries import starboard_queries as queries
-from resources.shared import PATH
 import scripts.tools.journal as journal
+
+from resources.shared import CONFIG_PATH
+from scripts.tools.utility import getCachePath
+
+CACHE_DIR = getCachePath("starboard")
 
 
 class StarboardView(discord.ui.DesignerView):
@@ -62,7 +66,7 @@ class Starboard(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
-		with open(PATH + "/config/starboard.json", "r") as scf:
+		with open(CONFIG_PATH + "/starboard.json", "r") as scf:
 			self.config = json.loads(scf.read())
 
 		self.servers = str(self.config.keys()).split("(")[1].split(")")[0]
@@ -72,7 +76,7 @@ class Starboard(commands.Cog):
 			self.exec_db(db, queries.create_starboard_cache_table)
 
 	def connect_db(self):
-		return sqlite3.connect(PATH + "/cache/starboard_cache.db")
+		return sqlite3.connect(CACHE_DIR + "/starboard_cache.db")
 
 	def exec_db(self, connection: sqlite3.Connection, query: str):
 		connection.cursor().execute(query)
