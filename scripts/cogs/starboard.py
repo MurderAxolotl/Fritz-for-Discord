@@ -112,7 +112,7 @@ class Starboard(commands.Cog):
 			for reaction_emoji in reactions:
 				# Why parse the json properly if it's not something I care about?
 				if targetReactionEmoji in str(reaction_emoji):
-					if reaction_emoji["count"] == int(guildConfig["count"]):
+					if reaction_emoji["count"] >= int(guildConfig["count"]):
 						await self.forwardToStarboard(ctx, int(guildConfig["forward_id"]))
 
 	async def forwardToStarboard(self, ctx: discord.RawReactionActionEvent, forwardChannelID: int):
