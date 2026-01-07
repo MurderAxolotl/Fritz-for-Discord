@@ -15,23 +15,34 @@ from scripts.cogs.management import ManagementView
 
 async def on_command_error(ctx, error):
 	try:
-		if isinstance(error.original, commands.NotOwner) or isinstance(error, swiperNoSwipingError):
+		# Check if error has an "original" parameter -- was running into issues without this
+		if "original" in dir(error):
+			mappedError = error.original
+
+		else:
+			mappedError = error
+
+	except Exception:
+		mappedError = error
+
+	try:
+		if isinstance(mappedError, commands.NotOwner) or isinstance(error, swiperNoSwipingError):
 			await ctx.respond("Only the operator may run this command", ephemeral=True)
 
-		elif isinstance(error.original, commands.BotMissingPermissions):
+		elif isinstance(mappedError, commands.BotMissingPermissions):
 			await ctx.respond("Fritz has insufficient permission to execute the command. Please re-invite Fritz and grant all requested permissions", ephemeral=True)
 
-		elif isinstance(error.original, bannedUser):
+		elif isinstance(mappedError, bannedUser):
 			journal.log(f"Blacklisted user attempted to use Fritz: {str(error)}", 5)
 			await ctx.respond("You are blacklisted from using Fritz", ephemeral=True)
 
 			return
 
-		elif isinstance(error.original, commands.errors.CheckFailure):
+		elif isinstance(mappedError, commands.errors.CheckFailure):
 			journal.log(f"Generic check failure detected: {str(error)}", 5)
 			await ctx.respond('Failed one or more command checks - you are not allowed to run this command', ephemeral=True)
 
-		elif isinstance(error.original, commands.errors.MissingRequiredArgument):
+		elif isinstance(mappedError, commands.errors.MissingRequiredArgument):
 			await ctx.respond(f"Looks like you forgot to provide a value for {str(error)}. Try filling out all required fields first!", ephemeral=True)
 
 		# === Extensions ===

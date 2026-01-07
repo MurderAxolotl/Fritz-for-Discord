@@ -36,6 +36,7 @@ from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCacheP
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.management import Management
 from scripts.cogs.starboard import Starboard
+from scripts.cogs.debugging import Debug
 
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
@@ -75,6 +76,7 @@ async def global_isbanned_check(ctx):
 bot.add_cog(Utilities(bot))
 bot.add_cog(Management(bot))
 bot.add_cog(Starboard(bot))
+bot.add_cog(Debug(bot))
 
 ### ===================================== ###
 ### EVENTS ###
