@@ -31,7 +31,7 @@ import scripts.errors.commandCheck    as commandCheck
 
 import scripts.tools.journal          as journal
 
-from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCachePath
+from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCachePath, is_docker
 
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.management import Management
@@ -290,12 +290,14 @@ async def memdump(context, dump_module_contents:bool=False):
 
 	await context.respond("Memory dumped")
 
-@zdev.command(name='shutdown')
+""" STOP: READ! """
+""" UNDER DOCKER, THE BOT WILL AUTOMATICALLY RESTART AFTER EXITING """
+""" IF NOT UNDER DOCKER, THE PROGRAM WILL EXIT GRACEFULLY """
+@zdev.command(name='shutdown', description="Stop/Restart the bot")
 @isDeveloper()
 async def initiateShutdown(ctx):
-	await ctx.respond(":saluting_face:")
-
-	os.system("sudo systemctl stop fritz")
+	await ctx.respond("Stopping bot" if not is_docker() else "Restarting bot", ephemeral = True)
+	await bot.close()
 
 @zdev.command(name='download_messages')
 @isDeveloper()

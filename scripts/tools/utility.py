@@ -12,8 +12,9 @@ import string
 import scripts.tools.journal as journal
 
 from discord.ext import commands
-from resources.colour import MAGENTA, SEAFOAM
+from pathlib import Path
 
+from resources.colour import MAGENTA, SEAFOAM
 from resources.shared import RESOURCE_PATH, REGISTERED_DEVELOPERS, CACHE_PATH
 
 loop = asyncio.get_event_loop()
@@ -97,6 +98,10 @@ def getCachePath(cog: str) -> str:
 	checkForFolder(path)
 
 	return path
+
+def is_docker() -> bool:
+	cgroup = Path('/proc/self/cgroup')
+	return Path('/.dockerenv').is_file() or (cgroup.is_file() and 'docker' in cgroup.read_text())
 
 class SafeDict(dict):
 	""" Dictionary that returns {key} if a value isn't found for the given key.
