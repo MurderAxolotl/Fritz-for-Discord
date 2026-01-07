@@ -26,7 +26,7 @@ class DebugView(discord.ui.DesignerView):
 		super().add_item(container)
 
 class Debug(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot: discord.Bot):
 		self.bot = bot
 
 	@commands.slash_command(name='throw_exception', description='Intentionally throw an exception', contexts=CONTEXTS, integration_tpyes=INTEGRATION_TYPES)
@@ -50,3 +50,26 @@ class Debug(commands.Cog):
 			case "ExtensionFailed"        : raise discord.ExtensionFailed("LegitExtension", Exception("Forced exception"))
 
 			case _                        : raise Exception("Unknown exception type lmfao??")
+
+	@commands.slash_command(name='walk_commands', description='Dumps a list of all commands', contexts=CONTEXTS, integration_Types=INTEGRATION_TYPES)
+	@isDeveloper()
+	async def dump_all_commands(self, ctx: discord.ApplicationContext):
+		await ctx.defer(ephemeral=True)
+
+		commandList = self.bot.walk_application_commands()
+		commands = []
+
+		full_string = "## Available commands: "
+
+		try:
+			while True:
+				commands.append(next(commandList))
+
+		except Exception:
+			pass
+
+		for command in commands:
+			if isinstance(command, discord.commands.core.SlashCommand):
+				full_string = full_string + f"\n**{command.name}** - {command.description}"
+
+		await ctx.respond(full_string)
