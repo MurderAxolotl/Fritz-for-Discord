@@ -46,23 +46,23 @@ async def on_command_error(ctx, error):
 			await ctx.respond(f"Looks like you forgot to provide a value for {str(error)}. Try filling out all required fields first!", ephemeral=True)
 
 		# === Extensions ===
-		elif isinstance(error.original, discord.ExtensionNotFound):
+		elif isinstance(mappedError, discord.ExtensionNotFound):
 			journal.log("Extension {error.original.name} not found", 3)
 			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` not found", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.ExtensionNotLoaded):
+		elif isinstance(mappedError, discord.ExtensionNotLoaded):
 			journal.log(f"Extension {error.original.name} not loaded", 4)
 			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` not loaded", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.ExtensionAlreadyLoaded):
+		elif isinstance(mappedError, discord.ExtensionAlreadyLoaded):
 			journal.log(f"Extension {error.original.name} already loaded", 4)
 			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` already loaded", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.NoEntryPointError):
+		elif isinstance(mappedError, discord.NoEntryPointError):
 			journal.log(f"Extension {error.original.name} has no entrypoint", 3)
 			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` failed to load: No entrypoint", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.ExtensionFailed):
+		elif isinstance(mappedError, discord.ExtensionFailed):
 			journal.log(f"Extension {error.original.name} failed to load: {str(error.original.original)}", 3)
 			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` failed to load: `{str(error.original.original)}", title="Load Plugin", success=False), ephemeral=True)
 
