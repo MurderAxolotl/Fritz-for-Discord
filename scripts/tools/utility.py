@@ -99,7 +99,7 @@ def getCachePath(cog: str) -> str:
 
 	return path
 
-def is_docker() -> bool:
+def isDocker() -> bool:
 	cgroup = Path('/proc/self/cgroup')
 	return Path('/.dockerenv').is_file() or (cgroup.is_file() and 'docker' in cgroup.read_text())
 

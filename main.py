@@ -256,68 +256,59 @@ async def wahfact(ctx): await animals.giveWahFact(ctx)
 
 ### ===================================== ###
 ### DEVELOPER ONLY ###
-@zdev.command(name="memdump")
-@isDeveloper()
-async def memdump(context, dump_module_contents:bool=False):
-	await context.defer()
+# @zdev.command(name="memdump")
+# @isDeveloper()
+# async def memdump(context, dump_module_contents:bool=False):
+# 	await context.defer()
 
-	with open(f"{PATH}/dump_{BOOTID}", "x") as dumpfile:
+# 	with open(f"{PATH}/dump_{BOOTID}", "x") as dumpfile:
 
-		print("### BEGIN MEMORY DUMP ###")
-		print(globals())
-		print(locals())
+# 		print("### BEGIN MEMORY DUMP ###")
+# 		print(globals())
+# 		print(locals())
 
-		print("\n\n\n")
+# 		print("\n\n\n")
 
-		print(sys.modules)
+# 		print(sys.modules)
 
-		dumpfile.write(str(globals()) + "\n")
-		dumpfile.write(str(locals()) + "\n")
-		dumpfile.write("\n\n\n")
-		dumpfile.write(str(sys.modules) + "\n")
+# 		dumpfile.write(str(globals()) + "\n")
+# 		dumpfile.write(str(locals()) + "\n")
+# 		dumpfile.write("\n\n\n")
+# 		dumpfile.write(str(sys.modules) + "\n")
 
-		if dump_module_contents:
-			import main
-			from resources import shared
-			print("module.main\n" + str(dir(main)))
-			print("module.shared\n" + str(dir(shared)))
+# 		if dump_module_contents:
+# 			import main
+# 			from resources import shared
+# 			print("module.main\n" + str(dir(main)))
+# 			print("module.shared\n" + str(dir(shared)))
 
-			dumpfile.write(str(dir(main)) + "\n")
-			dumpfile.write(str(dir(shared)) + "\n")
+# 			dumpfile.write(str(dir(main)) + "\n")
+# 			dumpfile.write(str(dir(shared)) + "\n")
 
-		print("### END MEMORY DUMP ###")
-		sys.stdout.flush()
+# 		print("### END MEMORY DUMP ###")
+# 		sys.stdout.flush()
 
-	await context.respond("Memory dumped")
+# 	await context.respond("Memory dumped")
 
-""" STOP: READ! """
-""" UNDER DOCKER, THE BOT WILL AUTOMATICALLY RESTART AFTER EXITING """
-""" IF NOT UNDER DOCKER, THE PROGRAM WILL EXIT GRACEFULLY """
-@zdev.command(name='shutdown', description="Stop/Restart the bot")
-@isDeveloper()
-async def initiateShutdown(ctx):
-	await ctx.respond("Stopping bot" if not is_docker() else "Restarting bot", ephemeral = True)
-	await bot.close()
+# @zdev.command(name='download_messages')
+# @isDeveloper()
+# async def downloadMessages(ctx, id):
+# 	await ctx.defer(ephemeral="True")
 
-@zdev.command(name='download_messages')
-@isDeveloper()
-async def downloadMessages(ctx, id):
-	await ctx.defer(ephemeral="True")
+# 	messageList = await discord_fancy.query_messages(id)
 
-	messageList = await discord_fancy.query_messages(id)
+# 	authorList  = await discord_fancy.parse_tools.messages.authors(messageList)
+# 	contentList = await discord_fancy.parse_tools.messages.content(messageList)
 
-	authorList  = await discord_fancy.parse_tools.messages.authors(messageList)
-	contentList = await discord_fancy.parse_tools.messages.content(messageList)
+# 	index = 0
 
-	index = 0
+# 	for author in authorList:
+# 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
+# 		index += 1
 
-	for author in authorList:
-		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
-		index += 1
+# 	sys.stdout.flush()
 
-	sys.stdout.flush()
-
-	await ctx.respond("Dumped to console")
+# 	await ctx.respond("Dumped to console")
 
 ### ===================================== ###
 # Commands for plugins. Unfortunately must be in this file

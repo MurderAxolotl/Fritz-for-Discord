@@ -26,10 +26,12 @@ class DebugView(discord.ui.DesignerView):
 		super().add_item(container)
 
 class Debug(commands.Cog):
+	debugCommandGroup = discord.SlashCommandGroup("dbg", "Debug commands", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+
 	def __init__(self, bot: discord.Bot):
 		self.bot = bot
 
-	@commands.slash_command(name='throw_exception', description='Intentionally throw an exception', contexts=CONTEXTS, integration_tpyes=INTEGRATION_TYPES)
+	@debugCommandGroup.command(name='throw_exception', description='Intentionally throw an exception', contexts=CONTEXTS, integration_tpyes=INTEGRATION_TYPES)
 	@isDeveloper()
 	async def throw_exception(
 		self,
@@ -51,7 +53,7 @@ class Debug(commands.Cog):
 
 			case _                        : raise Exception("Unknown exception type lmfao??")
 
-	@commands.slash_command(name='walk_commands', description='Dumps a list of all commands', contexts=CONTEXTS, integration_Types=INTEGRATION_TYPES)
+	@debugCommandGroup.command(name='walk_commands', description='Dumps a list of all commands', contexts=CONTEXTS, integration_Types=INTEGRATION_TYPES)
 	@isDeveloper()
 	async def dump_all_commands(self, ctx: discord.ApplicationContext):
 		await ctx.defer(ephemeral=True)
