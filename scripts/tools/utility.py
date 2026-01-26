@@ -91,6 +91,12 @@ def checkForFolder(path: str) -> None:
 
 		journal.log(f"{SEAFOAM}Setup: {{reset_colour}}Created {MAGENTA}{path}", 5)
 
+def stripURL(url:str) -> str:
+	""" Strips invalid characters from URLs """
+	safe_chars = ('.','_','-')
+
+	return "".join(c for c in str(url) if c.isalnum() or c in safe_chars).rstrip()
+
 def getCachePath(cog: str) -> str:
 	path = CACHE_PATH + "/" + cog
 
