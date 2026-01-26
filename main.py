@@ -17,21 +17,20 @@ import sys
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, IS_ANDROID
 from resources.shared import IS_DEBUGGING, VERSION, TOKEN
-from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, BOOTID
+from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PLUGIN_PATH, BOOTID
 
-from resources.colour import RED, DRIVES, YELLOW, RESET, MAGENTA, SEAFOAM
+from resources.colour import RED, YELLOW, RESET, MAGENTA, SEAFOAM
 
 import scripts.api.ptk_reactions      as ptk_reactions
 import scripts.api.qrTools            as qrTools
 import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
-import scripts.api.discord            as discord_fancy
 import scripts.api.lumos_status       as lumos_status
 import scripts.errors.commandCheck    as commandCheck
 
 import scripts.tools.journal          as journal
 
-from scripts.tools.utility import isDeveloper, bannedUser, loadString, getCachePath, is_docker
+from scripts.tools.utility import bannedUser, loadString, getCachePath
 
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.management import Management
@@ -140,10 +139,6 @@ if ENABLE_QUOTEBOOK:
 		avat       = message.author.display_avatar.url
 
 		await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
-
-	# @bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-	# async def forwardToQuotebook(ctx, message:discord.Message):
-	# 	await oneOff.forwardToQuotebook(ctx, message, bot)
 
 ### ===================================== ###
 ### API COMMANDS ###
@@ -256,59 +251,6 @@ async def wahfact(ctx): await animals.giveWahFact(ctx)
 
 ### ===================================== ###
 ### DEVELOPER ONLY ###
-# @zdev.command(name="memdump")
-# @isDeveloper()
-# async def memdump(context, dump_module_contents:bool=False):
-# 	await context.defer()
-
-# 	with open(f"{PATH}/dump_{BOOTID}", "x") as dumpfile:
-
-# 		print("### BEGIN MEMORY DUMP ###")
-# 		print(globals())
-# 		print(locals())
-
-# 		print("\n\n\n")
-
-# 		print(sys.modules)
-
-# 		dumpfile.write(str(globals()) + "\n")
-# 		dumpfile.write(str(locals()) + "\n")
-# 		dumpfile.write("\n\n\n")
-# 		dumpfile.write(str(sys.modules) + "\n")
-
-# 		if dump_module_contents:
-# 			import main
-# 			from resources import shared
-# 			print("module.main\n" + str(dir(main)))
-# 			print("module.shared\n" + str(dir(shared)))
-
-# 			dumpfile.write(str(dir(main)) + "\n")
-# 			dumpfile.write(str(dir(shared)) + "\n")
-
-# 		print("### END MEMORY DUMP ###")
-# 		sys.stdout.flush()
-
-# 	await context.respond("Memory dumped")
-
-# @zdev.command(name='download_messages')
-# @isDeveloper()
-# async def downloadMessages(ctx, id):
-# 	await ctx.defer(ephemeral="True")
-
-# 	messageList = await discord_fancy.query_messages(id)
-
-# 	authorList  = await discord_fancy.parse_tools.messages.authors(messageList)
-# 	contentList = await discord_fancy.parse_tools.messages.content(messageList)
-
-# 	index = 0
-
-# 	for author in authorList:
-# 		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
-# 		index += 1
-
-# 	sys.stdout.flush()
-
-# 	await ctx.respond("Dumped to console")
 
 ### ===================================== ###
 # Commands for plugins. Unfortunately must be in this file
