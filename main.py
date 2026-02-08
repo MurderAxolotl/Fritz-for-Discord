@@ -52,8 +52,10 @@ loop = asyncio.get_event_loop()
 nest_asyncio.apply(loop)
 
 ### COMMAND GROUPS ###
-fritz = bot.create_group("f",          "Fritz's generic commands",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
-zdev  = bot.create_group("f_dev",      "Developer-only utilities",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
+fritz = bot.create_group(os.getenv("fritz_prefix", "f"),          "Fritz's generic commands",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
+zdev  = bot.create_group(os.getenv("fritz_prefix_dev", "f_dev"),      "Developer-only utilities",           contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
+if not os.getenv("fritz_prefix") or not os.getenv("fritz_prefix_dev"):
+	journal.log("Missing command prefix in environment, using default.")
 
 if not qrTools.NOQR:
 	qr    = bot.create_group("qr",         "Tools relating to QR codes",         contexts=CONTEXTS,         integration_types=INTEGRATION_TYPES)
