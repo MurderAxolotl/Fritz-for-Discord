@@ -3,8 +3,8 @@ Original code created by MurderAxolotl.
 Please give credit. Source: https://github.com/psychon-night/Fritz-for-Discord
 """
 
-import scripts.hooks.firstRun
 import scripts.hooks.createConfigs # NOQA
+import scripts.hooks.firstRun
 
 import os
 import asyncio
@@ -17,25 +17,26 @@ import sys
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, IS_ANDROID
 from resources.shared import IS_DEBUGGING, VERSION, TOKEN
-from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PATH, PLUGIN_PATH, BOOTID
+from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PLUGIN_PATH, BOOTID
 
-from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAGENTA, SEAFOAM
+from resources.colour import RED, YELLOW, RESET, MAGENTA, SEAFOAM
 
 import scripts.api.ptk_reactions      as ptk_reactions
 import scripts.api.qrTools            as qrTools
 import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
-import scripts.api.discord            as discord_fancy
 import scripts.api.lumos_status       as lumos_status
-import scripts.api.starboard          as starboard
 import scripts.errors.commandCheck    as commandCheck
 
 import scripts.tools.journal          as journal
 
-from scripts.tools.utility import isDeveloper, bannedUser, loadString
+from scripts.tools.utility import bannedUser, loadString, getCachePath
 
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.confessions import Confessions
+from scripts.cogs.management import Management
+from scripts.cogs.starboard import Starboard
+from scripts.cogs.debugging import Debug
 
 # Before anything else, log the boot ID #
 journal.___lognoprefix(f"=========== BOOT {BOOTID} ===========", 6)
@@ -45,7 +46,7 @@ errors_during_startup = 0
 module_failures = []
 general_errors  = []
 
-bot = commands.Bot()
+bot = commands.Bot(intents=discord.Intents(messages=True, message_content=True, guilds=True, reactions=True))
 loop = asyncio.get_event_loop()
 
 # Some minor fixes for asyncio
@@ -74,18 +75,15 @@ async def global_isbanned_check(ctx):
 ### COGS ###
 bot.add_cog(Confessions(bot))
 bot.add_cog(Utilities(bot))
+bot.add_cog(Management(bot))
+bot.add_cog(Starboard(bot))
+bot.add_cog(Debug(bot))
 
 ### ===================================== ###
 ### EVENTS ###
 _on_message_hooks = []
 _on_ready_hooks = []
 _on_application_command_error_hooks = []
-
-# Listen for reactions. Used for starboard features
-if not starboard.NOQB:
-	@bot.event
-	async def on_raw_reaction_add(reactionContext:discord.RawReactionActionEvent):
-		await starboard.reactionAdded(reactionContext, bot)
 
 # Listen for "All stay strong"
 @bot.event
@@ -113,7 +111,7 @@ async def on_ready():
 
 	if errors_during_startup != 0:
 		journal.log(f"Encountered {errors_during_startup} errors during startup", severity=3)
-	
+
 	if len(module_failures) > 0:
 		for failure in module_failures:
 			journal.log(f"   => Module '{failure}' failed to import", severity=3)
@@ -121,7 +119,7 @@ async def on_ready():
 	if len(general_errors) > 0:
 		for failure in general_errors:
 			journal.log(f"   => {failure}", severity=3)
-	
+
 	if len(BLACKLISTED_USERS) != 0:
 		journal.log(f"There are {YELLOW}{len(BLACKLISTED_USERS)} blacklisted users", severity=5)
 
@@ -143,10 +141,6 @@ if ENABLE_QUOTEBOOK:
 		avat       = message.author.display_avatar.url
 
 		await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
-
-	# @bot.message_command(name="Quotebook (via Forward)", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-	# async def forwardToQuotebook(ctx, message:discord.Message):
-	# 	await oneOff.forwardToQuotebook(ctx, message, bot)
 
 ### ===================================== ###
 ### API COMMANDS ###
@@ -259,66 +253,6 @@ async def wahfact(ctx): await animals.giveWahFact(ctx)
 
 ### ===================================== ###
 ### DEVELOPER ONLY ###
-@zdev.command(name="memdump")
-@isDeveloper()
-async def memdump(context, dump_module_contents:bool=False):
-	await context.defer()
-
-	with open(f"{PATH}/dump_{BOOTID}", "x") as dumpfile:
-
-		print("### BEGIN MEMORY DUMP ###")
-		print(globals())
-		print(locals())
-
-		print("\n\n\n")
-
-		print(sys.modules)
-
-		dumpfile.write(str(globals()) + "\n")
-		dumpfile.write(str(locals()) + "\n")
-		dumpfile.write("\n\n\n")
-		dumpfile.write(str(sys.modules) + "\n")
-
-		if dump_module_contents:
-			import main
-			from resources import shared
-			print("module.main\n" + str(dir(main)))
-			print("module.shared\n" + str(dir(shared)))
-
-			dumpfile.write(str(dir(main)) + "\n")
-			dumpfile.write(str(dir(shared)) + "\n")
-
-		print("### END MEMORY DUMP ###")
-		sys.stdout.flush()
-
-	await context.respond("Memory dumped")
-
-@zdev.command(name='shutdown')
-@isDeveloper()
-async def initiateShutdown(ctx):
-	await ctx.respond(":saluting_face:")
-
-	os.system("sudo systemctl stop fritz")
-
-@zdev.command(name='download_messages')
-@isDeveloper()
-async def downloadMessages(ctx, id):
-	await ctx.defer(ephemeral="True")
-
-	messageList = await discord_fancy.query_messages(id)
-
-	authorList  = await discord_fancy.parse_tools.messages.authors(messageList)
-	contentList = await discord_fancy.parse_tools.messages.content(messageList)
-
-	index = 0
-
-	for author in authorList:
-		print(f"{RED}CACHED: {str(id)}{YELLOW} {str(author)}: {DRIVES}{str(contentList[index])}{RESET}")
-		index += 1
-	
-	sys.stdout.flush()
-
-	await ctx.respond("Dumped to console")
 
 ### ===================================== ###
 # Commands for plugins. Unfortunately must be in this file
@@ -345,9 +279,9 @@ def psi_register_application_command_error(function):
 
 ## Support for plug-in modules in plugins/
 if ENABLE_IMPORTED_PLUGINS:
-	if not os.path.exists(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING"):
-
-		print(RED + loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET) + RESET, flush=True)
+	PLUGIN_LOADER_CACHE_DIR = getCachePath("plugin_loader")
+	if not os.path.exists(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING"):
+		print(loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET), 4)
 
 		wait = 0
 
@@ -356,35 +290,28 @@ if ENABLE_IMPORTED_PLUGINS:
 			time.sleep(1)
 			wait += 1
 
-			print(RED + f"\u001b[1FFritz will start in {fl02} seconds   ", flush=True)
+			print(RED + f"\u001b[1FFritz will start in {fl02} seconds" + RESET, flush=True)
 
-		open(f"{PATH}/cache/HAS_SEEN_PLUGIN_WARNING", "x").close()
+		open(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING", "x").close()
 
 	# First, make sure the plugin directory exists
 	if os.path.exists(PLUGIN_PATH):
 		plugins_to_import = os.listdir(PLUGIN_PATH)
 
+		# This is kinda hacky but it does work
+		sys.path.append(PLUGIN_PATH)
+
 		for module in plugins_to_import:
+			module_path = PLUGIN_PATH + f"/{module}/plugin.py"
+			module_name = f"{module}.plugin"
+
 			# Check to make sure the file isn't blacklisted
-			if os.path.isdir(PLUGIN_PATH + f"/{module}") or ".env" in module:
+			if not os.path.exists(module_path):
 				pass
 
 			else:
 				try:
-					# This is a huge security violation
-					exec(open(PLUGIN_PATH + f"/{module}").read())
-
-					try:
-						t1, t2, t3 = _funchook()
-
-						for hook in t1: psi_register_on_ready(hook)
-						for hook in t2: psi_register_on_message(hook)
-						for hook in t3: psi_register_application_command_error(hook)
-
-						del _funchook
-
-					except Exception:
-						pass
+					bot.load_extension(module_name)
 
 					num_imported_plugins += 1
 
@@ -392,7 +319,6 @@ if ENABLE_IMPORTED_PLUGINS:
 					general_errors.append(f"Plugin '{module[:-3]}' failed to activate: " + str(err))
 
 	else:
-		journal.log("Plugin are enabled, but plugin directory is missing!", 4)
 		general_errors.append("Plugins are enabled, but plugin directory is missing!")
 
 ### ===================================== ###
@@ -406,9 +332,6 @@ if __name__ == "__main__":
 			case [True, True]  : journal.log(MAGENTA + f"Fritz {VERSION}" + RED + " (debug, experimental)", 6)
 
 		print("", flush=True)
-
-		if starboard.NOQB:
-			errors_during_startup += 1
 
 		bot.run(TOKEN)
 
