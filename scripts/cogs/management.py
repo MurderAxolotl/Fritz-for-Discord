@@ -4,7 +4,7 @@ from discord.ext import commands
 from resources.shared import CONTEXTS, INTEGRATION_TYPES
 
 from scripts.tools import journal
-from scripts.tools.utility import isDeveloper
+from scripts.tools.utility import isDeveloper, isDocker
 
 class ManagementView(discord.ui.DesignerView):
 	def __init__(self, text="", *, title=None, success=True):
@@ -63,3 +63,9 @@ class Management(commands.Cog):
 
 		journal.log(f"Plugin {plugin_name} reloaded", 5)
 		await ctx.respond(view=ManagementView(f"Reloaded plugin `{plugin_name}`", title="Reload Plugin", success=True))
+
+	@commands.slash_command(name='shutdown', description='Shut down or restart the bot', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
+	@isDeveloper()
+	async def initiateShutdown(self, ctx):
+		await ctx.respond("Stopping bot" if not isDocker() else "Restarting bot", ephemeral = True)
+		await self.bot.close()

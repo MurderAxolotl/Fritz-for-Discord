@@ -15,59 +15,62 @@ from scripts.cogs.management import ManagementView
 
 async def on_command_error(ctx, error):
 	try:
-		if isinstance(error.original, commands.NotOwner) or isinstance(error, swiperNoSwipingError):
-			await ctx.respond("Only the operator may run this command")
+		# Check if error has an "original" parameter -- was running into issues without this
+		if "original" in dir(error):
+			mappedError = error.original
 
-		elif isinstance(error.original, commands.BotMissingPermissions):
-			await ctx.respond("Fritz has insufficient permission to execute the command. Please re-invite Fritz and grant all requested permissions")
+		else:
+			mappedError = error
 
-		elif isinstance(error.original, bannedUser):
-			journal.log("Blacklisted user attempted to use Fritz: " + str(error), 5)
-			await ctx.respond("You are blacklisted from using Fritz")
+	except Exception:
+		mappedError = error
+
+	try:
+		if isinstance(mappedError, commands.NotOwner) or isinstance(error, swiperNoSwipingError):
+			await ctx.respond("Only the operator may run this command", ephemeral=True)
+
+		elif isinstance(mappedError, commands.BotMissingPermissions):
+			await ctx.respond("Fritz has insufficient permission to execute the command. Please re-invite Fritz and grant all requested permissions", ephemeral=True)
+
+		elif isinstance(mappedError, bannedUser):
+			journal.log(f"Blacklisted user attempted to use Fritz: {str(error)}", 5)
+			await ctx.respond("You are blacklisted from using Fritz", ephemeral=True)
 
 			return
 
-		elif isinstance(error.original, commands.errors.CheckFailure):
-			journal.log("Generic check failure detected: " + str(error), 5)
-			await ctx.respond('Failed one or more command checks - you are not allowed to run this command')
+		elif isinstance(mappedError, commands.errors.CheckFailure):
+			journal.log(f"Generic check failure detected: {str(error)}", 5)
+			await ctx.respond('Failed one or more command checks - you are not allowed to run this command', ephemeral=True)
 
-		elif isinstance(error.original, commands.errors.MissingRequiredArgument):
-			await ctx.respond("Looks like you forgot to provide a value for {parama}. Try filling out all required fields first!".format(parama=error))
+		elif isinstance(mappedError, commands.errors.MissingRequiredArgument):
+			await ctx.respond(f"Looks like you forgot to provide a value for {str(error)}. Try filling out all required fields first!", ephemeral=True)
 
 		# === Extensions ===
-		elif isinstance(error.original, discord.ExtensionNotFound):
+		elif isinstance(mappedError, discord.ExtensionNotFound):
 			journal.log("Extension {error.original.name} not found", 3)
-			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` not found", title="Load Plugin", success=False))
+			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` not found", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.ExtensionNotLoaded):
+		elif isinstance(mappedError, discord.ExtensionNotLoaded):
 			journal.log(f"Extension {error.original.name} not loaded", 4)
-			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` not loaded", title="Load Plugin", success=False))
+			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` not loaded", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.ExtensionAlreadyLoaded):
+		elif isinstance(mappedError, discord.ExtensionAlreadyLoaded):
 			journal.log(f"Extension {error.original.name} already loaded", 4)
-			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` already loaded", title="Load Plugin", success=False))
+			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` already loaded", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.NoEntryPointError):
+		elif isinstance(mappedError, discord.NoEntryPointError):
 			journal.log(f"Extension {error.original.name} has no entrypoint", 3)
-			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` failed to load: No entrypoint", title="Load Plugin", success=False))
+			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` failed to load: No entrypoint", title="Load Plugin", success=False), ephemeral=True)
 
-		elif isinstance(error.original, discord.ExtensionFailed):
+		elif isinstance(mappedError, discord.ExtensionFailed):
 			journal.log(f"Extension {error.original.name} failed to load: {str(error.original.original)}", 3)
-			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` failed to load: `{str(error.original.original)}", title="Load Plugin", success=False))
+			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` failed to load: `{str(error.original.original)}", title="Load Plugin", success=False), ephemeral=True)
 
 		else:
 			journal.log("Failed to execute command: " + str(error), 3)
-			await ctx.respond(f"Failed to execute command. Please [report this bug](<{GIT_URL}/issues/new?assignees=&labels=bug%2Cbroken+command&projects=&template=broken_command.yml>)")
+			await ctx.respond(f"Failed to execute command. Please [report this bug](<{GIT_URL}/issues/new?assignees=&labels=bug%2Cbroken+command&projects=&template=broken_command.yml>)", ephemeral=True)
 
 	except Exception as err:
-		try:
-			journal.log("While handling an error, another one occured: " + str(err), 3)
-
-		except Exception as err2:
-			journal.log("Commands: Too many errors occured while attempting to handle another error. Assuming repeated errors were caused by Discord.", 2)
-			journal.log("   -> %s"%str(err), 2)
-			journal.log("   -> %s"%str(err2), 2)
-
-			return
+		journal.log(f"While handling an error, another one occured: {str(err)}", 3)
 
 	return
