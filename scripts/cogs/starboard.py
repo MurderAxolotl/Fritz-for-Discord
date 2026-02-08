@@ -10,7 +10,7 @@ from resources.sqlite_queries import starboard_queries as queries
 import scripts.tools.journal as journal
 
 from resources.shared import CONFIG_PATH
-from scripts.tools.utility import getCachePath
+from scripts.tools.utility import getCachePath, stripURL
 
 CACHE_DIR = getCachePath("starboard")
 
@@ -22,7 +22,7 @@ class StarboardView(discord.ui.DesignerView):
 		container = discord.ui.Container(colour=discord.Colour.blurple())
 		super().add_item(container)
 
-		title_text = discord.ui.TextDisplay(f"### [New starred message in #{message.channel}]({message.jump_url})")
+		title_text = discord.ui.TextDisplay(f"### [New starred message in #{stripURL(message.channel.name)}]({message.jump_url})")
 		container.add_item(title_text)
 
 		message_view = discord.ui.Section()
