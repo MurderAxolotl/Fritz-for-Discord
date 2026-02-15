@@ -26,12 +26,5 @@ class Confessions(commands.Cog):
 	### BOT UTILITIES ###
 	@commands.slash_command(name='confess', description='Send an anonymous message to the current channel', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def confess(self, ctx: discord.ApplicationContext, confession=discord.Option(input_type=str, name="your-confession", required=True)):
-
-		try:
-			await ctx.send(view=ConfessionView(confession, title="Confession"))
-			await ctx.respond(view=ConfessionView(confession, title="Confession Recieved"), ephemeral=True)
-		except:
-			try:
-				await ctx.respond(view=ConfessionView("Failed to send confession", title="Something went wrong"), ephemeral=True)
-			except:
-				journal.log("Something really went wrong in confessions")
+		await ctx.send(view=ConfessionView(confession, title="Confession"))
+		await ctx.respond(view=ConfessionView(confession, title="Confession Recieved"), ephemeral=True)
