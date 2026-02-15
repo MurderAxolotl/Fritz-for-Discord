@@ -17,7 +17,7 @@ import sys
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, IS_ANDROID
 from resources.shared import IS_DEBUGGING, VERSION, TOKEN
-from resources.shared import ENABLE_QUOTEBOOK, ENABLE_IMPORTED_PLUGINS, PLUGIN_PATH, BOOTID
+from resources.shared import ENABLE_IMPORTED_PLUGINS, PLUGIN_PATH, BOOTID
 
 from resources.colour import RED, YELLOW, RESET, MAGENTA, SEAFOAM
 

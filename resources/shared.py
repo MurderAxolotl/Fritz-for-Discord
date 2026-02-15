@@ -88,8 +88,6 @@ ALLOWED_MCSTATUS_SERVERS = json.loads(os.getenv("mcs_whitelist", "[]"))
 BLACKLISTED_USERS = list(json.loads(os.getenv("blacklisted_users", "{}")))
 
 # Globals #
-QUOTE_WEBHOOK = os.getenv("quote_webhook", "")
-QUOTE_ID = os.getenv("quotebook_id", "")
 REGISTERED_DEVELOPERS = json.loads(os.getenv("developers", "[]")) # Okay, well, you can probably safely edit this
 INTENTS = discord.Intents(messages=True, message_content=True, voice_states=True, reactions=True)
 
@@ -104,9 +102,6 @@ CONFIG_PATH = os.getenv("configPath", PATH + "/config")
 RESOURCE_PATH = os.getenv("resourcePath", PATH + "/resources")
 PLUGIN_PATH = os.getenv("pluginPath", PATH + "/plugins")
 CACHE_PATH = os.getenv("cachePath", PATH + "/cache")
-
-# Module availability
-ENABLE_QUOTEBOOK = True if QUOTE_WEBHOOK != "" and QUOTE_ID != "" else False
 
 VERSION = f"1.27.1-{PLATFORM_IDENTIFIER}"
 BOOTID = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(32))
