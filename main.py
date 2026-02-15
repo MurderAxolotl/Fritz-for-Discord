@@ -23,7 +23,6 @@ from resources.colour import RED, YELLOW, RESET, MAGENTA, SEAFOAM
 
 import scripts.api.ptk_reactions      as ptk_reactions
 import scripts.api.qrTools            as qrTools
-import scripts.api.fun                as oneOff
 import scripts.api.animal_images      as animals
 import scripts.api.lumos_status       as lumos_status
 import scripts.errors.commandCheck    as commandCheck
@@ -34,6 +33,7 @@ from scripts.tools.utility import bannedUser, loadString, getCachePath
 
 from scripts.cogs.utilities import Utilities
 from scripts.cogs.management import Management
+from scripts.cogs.quotebook import Quotebook
 from scripts.cogs.starboard import Starboard
 from scripts.cogs.debugging import Debug
 
@@ -74,6 +74,7 @@ async def global_isbanned_check(ctx):
 ### COGS ###
 bot.add_cog(Utilities(bot))
 bot.add_cog(Management(bot))
+bot.add_cog(Quotebook(bot))
 bot.add_cog(Starboard(bot))
 bot.add_cog(Debug(bot))
 
@@ -127,18 +128,6 @@ async def on_ready():
 
 	for func in _on_ready_hooks:
 		func()
-
-### ===================================== ###
-### RIGHT-CLICK COMMANDS ###
-if ENABLE_QUOTEBOOK:
-	@bot.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
-	async def quotebookContext(ctx:discord.ApplicationCommand, message:discord.Message):
-		authorName = message.author.display_name
-		author     = message.author.id
-		text       = message.content
-		avat       = message.author.display_avatar.url
-
-		await oneOff.quotebookMessage(ctx, text, author, authorName, avat)
 
 ### ===================================== ###
 ### API COMMANDS ###
