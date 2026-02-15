@@ -9,6 +9,8 @@ import scripts.tools.journal as journal
 from resources.shared import CONTEXTS, INTEGRATION_TYPES
 from resources.shared import QUOTE_WEBHOOK, QUOTE_ID, CONFIG_PATH
 
+LOG_COMPONENT = "Quotebook"
+
 
 class Quotebook(commands.Cog):
 	def __init__(self, bot):
@@ -51,16 +53,18 @@ class Quotebook(commands.Cog):
 				"username": f"{author_name} (via Fritz)"
 			}
 
-		if str(server) in self.guild_list:
-			dynamic_webhook = self.config[str(server)]["channel"]
+		try:
+			if str(server) in self.guild_list:
+				dynamic_webhook = self.config[str(server)]["channel"]
 
-			request = requests.post(dynamic_webhook, json = form)
+				request = requests.post(dynamic_webhook, json = form)
 
-		else:
-			request = requests.post(QUOTE_WEBHOOK, json = form)
+			else:
+				request = requests.post(QUOTE_WEBHOOK, json = form)
 
-		if request.status_code != "200":
-			journal.log(f"Discord returned error {request.status_code}: {request.text}", 4, component="Quotebook")
+			request.raise_for_status()
+		except HTTPError as http_error:
+			journal.log(f"Discord returned error {http_error.code}: {http_error.reason}", 4, component=LOG_COMPONENT)
 
 		await ctx.respond("Quotebooked", ephemeral=True)
 
