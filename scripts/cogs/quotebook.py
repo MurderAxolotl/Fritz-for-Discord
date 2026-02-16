@@ -11,6 +11,37 @@ from resources.shared import CONTEXTS, INTEGRATION_TYPES, CONFIG_PATH
 LOG_COMPONENT = "Quotebook"
 
 
+class QuotebookModal(discord.ui.DesignerModal):
+	def __init__(self, message: discord.Message, webhook):
+		super().__init__(title="Quotebook Message")
+
+		self.message = message
+		self.message_text = self.message.content
+		self.author_name = self.message.author.display_name
+		self.avatar_url = self.message.author.display_avatar.url
+		self.webhook = webhook
+
+		message_text_display = discord.ui.TextDisplay(self.message_text)
+		super().add_item(message_text_display)
+
+	async def callback(self, interaction: discord.Interaction):
+		form = {
+			"content": f"{self.message_text}",
+			"username": f"{self.author_name} (via Fritz)",
+			"avatar_url": f"{self.avatar_url}"
+		}
+
+		try:
+			request = requests.post(self.webhook, json=form)
+			request.raise_for_status()
+
+			await interaction.response.send_message("Quotebooked", ephemeral=True)
+		except HTTPError as http_error:
+			journal.log(f"Discord returned error {http_error.code}: {http_error.reason}", 4, component=LOG_COMPONENT)
+
+			await interaction.response.send_message("Failed to quotebook!", ephemeral=True)
+
+
 class Quotebook(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -27,41 +58,15 @@ class Quotebook(commands.Cog):
 
 	@commands.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def quotebook(self, ctx: discord.ApplicationCommand, message: discord.Message):
-		await ctx.defer(ephemeral=True)
-
-		author_name = message.author.display_name
-		message_text = message.content
-		avatar_url = message.author.display_avatar.url
-
 		try:
 			server = ctx.guild.id
 
 		except: #noqa
 			server = 0
 
-		try:
-			form = {
-				"content": f"{message_text}",
-				"username": f"{author_name} (via Fritz)",
-				"avatar_url": f"{avatar_url}"
-			}
-
-		except: #noqa
-			form = {
-				"content": f"{message_text}",
-				"username": f"{author_name} (via Fritz)"
-			}
-
 		if str(server) in self.guild_list:
-			dynamic_webhook = self.config[str(server)]["channel"]
-
-			try:
-				request = requests.post(dynamic_webhook, json = form)
-				request.raise_for_status()
-			except HTTPError as http_error:
-				journal.log(f"Discord returned error {http_error.code}: {http_error.reason}", 4, component=LOG_COMPONENT)
-
-			await ctx.respond("Quotebooked", ephemeral=True)
+			modal = QuotebookModal(message=message, webhook=self.config[str(server)]["channel"])
+			await ctx.send_modal(modal)
 
 		else:
 			await ctx.respond("Quotebook is not enabled here", ephemeral=True)
