@@ -16,30 +16,23 @@ class QuotebookModal(discord.ui.DesignerModal):
 		super().__init__(title="Quotebook Message")
 
 		self.message = message
+		self.webhook = webhook
+
 		self.message_text = self.message.content
 		self.author_name = self.message.author.display_name
 		self.avatar_url = self.message.author.display_avatar.url
-		self.webhook = webhook
 
 		message_text_display = discord.ui.TextDisplay(self.message_text)
 		super().add_item(message_text_display)
 
 	async def callback(self, interaction: discord.Interaction):
-		form = {
-			"content": f"{self.message_text}",
-			"username": f"{self.author_name} (via Fritz)",
-			"avatar_url": f"{self.avatar_url}"
-		}
+		await self.webhook.send(
+			content=self.message_text,
+			username=f"{self.author_name} (via Fritz)",
+			avatar_url=self.avatar_url,
+		)
 
-		try:
-			request = requests.post(self.webhook, json=form)
-			request.raise_for_status()
-
-			await interaction.response.send_message("Quotebooked", ephemeral=True)
-		except HTTPError as http_error:
-			journal.log(f"Discord returned error {http_error.code}: {http_error.reason}", 4, component=LOG_COMPONENT)
-
-			await interaction.response.send_message("Failed to quotebook!", ephemeral=True)
+		await interaction.response.send_message("Quotebooked", ephemeral=True)
 
 
 class Quotebook(commands.Cog):
@@ -59,15 +52,38 @@ class Quotebook(commands.Cog):
 	@commands.message_command(name="Quotebook", contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def quotebook(self, ctx: discord.ApplicationCommand, message: discord.Message):
 		try:
-			server = ctx.guild.id
+			guild_id = ctx.guild.id
 
 		except: #noqa
-			server = 0
+			guild_id = 0
 
-		if str(server) in self.guild_list:
-			modal = QuotebookModal(message=message, webhook=self.config[str(server)]["channel"])
+		if str(guild_id) in self.guild_list:
+			channel_id=self.config[str(guild_id)]["channel_id"]
+
+			server = self.bot.get_guild(guild_id)
+			channel = server.get_channel(channel_id)
+
+			# If channel isn't already cached, fetch it from Discord
+			if channel is None:
+				journal.log(f"Couldn't find channel {channel_id} in cache, fetching from Discord", 7, component=LOG_COMPONENT)
+				channel = await self.bot.fetch_channel(channel_id)
+
+			webhook = await self.get_or_create_webhook(channel)
+
+			modal = QuotebookModal(message=message, webhook=webhook)
 			await ctx.send_modal(modal)
 
 		else:
 			await ctx.respond("Quotebook is not enabled here", ephemeral=True)
+
+	async def get_or_create_webhook(self, channel: discord.TextChannel):
+		# Check for existing webhooks
+		webhooks = await channel.webhooks()
+		for webhook in webhooks:
+			if webhook.user == self.bot.user:
+				return webhook
+
+		journal.log(f"Couldn't find existing webhook for {channel.name}, creating new one", 7, component=LOG_COMPONENT)
+		# If we don't find an existing webhook, create a new one
+		return await channel.create_webhook(name="Fritz Quotebook")
 
