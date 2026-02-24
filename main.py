@@ -33,6 +33,7 @@ import scripts.tools.journal          as journal
 from scripts.tools.utility import bannedUser, loadString, getCachePath
 
 from scripts.cogs.utilities import Utilities
+from scripts.cogs.confessions import Confessions
 from scripts.cogs.management import Management
 from scripts.cogs.starboard import Starboard
 from scripts.cogs.debugging import Debug
@@ -72,6 +73,7 @@ async def global_isbanned_check(ctx):
 
 ### ===================================== ###
 ### COGS ###
+bot.add_cog(Confessions(bot))
 bot.add_cog(Utilities(bot))
 bot.add_cog(Management(bot))
 bot.add_cog(Starboard(bot))
