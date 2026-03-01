@@ -19,6 +19,9 @@ async def on_command_error(ctx, error):
 		if "original" in dir(error):
 			mappedError = error.original
 
+		elif isinstance(error, NotImplementedError):
+			await ctx.respond("This feature is not implemented yet")
+
 		else:
 			mappedError = error
 
