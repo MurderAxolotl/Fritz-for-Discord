@@ -26,5 +26,7 @@ class Confessions(commands.Cog):
 	### BOT UTILITIES ###
 	@commands.slash_command(name='confess', description='Send an anonymous message to the current channel', contexts=CONTEXTS, integration_types=INTEGRATION_TYPES)
 	async def confess(self, ctx: discord.ApplicationContext, confession=discord.Option(input_type=str, name="your-confession", required=True)):
-		await ctx.send(view=ConfessionView(confession, title="Confession"))
+		confession_message = await ctx.send(view=ConfessionView(confession, title="Confession"))
+		if type(confession_message.channel) is discord.TextChannel:
+			await confession_message.create_thread(name=f"Confession Thread", auto_archive_duration=1440)
 		await ctx.respond(view=ConfessionView(confession, title="Confession Recieved"), ephemeral=True)
