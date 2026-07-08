@@ -13,6 +13,8 @@ from resources.colour import RED, DRIVES, YELLOW, SPECIALDRIVE, BLUE, RESET, MAG
 from scripts.tools.utility import swiperNoSwipingError, bannedUser
 from scripts.cogs.management import ManagementView
 
+import traceback
+
 async def on_command_error(ctx, error):
 	try:
 		# Check if error has an "original" parameter -- was running into issues without this
@@ -67,7 +69,8 @@ async def on_command_error(ctx, error):
 			await ctx.respond(view=ManagementView(f"Extension `{error.original.name}` failed to load: `{str(error.original.original)}", title="Load Plugin", success=False), ephemeral=True)
 
 		else:
-			journal.log("Failed to execute command: " + str(error), 3)
+			stack_trace_string = "".join(traceback.format_exception(error))
+			journal.log("Failed to execute command:\n" + stack_trace_string, 3)
 			await ctx.respond(f"Failed to execute command. Please [report this bug](<{GIT_URL}/issues/new?assignees=&labels=bug%2Cbroken+command&projects=&template=broken_command.yml>)", ephemeral=True)
 
 	except Exception as err:
