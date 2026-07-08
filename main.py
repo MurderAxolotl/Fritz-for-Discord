@@ -266,20 +266,20 @@ def psi_register_application_command_error(function):
 	_psi__log("on_application_command_error", function)
 	_on_application_command_error_hooks.append(function)
 
-## Support for plug-in modules in plugins/
+
+# Support for plug-in modules in plugins/
 if ENABLE_IMPORTED_PLUGINS:
 	PLUGIN_LOADER_CACHE_DIR = getCachePath("plugin_loader")
 	if not os.path.exists(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING"):
 		print(loadString("plugins").format(rd=RED, yl=YELLOW, pl=MAGENTA, rs=RESET), 4)
 
-		wait = 0
+		wait = 15
 
-		while wait != 60:
-			fl02 = 60 - wait
+		while wait != 0:
 			time.sleep(1)
-			wait += 1
+			wait -= 1
 
-			print(RED + f"\u001b[1FFritz will start in {fl02} seconds" + RESET, flush=True)
+			print(RED + f"\u001b[1FFritz will start in {wait} seconds" + RESET, flush=True)
 
 		open(PLUGIN_LOADER_CACHE_DIR + "/HAS_SEEN_PLUGIN_WARNING", "x").close()
 
@@ -309,6 +309,7 @@ if ENABLE_IMPORTED_PLUGINS:
 
 	else:
 		general_errors.append("Plugins are enabled, but plugin directory is missing!")
+
 
 ### ===================================== ###
 
