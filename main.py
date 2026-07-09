@@ -13,6 +13,7 @@ import discord
 from discord.ext import commands
 import time
 import sys
+import traceback
 
 from resources.shared import CONTEXTS, CONTEXTS_SERVER_ONLY, INTEGRATION_TYPES, INTEGRATION_TYPES_SERVER_ONLY
 from resources.shared import BLACKLISTED_USERS, IS_ANDROID
@@ -305,7 +306,8 @@ if ENABLE_IMPORTED_PLUGINS:
 					num_imported_plugins += 1
 
 				except Exception as err:
-					general_errors.append(f"Plugin '{module[:-3]}' failed to activate: " + str(err))
+					stack_trace_string = "".join(traceback.format_exception(err))
+					general_errors.append(f"Plugin '{module[:-3]}' failed to activate:\n" + stack_trace_string)
 
 	else:
 		general_errors.append("Plugins are enabled, but plugin directory is missing!")
