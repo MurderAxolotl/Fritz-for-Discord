@@ -177,3 +177,6 @@ cython_debug/
 #.idea/
 init.sh
 .vscode/settings.json
+
+# MacOS System Files
+.DS_Store
